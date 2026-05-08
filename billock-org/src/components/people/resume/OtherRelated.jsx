@@ -43,7 +43,7 @@ export default class OtherRelated extends Component {
       {
         "data": "DeVry University, Visiting Professor 2011-2018",
         "children": [
-          "Taught Computer Grpahics Programming 1 and 2, Math Programming for Games, and Introduction to Game and Simulation Programming"
+          "Taught Computer Graphics Programming 1 and 2, Math Programming for Games, and Introduction to Game and Simulation Programming"
         ]
       },
       {
