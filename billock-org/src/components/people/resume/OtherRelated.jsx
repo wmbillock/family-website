@@ -6,15 +6,19 @@ export default class OtherRelated extends Component {
       {
         "data": "North American Brass Band Association",
         "children": [
-          "Board member, 2022-Present",
-          "Tech lead, 2022-Present"
+          "Board member, 2022-2024",
+          "Tech lead, 2022-2024"
         ]
       },
       {
         "data": "Chicago Brass Band",
         "children": [
-          "Board member, 2022-Present",
-          "First Tenor Horn, 2019-Present"
+          "President, 2025",
+          "Vice President, 2024",
+          "Board member, 2023",
+          "First Baritone, 2025",
+          "Solo Tenor Horn, 2024",
+          "First Tenor Horn, 2019-2024"
         ]
       },
       {

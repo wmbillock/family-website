@@ -17,6 +17,10 @@ export default class Skills extends Component {
         'level':'Intermediate'
       },
       {
+        'skill':'React development',
+        'level':'Advanced'
+      },
+      {
         'skill':'C++ development',
         'level':'Advanced'
       },
