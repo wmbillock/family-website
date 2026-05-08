@@ -10,7 +10,7 @@ export default class FamilyNavBar extends Component {
   render() {
     return (
     <div className='menu-frame'>
-        <Menu pageWrapId={"pagecontent"} burgerButtonClassName={'burger-style'}>
+        <Menu pageWrapId={"pagecontent"} burgerButtonClassName={'burger-style'} width={120}>
             <Link id="home" className="menu-item" to="/"><img className='circleimagerot' src={require('../images/tenor-horn.jpg')} alt="Home" /></Link>
             <Link to="/willow" className="menu-item"><img className="circleimage" src={require("../images/willow.jpg")} alt="Willow" /></Link>
             <Link to="/kiley" className="menu-item"><img className="circleimagerot" src={require("../images/kiley.jpg")} alt="Kiley" /></Link>
