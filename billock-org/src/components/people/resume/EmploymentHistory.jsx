@@ -246,8 +246,8 @@ export default class EmploymentHistory extends Component {
     ]);
   }
   render() {
-    var employment_list = this.getData().map( (item) => 
-      <div key={uuidv4()}>
+    var employment_list = this.getData().map( (item) =>
+      <div key={uuidv4()} className='resume-entry'>
         <div>
           <span className="datespan">{item['start-date']}-{item['end-date'] === undefined ? 'Present' : item['end-date']}</span>
           &nbsp;----&nbsp;

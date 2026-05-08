@@ -7,6 +7,13 @@ import '../../../stylesheets/resume.sass'
 
 export default class Resume extends Component {
   generatePDF = () => {
+    const originalTitle = document.title
+    document.title = 'willow-billock-resume'
+    const restore = () => {
+      document.title = originalTitle
+      window.removeEventListener('afterprint', restore)
+    }
+    window.addEventListener('afterprint', restore)
     window.print()
   }
   render() {

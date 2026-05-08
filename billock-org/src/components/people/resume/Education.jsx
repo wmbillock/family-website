@@ -24,8 +24,8 @@ export default class Education extends Component {
     ]);
   }
   render() {
-    var education_list = this.getData().map( (item) => 
-      <div key={uuidv4()}>
+    var education_list = this.getData().map( (item) =>
+      <div key={uuidv4()} className='resume-entry'>
         <div>
           <span className="degree">
             {item['degree']}
