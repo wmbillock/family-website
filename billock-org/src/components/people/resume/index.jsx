@@ -22,7 +22,7 @@ export default class Resume extends Component {
       width: 170,
       margin: 40,
       autoPaging: 'text',
-      filename: 'matt-billock-generated-resume.pdf'
+      filename: 'willow-billock-generated-resume.pdf'
    });
   }
   render() {
@@ -30,7 +30,7 @@ export default class Resume extends Component {
       <div className='resume'>
         <button onClick={this.generatePDF} type='button'>Export PDF</button>
         <div id="resume-content">
-          <h1>MATTHEW R. BILLOCK</h1>
+          <h1>WILLOW BILLOCK</h1>
           <Skills />
           <EmploymentHistory />
           <Education />
