@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d4785032.css",
-    "main.js": "/static/js/main.fc7db3ef.js",
+    "main.css": "/static/css/main.432d4852.css",
+    "main.js": "/static/js/main.6516d964.js",
     "static/js/239.cb6a0c58.chunk.js": "/static/js/239.cb6a0c58.chunk.js",
     "static/js/213.38f3f3fd.chunk.js": "/static/js/213.38f3f3fd.chunk.js",
     "static/js/455.bd84859a.chunk.js": "/static/js/455.bd84859a.chunk.js",
@@ -16,14 +16,14 @@
     "static/media/connor-background.jpg": "/static/media/connor-background.eb94cdb3dfa813f14791.jpg",
     "static/media/tenor-horn.jpg": "/static/media/tenor-horn.20c9d3192a2ff4b7eb3e.jpg",
     "index.html": "/index.html",
-    "main.d4785032.css.map": "/static/css/main.d4785032.css.map",
-    "main.fc7db3ef.js.map": "/static/js/main.fc7db3ef.js.map",
+    "main.432d4852.css.map": "/static/css/main.432d4852.css.map",
+    "main.6516d964.js.map": "/static/js/main.6516d964.js.map",
     "239.cb6a0c58.chunk.js.map": "/static/js/239.cb6a0c58.chunk.js.map",
     "213.38f3f3fd.chunk.js.map": "/static/js/213.38f3f3fd.chunk.js.map",
     "455.bd84859a.chunk.js.map": "/static/js/455.bd84859a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d4785032.css",
-    "static/js/main.fc7db3ef.js"
+    "static/css/main.432d4852.css",
+    "static/js/main.6516d964.js"
   ]
 }
