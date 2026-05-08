@@ -8,7 +8,7 @@ export default class EmploymentHistory extends Component {
         'key':uuidv4(),
         'start-date': 'August 2022',
         'end-date': undefined,
-        'title': 'Staff Software Development Engineer',
+        'title': 'Staff Software Engineer',
         'company': 'Affirm, Inc.',
         'location': 'Remote',
         'responsibilities': [
