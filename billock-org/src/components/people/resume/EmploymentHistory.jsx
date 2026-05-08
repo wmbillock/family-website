@@ -12,7 +12,7 @@ export default class EmploymentHistory extends Component {
         'company': 'Affirm, Inc.',
         'location': 'Remote',
         'responsibilities': [
-          "Tech used: Python (Flask/SQLAlchemy), Databricks, Docker, Kubernetes, Airflow",
+          "Tech used: Python (Flask/SQLAlchemy), Databricks, Docker, Kubernetes, Airflow, ReactJS",
           "Worked to enhance quality of back-end machine learning pipelines",
           "Held architectural oversight for the pricing service, which serves 12 million requests per minute at five 9s of availability, while driving team quality and development practices to maximize delivery reliability",
           "Won a team hackathon and shipped one of the first production LLM integrations at Affirm",

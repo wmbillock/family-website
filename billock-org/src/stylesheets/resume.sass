@@ -15,7 +15,11 @@
 @media print
     @page
         size: letter
-        margin: 0.5in 0
+        margin: 0.5in
+
+    /* Reset transforms on ancestors so positioning + @page margin work as expected */
+    html, body, #outer-container, #main, #pagecontent, .App-container, .bm-menu-wrap, .bm-menu
+        transform: none !important
 
     body *
         visibility: hidden
@@ -30,7 +34,7 @@
         top: 0
         width: 100%
         box-sizing: border-box
-        padding: 0 0.5in
+        padding: 0
         color: #000
         background: #fff
         font-size: 10pt
