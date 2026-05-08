@@ -136,6 +136,105 @@ html,
   margin-left: auto
   margin-right: auto
 
+.video-grid
+  display: grid
+  grid-template-columns: 1fr
+  gap: 1rem
+  padding: 1rem 0
+
+.video-card
+  background: rgba(255, 255, 255, 0.92)
+  border-radius: 8px
+  overflow: hidden
+  display: flex
+  flex-direction: column
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15)
+
+.video-thumb
+  position: relative
+  display: block
+  width: 100%
+  border: none
+  padding: 0
+  cursor: pointer
+  background: none
+
+.video-thumb img
+  width: 100%
+  display: block
+  aspect-ratio: 16 / 9
+  object-fit: cover
+
+.video-thumb .play-icon
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  font-size: 3.5rem
+  color: white
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8)
+  pointer-events: none
+  opacity: 0.95
+  transition: font-size 0.15s ease
+
+.video-thumb:hover .play-icon
+  font-size: 4rem
+  opacity: 1
+
+.year-badge
+  position: absolute
+  top: 8px
+  right: 8px
+  background: rgba(0, 0, 0, 0.78)
+  color: white
+  padding: 3px 10px
+  border-radius: 4px
+  font-size: 0.85rem
+  font-weight: 700
+
+.video-card iframe
+  width: 100%
+  aspect-ratio: 16 / 9
+  border: 0
+  display: block
+
+.video-meta
+  padding: 0.6rem 0.85rem 0.85rem
+
+.video-meta h3
+  font-size: 1rem
+  margin: 0 0 0.25rem
+  font-weight: 600
+  color: #1a1a1a
+
+.video-group
+  font-size: 0.9rem
+  margin: 0 0 0.2rem
+
+.video-group a
+  color: #1155cc
+  text-decoration: none
+
+.video-group a:hover
+  text-decoration: underline
+
+.video-detail
+  font-size: 0.82rem
+  margin: 0
+  color: #555
+
+@media (min-width: 600px)
+  .video-grid
+    grid-template-columns: repeat(2, 1fr)
+
+@media (min-width: 992px)
+  .video-grid
+    grid-template-columns: repeat(3, 1fr)
+
+@media (min-width: 1400px)
+  .video-grid
+    grid-template-columns: repeat(4, 1fr)
+
 .footer
   text-align: center
   background-color: rgba(0,0,64, .75)
