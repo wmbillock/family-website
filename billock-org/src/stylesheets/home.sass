@@ -10,34 +10,28 @@
 .bg
     @include background("..\\images\\house.jpg")
     background-attachment: fixed
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: 100vh
 
 .page-title
-    top: 50%
-    left: 50%
     scale: 2
-    -webkit-transform: translate(-50%, -50%)
-    -moz-transform: translate(-50%, -50%)
-    -ms-transform: translate(-50%, -50%)
-    -o-transform: translate(-50%, -50%)
-    transform: translate(-50%, -50%)
     transition: transform 0.3s ease
     text-align: center
-    vertical-align: middle
-    position: absolute
     background-color: rgba(200,200,200, 64)
     border-radius: 10px
     border-width: thick
     border-color: black
     border-style: double
-    display: inline-flexbox
     @media (max-width: 768px)
         scale: 1
         max-width: 90vw
 
 @media (min-width: 769px)
   body.menu-open .page-title
-    -webkit-transform: translate(calc(-50% - var(--menu-width, 200px) / 2), -50%)
-    transform: translate(calc(-50% - var(--menu-width, 200px) / 2), -50%)
+    -webkit-transform: translateX(calc(var(--menu-width, 200px) / -2))
+    transform: translateX(calc(var(--menu-width, 200px) / -2))
 
 .h1, h1
     font-size: xxx-large
