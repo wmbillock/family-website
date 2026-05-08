@@ -3,17 +3,17 @@ import { Tab, Tabs } from 'react-bootstrap'
 import PersonalInfo from './PersonalInfo'
 import HobbyInfo from './HobbyInfo'
 import Resume from './resume'
-import '../../stylesheets/matt.sass'
+import '../../stylesheets/willow.sass'
 
-export default class Matt extends Component {
-  
+export default class Willow extends Component {
+
   render() {
     return (
-      <div className='matt-bg'>
+      <div className='willow-bg'>
         <div className="main-content">
           <div>
-            <h1>Matt</h1>
-            <Tabs defaultActiveKey="resume" id="matt-page-tabs" className='mb-3'>
+            <h1>Willow</h1>
+            <Tabs defaultActiveKey="resume" id="willow-page-tabs" className='mb-3'>
               <Tab eventKey='personal' title='Personal info'>
                 <PersonalInfo />
               </Tab>
