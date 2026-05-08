@@ -20,7 +20,7 @@ export default class EmploymentHistory extends Component {
           "Provided mentorship and guidance to team members, while also working to level up the larger engineering organization",
           "Created and collaborated on many software designs, gathering feedback and buy-in before driving projects through development to delivery",
           "Improved development pipelines and reduced process inefficiencies to improve concurrent experimentation capacity by 400%",
-          "Developed automated reporting to track finacning program experimentation and configuration changes, supporting business needs"
+          "Developed automated reporting to track financing program experimentation and configuration changes, supporting business needs"
         ]
       },
       {
@@ -222,7 +222,7 @@ export default class EmploymentHistory extends Component {
         "responsibilities": [
           "Implemented graphical effects in a DirectX 9 rendering engine",
           "Ported game engine from DirectX 8 to DirectX 9",
-          "Build a reloadable shader debugger in HLSLS and Cg",
+          "Built a reloadable shader debugger in HLSL and Cg",
         ]
       },
       {

@@ -11,7 +11,7 @@ export default class Education extends Component {
         'major': 'Computer Graphics and Animation (developer concentration)',
         'graduationDate': '06/2007',
         'city': 'Chicago, IL',
-        'notes': 'Graduated with distinction. Member of Upsilon Pi Epsilon Computer Science Honors Society'
+        'notes': 'Graduated with distinction. Member of Upsilon Pi Epsilon Computer Science Honor Society'
       },
       {
         'school': 'Iowa State University',
