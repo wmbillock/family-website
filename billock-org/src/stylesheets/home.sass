@@ -20,6 +20,7 @@
     -ms-transform: translate(-50%, -50%)
     -o-transform: translate(-50%, -50%)
     transform: translate(-50%, -50%)
+    transition: transform 0.3s ease
     text-align: center
     vertical-align: middle
     position: absolute
@@ -32,6 +33,11 @@
     @media (max-width: 768px)
         scale: 1
         max-width: 90vw
+
+@media (min-width: 769px)
+  body.menu-open .page-title
+    -webkit-transform: translate(calc(-50% - var(--menu-width, 200px) / 2), -50%)
+    transform: translate(calc(-50% - var(--menu-width, 200px) / 2), -50%)
 
 .h1, h1
     font-size: xxx-large
