@@ -14,6 +14,9 @@ export default class EmploymentHistory extends Component {
         'responsibilities': [
           "Tech used: Python (Flask/SQLAlchemy), Databricks, Docker, Kubernetes, Airflow",
           "Worked to enhance quality of back-end machine learning pipelines",
+          "Contributed to a high-throughput pricing system that handles millions of requests per minute",
+          "Won an internal AI hackathon by designing and building an agentic framework",
+          "Participated in the redesign of the software engineering interview process by developing a new screening question",
           "Provided mentorship and guidance to team members, while also working to level up the larger engineering organization",
           "Created and collaborated on many software designs, gathering feedback and buy-in before driving projects through development to delivery",
           "Improved development pipelines and reduced process inefficiencies to improve concurrent experimentation capacity by 400%",
