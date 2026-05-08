@@ -72,8 +72,8 @@ export default class OtherRelated extends Component {
     ]
   }
   render() {
-    const item_list = this.getData().map((item) => 
-      <div key={uuidv4()}>
+    const item_list = this.getData().map((item) =>
+      <div key={uuidv4()} className='resume-entry'>
         <span className='company-location'>{item['data']}</span>
         <ul>
           {item['children'].map((child) => <li key={uuidv4()}>{child}</li>)}
