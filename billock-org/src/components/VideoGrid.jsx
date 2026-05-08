@@ -11,7 +11,7 @@ const groups = {
   isucfvmb: { name: 'Iowa State University Cyclone Football "Varsity" Marching Band', url: 'https://music.iastate.edu' },
   pioneer: { name: 'Pioneer Drum and Bugle Corps', url: 'https://www.dci.org' },
   sinewave: { name: 'Sine Wave Minicorps', url: 'https://www.dca-corps.org' },
-  nabbss: { name: 'North American Brass Band Summer School', url: 'https://www.nabba.org' },
+  nabbss: { name: 'North American Brass Band Summer School' },
   local_legends_mke: { name: 'Local Legends (MKE)', url: 'https://open.spotify.com/artist/7DDKBf8FjApiQMhTKR2nkZ' }
 }
 
