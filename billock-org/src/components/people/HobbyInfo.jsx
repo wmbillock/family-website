@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import VideoCarousel from '../VideoCaoursel'
+import VideoGrid from '../VideoGrid'
 
 export default class HobbyInfo extends Component {
   render() {
     return (
       <div>
-        <VideoCarousel />
+        <VideoGrid />
         <div className='spotify-embed'>
           <h2>Listen on Spotify</h2>
           <iframe

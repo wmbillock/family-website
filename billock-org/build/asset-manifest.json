@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.5109f431.css",
-    "main.js": "/static/js/main.360d7773.js",
+    "main.css": "/static/css/main.cc743a76.css",
+    "main.js": "/static/js/main.347103df.js",
     "static/js/498.1e3489de.chunk.js": "/static/js/498.1e3489de.chunk.js",
     "static/js/703.42230876.chunk.js": "/static/js/703.42230876.chunk.js",
     "static/js/455.043729bb.chunk.js": "/static/js/455.043729bb.chunk.js",
@@ -16,14 +16,14 @@
     "static/media/connor-background.jpg": "/static/media/connor-background.eb94cdb3dfa813f14791.jpg",
     "static/media/tenor-horn.jpg": "/static/media/tenor-horn.20c9d3192a2ff4b7eb3e.jpg",
     "index.html": "/index.html",
-    "main.5109f431.css.map": "/static/css/main.5109f431.css.map",
-    "main.360d7773.js.map": "/static/js/main.360d7773.js.map",
+    "main.cc743a76.css.map": "/static/css/main.cc743a76.css.map",
+    "main.347103df.js.map": "/static/js/main.347103df.js.map",
     "498.1e3489de.chunk.js.map": "/static/js/498.1e3489de.chunk.js.map",
     "703.42230876.chunk.js.map": "/static/js/703.42230876.chunk.js.map",
     "455.043729bb.chunk.js.map": "/static/js/455.043729bb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5109f431.css",
-    "static/js/main.360d7773.js"
+    "static/css/main.cc743a76.css",
+    "static/js/main.347103df.js"
   ]
 }
