@@ -25,7 +25,7 @@ export default class VideoCarousel extends Component {
       {
         'group': 'chicago_brass_band',
         'video_id': 'TvxihI_QbQ0',
-        'typw': 'video',
+        'type': 'video',
         'legend': 'Finale from Symphony No. 4 (P.I. Tchaikovsky), Chicago Brass Band, Crystal Lake, IL, October 2021. First Tenor Horn'
       },
       {
@@ -55,19 +55,19 @@ export default class VideoCarousel extends Component {
       {
         'group': 'chicago_brass_band',
         'video_id': 'mH0GMwCCq_Y',
-        'typw': 'video',
+        'type': 'video',
         'legend': 'Chicago, That Toddlin\' Town, Chicago Brass Band, 2020. First Tenor Horn'
       },
       {
         'group': 'chicago_brass_band',
         'video_id': 'b32IQO4sqwY',
-        'typw': 'video',
+        'type': 'video',
         'legend': 'The Nutcracker Sweet, Chicago Brass Band, Crystal Lake, IL, December, 2021. First Tenor Horn'
       },
       {
         'group': 'chicago_brass_band',
         'video_id': 'b36kt6Ad95U',
-        'typw': 'video',
+        'type': 'video',
         'legend': 'West Side Story, Chicago Brass Band, Crystal Lake, IL, October 2021. First Tenor Horn'
       },
       {
@@ -104,7 +104,7 @@ export default class VideoCarousel extends Component {
         'group': 'isucfvmb',
         'video_id': 'DIsP5gKQoIo',
         'type': 'video',
-        'legend': 'Pregame show, Iowa State University Cyclone Footbal "Varisty" Marching Band, Ames, IA, 2000. 1st trumpet'
+        'legend': 'Pregame show, Iowa State University Cyclone Football "Varsity" Marching Band, Ames, IA, 2000. 1st trumpet'
       },
       {
         'group': 'sinewave',
