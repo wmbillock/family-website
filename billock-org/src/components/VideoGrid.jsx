@@ -10,7 +10,9 @@ const groups = {
   colts: { name: 'Colts Drum and Bugle Corps', url: 'https://www.colts.org' },
   isucfvmb: { name: 'Iowa State University Cyclone Football "Varsity" Marching Band', url: 'https://music.iastate.edu' },
   pioneer: { name: 'Pioneer Drum and Bugle Corps', url: 'https://www.dci.org' },
-  sinewave: { name: 'Sine Wave Minicorps', url: 'https://www.dca-corps.org' }
+  sinewave: { name: 'Sine Wave Minicorps', url: 'https://www.dca-corps.org' },
+  nabbss: { name: 'North American Brass Band Summer School', url: 'https://www.nabba.org' },
+  local_legends_mke: { name: 'Local Legends (MKE)', url: 'https://open.spotify.com/artist/7DDKBf8FjApiQMhTKR2nkZ' }
 }
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -23,6 +25,12 @@ const monthIdx = (date) => {
 }
 
 const videos = [
+  { video_id: 'K--uJHNUIyc', group: 'chicago_brass_band', title: 'Crazy Twenties (Thierry Deleruyelle)', year: 2025, date: 'March 2025', location: 'Fort Wayne, IN', role: 'First Baritone', context: '2025 NABBA Championships' },
+  { video_id: 'VRNjYEm2Uyo', group: 'chicago_brass_band', title: 'The World Rejoicing (Edward Gregson)', year: 2025, date: 'March 2025', location: 'Fort Wayne, IN', role: 'First Baritone', context: '2025 NABBA Championships' },
+  { video_id: 'H159CRMZydk', group: 'chicago_brass_band', title: 'Other Lives (Oliver Waespi)', year: 2024, date: 'March 2024', location: 'Huntsville, AL', role: 'Solo Tenor Horn', context: '2024 NABBA Championships' },
+  { video_id: 'yin1582SZcQ', group: 'chicago_brass_band', title: 'Metropolis 1927 (Peter Graham)', year: 2024, date: 'March 2024', location: 'Huntsville, AL', role: 'Solo Tenor Horn', context: '2024 NABBA Championships' },
+  { video_id: 'T0pn_TSSj9s', group: 'nabbss', title: 'Lord of the Dance', year: 2022, location: 'Halifax, NS', role: 'Solo Tenor Horn' },
+  { video_id: 'ZpXTLs8gv4I', group: 'local_legends_mke', title: 'C.E. Open Season', year: 2025, location: 'X-Ray Arcade, Cudahy, WI', role: 'Trombone, composer, lyricist' },
   { video_id: 'TvxihI_QbQ0', group: 'chicago_brass_band', title: 'Finale from Symphony No. 4 (Tchaikovsky)', year: 2021, date: 'October 2021', location: 'Crystal Lake, IL', role: 'First Tenor Horn' },
   { video_id: 'b32IQO4sqwY', group: 'chicago_brass_band', title: 'The Nutcracker Sweet', year: 2021, date: 'December 2021', location: 'Crystal Lake, IL', role: 'First Tenor Horn' },
   { video_id: 'b36kt6Ad95U', group: 'chicago_brass_band', title: 'West Side Story', year: 2021, date: 'October 2021', location: 'Crystal Lake, IL', role: 'First Tenor Horn' },
@@ -77,9 +85,12 @@ export default class VideoGrid extends Component {
         <div className='video-meta'>
           <h3>{video.title}</h3>
           <p className='video-group'>
-            <a href={group.url} target='_blank' rel='noopener noreferrer'>{group.name}</a>
+            {group.url
+              ? <a href={group.url} target='_blank' rel='noopener noreferrer'>{group.name}</a>
+              : <span>{group.name}</span>}
           </p>
           <p className='video-detail'>{video.role}{video.location ? ` · ${video.location}` : ''}</p>
+          {video.context && <p className='video-context'>{video.context}</p>}
         </div>
       </div>
     )
