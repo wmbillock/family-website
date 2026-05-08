@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAEA,AAAA,OAAO,EAAE,aAAa,CAAC;EACnB,UAAU,EAAE,IAAI;EAChB,YAAY,EAAE,IAAI;EAClB,aAAa,EAAE,IAAI;EACnB,WAAW,EAAE,IAAI;CAAG;;AAExB,AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,CAAC;EACpB,WAAW,EAAE,IAAI;EACjB,UAAU,EAAE,MAAM;CAAG;;AAEzB,AAAA,OAAO,EAAE,SAAS,EAAE,iBAAiB,CAAC;EAClC,WAAW,EAAE,IAAI;CAAG",
-    "sources": [
-        "../../../src/stylesheets/resume.sass"
-    ],
-    "names": [],
-    "file": "resume.css"
-}
