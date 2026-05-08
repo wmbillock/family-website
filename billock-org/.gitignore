@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# build output (generated fresh in CI before deploy)
+/build
+
 # testing
 /coverage
 

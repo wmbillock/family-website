@@ -1,7 +1,7 @@
 
 .resume
     margin: 2%
-    
+
 .degree, .major, .title
     font-weight: bold
     font-style: italic
@@ -11,3 +11,49 @@
 
 .resume-content
     margin: 2%
+
+@media print
+    @page
+        size: letter
+        margin: 0.6in
+
+    body *
+        visibility: hidden
+
+    #resume-content,
+    #resume-content *
+        visibility: visible
+
+    #resume-content
+        position: absolute
+        left: 0
+        top: 0
+        width: 100%
+        color: #000
+        background: #fff
+        font-size: 10pt
+        line-height: 1.35
+
+    #resume-content h1
+        font-size: 18pt
+        text-align: center
+        margin: 0 0 0.4em
+
+    #resume-content h2
+        font-size: 13pt
+        margin: 0.6em 0 0.25em
+        border-bottom: 0.5pt solid #000
+
+    #resume-content ul
+        margin: 0 0 0.4em
+        padding-left: 1.2em
+
+    #resume-content li
+        margin: 0.05em 0
+        page-break-inside: avoid
+
+    #resume-content > div
+        page-break-inside: avoid
+
+    .resume-print-btn
+        display: none
