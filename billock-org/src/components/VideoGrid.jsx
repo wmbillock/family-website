@@ -30,7 +30,7 @@ const videos = [
   { video_id: 'H159CRMZydk', group: 'chicago_brass_band', title: 'Other Lives (Oliver Waespi)', year: 2024, date: 'March 2024', location: 'Huntsville, AL', role: 'Solo Tenor Horn', context: '2024 NABBA Championships' },
   { video_id: 'yin1582SZcQ', group: 'chicago_brass_band', title: 'Metropolis 1927 (Peter Graham)', year: 2024, date: 'March 2024', location: 'Huntsville, AL', role: 'Solo Tenor Horn', context: '2024 NABBA Championships' },
   { video_id: 'T0pn_TSSj9s', group: 'nabbss', title: 'Lord of the Dance', year: 2022, location: 'Halifax, NS', role: 'Solo Tenor Horn' },
-  { video_id: 'ZpXTLs8gv4I', group: 'local_legends_mke', title: 'C.E. Open Season', year: 2025, location: 'X-Ray Arcade, Cudahy, WI', role: 'Trombone, composer, lyricist' },
+  { video_id: 'zHvjUeW-qXc', group: 'local_legends_mke', title: 'C.E. Open Season', year: 2025, location: 'X-Ray Arcade, Cudahy, WI', role: 'Trombone, composer, lyricist' },
   { video_id: 'TvxihI_QbQ0', group: 'chicago_brass_band', title: 'Finale from Symphony No. 4 (Tchaikovsky)', year: 2021, date: 'October 2021', location: 'Crystal Lake, IL', role: 'First Tenor Horn' },
   { video_id: 'b32IQO4sqwY', group: 'chicago_brass_band', title: 'The Nutcracker Sweet', year: 2021, date: 'December 2021', location: 'Crystal Lake, IL', role: 'First Tenor Horn' },
   { video_id: 'b36kt6Ad95U', group: 'chicago_brass_band', title: 'West Side Story', year: 2021, date: 'October 2021', location: 'Crystal Lake, IL', role: 'First Tenor Horn' },
