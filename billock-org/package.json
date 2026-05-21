@@ -17,7 +17,7 @@
     "react-router-dom": "",
     "react-scripts": "",
     "sass": "^1.49.9",
-    "uuid": "^8.3.2"
+    "uuid": "^14.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
