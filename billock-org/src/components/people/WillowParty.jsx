@@ -35,8 +35,8 @@ export default class WillowParty extends Component {
       <div className='willow-party-bg'>
         <main className='willow-party-page'>
           <section className='willow-hero'>
-            <p className='event-kicker'>Lakeside Legends</p>
-            <h1>Willow's birthday party, and the Billock's Housewarming</h1>
+            <p className='event-kicker'>Willow's birthday party, and the Billock's Housewarming</p>
+            <h1>Lakeside Legends</h1>
             <div className='hero-meta'>
               <span>Saturday, September 26</span>
               <span>2 PM until whenever</span>
