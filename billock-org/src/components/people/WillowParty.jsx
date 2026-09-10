@@ -54,7 +54,7 @@ export default class WillowParty extends Component {
               <p>We'll all provide the music today. I'll have horns on hand, but bring your axe and let's jam!</p>
             </div>
             <div>
-              <strong>No presents. jut *presence*.</strong>
+              <strong>No presents. just *presence*.</strong>
               <p>If there's something specific you absolutely must have, bring it with! But we neither want nor need much. In lieu of gifts, please make a donation to the LGBTQ Center of Lake County at https://lgbtqlc.com/</p>
             </div>
           </section>
