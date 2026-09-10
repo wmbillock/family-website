@@ -13,6 +13,7 @@ export default class Willow extends Component {
         <div className="main-content">
           <div>
             <h1>Willow</h1>
+            <p><a href='/willow/september-26'>September 26: Birthday party, funeral, housewarming, and music</a> - 2 PM until whenever.</p>
             <Tabs defaultActiveKey="resume" id="willow-page-tabs" className='mb-3'>
               <Tab eventKey='personal' title='Personal info'>
                 <PersonalInfo />
