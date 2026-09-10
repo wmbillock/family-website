@@ -80,7 +80,7 @@ export default class WillowParty extends Component {
           <section className='party-section burn-guidance'>
             <h2>What can go in the fire</h2>
             <p>
-              Nothing explosive, and probably nothing that's too toxic when it burns. Probably rules out most trump shit, but we'll burn that shit anyway just for fun.
+              Nothing explosive, and probably nothing that's too toxic when it burns. Probably rules out most MAGA gear, but we'll burn that stuff anyway just for fun. A memory, note, or paper product is prolly best served.
             </p>
           </section>
         </main>
