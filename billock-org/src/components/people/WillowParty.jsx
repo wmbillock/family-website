@@ -5,27 +5,27 @@ const schedule = [
   {
     time: '2:00 PM',
     title: 'Come on over',
-    text: 'We start at 2. Come eat, get a drink, and see the house.'
+    text: 'Show up, mingle, grab a drink, have a blast.'
   },
   {
     time: '2:30 PM',
-    title: 'Viking funeral for the dead me',
-    text: 'Bring a memory of who I used to be, or something anti-trans to burn in angry effigy. We will gather at the fire pit by the lake and burn some shit.'
+    title: 'Lakeside memorial',
+    text: 'Bring something to burn in effigy, or a memory to sacrifice to the flames in honor of others.. We honor the passing of my dead name, while also celebrating the path forward.'
   },
   {
-    time: '3:30 PM',
+    time: '3:00 PM',
     title: 'Local Legends',
-    text: 'Local Legends plays an open-ended acoustic set. We will put Take the Time at the end and leave the solo section open for a bit, so jump in if you want.'
+    text: 'Local Legends making a special guest appearance. Wanna join in? Hit me up beforehand!'
   },
   {
     time: 'After the set',
-    title: 'Backing tracks and open jam',
-    text: 'Then we switch to backing tracks and anyone with a horn. Bring an instrument if you want to jam along, horns especially. I wrote out parts for ZKLUPP, so we may pass those out too.'
+    title: 'Open jam and housewarming',
+    text: 'Once the concert is done, the music\'s just getting started. Join us to jam out to some backing tracks on the lake, hang out around the house, enjoy food, and socialize'
   },
   {
     time: 'After dark',
     title: 'Still hanging out',
-    text: 'When it gets dark we will turn down the amplified stuff and transition away from noise ordinance violations. The party runs until whenever.'
+    text: 'Darkness is no obstacle! The party goes until the party is finished, be that 3 PM or 3 AM. Let\'s shoot for the latter :)'
   }
 ]
 
@@ -35,27 +35,27 @@ export default class WillowParty extends Component {
       <div className='willow-party-bg'>
         <main className='willow-party-page'>
           <section className='willow-hero'>
-            <p className='event-kicker'>A birthday, a funeral, a housewarming, and a general party</p>
-            <h1>Willow's birthday party</h1>
+            <p className='event-kicker'>Lakeside Legends</p>
+            <h1>Willow's birthday party, and the Billock's Housewarming</h1>
             <div className='hero-meta'>
               <span>Saturday, September 26</span>
               <span>2 PM until whenever</span>
             </div>
-            <p>My birthday is September 22. September 11 marks two years on HRT, and this is my first full year as myself. So we are celebrating all of that, plus the house, with a fire and a lot of music.</p>
+            <p>We'll be giving a proper sendoff to the me that was, and play some music to welcome the life going forward. Plus fire and food and lake!</p>
           </section>
 
           <section className='party-callouts' aria-label='What to bring'>
             <div>
-              <strong>Bring something to burn</strong>
-              <p>A memory of who I used to be, or something anti-trans to burn in angry effigy.</p>
+              <strongBurning rage and catharsis</strong>
+              <p>A memory of who I used to be, or something anti-trans to burn in angry effigy. Suggestions: MAGA hat, harry potter book, anything where watching it burn will feel satisfying.</p>
             </div>
             <div>
-              <strong>Bring an instrument if you want</strong>
-              <p>Horns especially, but bring whatever you play. I want a celebration of joy through music.</p>
+              <strong>A way to make noise</strong>
+              <p>We'll all provide the music today. I'll have horns on hand, but bring your axe and let's jam!</p>
             </div>
             <div>
-              <strong>No presents. No dishes.</strong>
-              <p>Just presence. We will supply food and drinks. If you want something specific, bring it.</p>
+              <strong>No presents. jut *presence*.</strong>
+              <p>If there's something specific you absolutely must have, bring it with! But we neither want nor need much. In lieu of gifts, please make a donation to the LGBTQ Center of Lake County at https://lgbtqlc.com/</p>
             </div>
           </section>
 
@@ -77,9 +77,7 @@ export default class WillowParty extends Component {
           <section className='party-section burn-guidance'>
             <h2>What can go in the fire</h2>
             <p>
-              Keep it to plain paper, uncoated cardboard, or clean untreated wood.
-              No plastics, electronics, treated wood, synthetic fabric, painted objects, batteries, aerosols,
-              or anything coated. A note on plain paper is fine.
+              Nothing explosive, and probably nothing that's too toxic when it burns. Probably rules out most trump shit, but we'll burn that shit anyway just for fun.
             </p>
           </section>
         </main>
