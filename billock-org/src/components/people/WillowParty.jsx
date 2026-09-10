@@ -40,7 +40,8 @@ export default class WillowParty extends Component {
             <div className='hero-meta'>
               <span>Saturday, September 26</span>
               <span>2 PM until whenever</span>
-              <span><a href="https://maps.app.goo.gl/ZK7atePmnkUaAoS38">34386 N Lakeside Drive, Grayslake, IL 60030</a> (DO NOT SET YOUR GPS HERE)</span>
+              <br />
+              <span><a href="https://maps.app.goo.gl/ZK7atePmnkUaAoS38">34386 N Lakeside Drive, Grayslake, IL 60030 (use this pin)</a></span>
               <span></span>
             </div>
             <br />
