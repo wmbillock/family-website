@@ -58,7 +58,7 @@ export default class WillowParty extends Component {
             </div>
             <div>
               <strong>No presents. just *presence*.</strong>
-              <p>If there's something specific you absolutely must have, bring it with! But we neither want nor need much. In lieu of gifts, please make a donation to the LGBTQ Center of Lake County at https://lgbtqlc.com/</p>
+              <p>Food and beverages provided from Big Jacks, no need to bring anything. If there's something specific you absolutely must have, bring it with! In lieu of gifts, please make a donation to <a href="https://lgbtqlc.com/">the LGBTQ Center of Lake County</a></p>
             </div>
           </section>
 
