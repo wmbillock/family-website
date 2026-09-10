@@ -46,7 +46,7 @@ export default class WillowParty extends Component {
 
           <section className='party-callouts' aria-label='What to bring'>
             <div>
-              <strongBurning rage and catharsis</strong>
+              <strong>Burning rage and catharsis</strong>
               <p>A memory of who I used to be, or something anti-trans to burn in angry effigy. Suggestions: MAGA hat, harry potter book, anything where watching it burn will feel satisfying.</p>
             </div>
             <div>
