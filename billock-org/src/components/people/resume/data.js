@@ -17,6 +17,9 @@ export const employment = [
     company: 'Affirm, Inc.',
     location: 'Remote',
     responsibilities: [
+      'Led recovery efforts for a stalled pricing-configuration project, aligning 13 teams around a shared goal',
+      'Developed Libretto, an autonomous note-taking swarm with PARA-based memory, custom collectors, and agent lifecycle management, enabling project-oriented knowledge discovery through a local Obsidian Markdown library',
+      'Designed and built a custom memory system that pre-organizes streams by project, reducing tokens per request by an average of 40% in testing',
       'Tech used: Python (Flask/SQLAlchemy), Databricks, Docker, Kubernetes, Airflow, ReactJS',
       'Worked to enhance quality of back-end machine learning pipelines',
       'Held architectural oversight for the pricing service, which serves 12 million requests per minute at five 9s of availability, while driving team quality and development practices to maximize delivery reliability',
