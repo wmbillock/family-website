@@ -1,13 +1,4 @@
-export const skills = [
-  { skill: 'Ruby development', level: 'Advanced' },
-  { skill: 'Python development', level: 'Advanced' },
-  { skill: 'JavaScript development', level: 'Intermediate' },
-  { skill: 'React development', level: 'Intermediate' },
-  { skill: 'C++ development', level: 'Advanced' },
-  { skill: 'Agile methodologies', level: 'Advanced' },
-  { skill: 'Software architecture and design', level: 'Advanced' },
-  { skill: 'Engineering management and leadership', level: 'Intermediate' },
-]
+export const objective = 'Seeking a remote Staff or Principal engineering role building reliable distributed systems and applied AI platforms, bringing experience in high-throughput pricing, payments, autonomous agents, and leadership across engineering teams.'
 
 export const employment = [
   {

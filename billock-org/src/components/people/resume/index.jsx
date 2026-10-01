@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Skills from './Skills'
+import { objective } from './data'
 import EmploymentHistory from './EmploymentHistory'
 import Education from './Education'
 import OtherRelated from './OtherRelated'
@@ -17,7 +17,10 @@ export default class Resume extends Component {
         <button onClick={this.generatePDF} type='button' className='resume-print-btn'>Export PDF</button>
         <div id="resume-content">
           <h1>WILLOW BILLOCK</h1>
-          <Skills />
+          <section aria-labelledby="resume-objective">
+            <h2 id="resume-objective">Objective</h2>
+            <p>{objective}</p>
+          </section>
           <EmploymentHistory />
           <Education />
           <OtherRelated />

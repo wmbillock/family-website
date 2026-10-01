@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf'
-import { skills, employment, education, otherRelated } from './data'
+import { objective, employment, education, otherRelated } from './data'
 
 const PAGE_W = 612
 const PAGE_H = 792
@@ -54,11 +54,9 @@ export default function buildPdf() {
   doc.text('WILLOW BILLOCK', PAGE_W / 2, y + FONT_H1 * 0.85, { align: 'center' })
   y += FONT_H1 * LINE_GAP
 
-  // Skills
-  drawSectionHeader('Skills')
-  for (const s of skills) {
-    drawWrappedText(`${s.skill} - ${s.level}`, MARGIN + BULLET_INDENT, { bullet: true })
-  }
+  // Objective
+  drawSectionHeader('Objective')
+  drawWrappedText(objective, MARGIN)
 
   // Employment
   drawSectionHeader('Employment')
