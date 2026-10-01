@@ -18,3 +18,7 @@ Prior job-hunt resumes are in Willow's Google Drive. No Drive connector is expos
 Further detail that would improve the case studies: benchmark task count, provider/model versions, run dates, averaging method and per-provider results; pricing measurement window; pricing-configuration final delivery milestone; payment uptime window; experimentation-capacity baseline; older game credits and public artifacts. Do not manufacture these details or present resume-history links as independent verification.
 
 Employer internal artifacts, proprietary code, compensation records, and job-search controls are not copied to the public website. Additional evidence should use public artifacts or a publishable owner-supplied account.
+
+## Libretto clarification
+
+Willow clarified that Libretto and the custom project-organized memory system are the same accomplishment; the canonical employment bullet combines architecture and measured result. Willow also confirmed a company hackathon win and repeated invitations to present as a leading voice in AI and autonomous development to an audience of over 1,000 developers. No individual presentation dates, event names, or per-event audience count are inferred.

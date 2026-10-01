@@ -11,6 +11,9 @@ test('short PDF is two pages and retains the complete employer timeline', () => 
   expect(pdf).not.toContain('Skills')
   employment.forEach(job => expect(pdf).toContain(job.company))
   expect(pdf).toContain('40% in testing')
+  expect(pdf).toContain('over 1,000 developers')
+  expect((pdf.match(/Developed Libretto/g) || []).length).toBe(1)
+  expect(pdf).not.toContain('Designed and built a custom memory system')
 })
 
 test('full PDF includes historical technical work and measured-result context', () => {

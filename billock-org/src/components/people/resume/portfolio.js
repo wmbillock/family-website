@@ -4,6 +4,7 @@ export const shortEmployment = employment.slice(0, 3).map((job, index) => ({
   ...job,
   responsibilities: [
     [job.responsibilities[0], job.responsibilities[1], job.responsibilities[2],
+      job.responsibilities.find(item => item.startsWith('Won Affirm')),
       'Architectural oversight of a pricing service averaging 12 million requests per minute at 99.999% measured availability',
       'Increased concurrent experimentation capacity by 400% through development-pipeline improvements'],
     ['Helped migrate a workflow engine from Redis/Sidekiq to Temporal and Go',
@@ -49,10 +50,10 @@ export const achievements = [
     context: 'This describes experimentation capacity, not a claim that all engineering productivity or revenue increased by 400%.',
   },
   {
-    id: 'production-llm', title: 'From a team hackathon to production LLM integration', organization: 'Affirm',
-    contribution: 'Won a team hackathon and helped ship one of Affirm’s first production LLM integrations.',
-    approach: 'Contributed as part of the winning team and the subsequent production integration effort.',
-    result: 'A production LLM integration, in addition to the hackathon win.',
+    id: 'production-llm', title: 'Company hackathon winner and AI development speaker', organization: 'Affirm',
+    contribution: 'Won Affirm’s company hackathon as part of a team and helped ship one of the company’s first production LLM integrations.',
+    approach: 'Contributed as part of the winning team and the subsequent production integration effort. Invited on several occasions to present as a leading voice in AI and autonomous development to an audience of over 1,000 developers.',
+    result: 'A company hackathon win, a production LLM integration, and repeated invitations to share AI and autonomous-development work with developers.',
     context: 'The achievement is team-based. Internal implementation and evaluation artifacts are not published here.',
   },
   {
@@ -98,6 +99,7 @@ export const projects = [
 ]
 
 export const writingAndSpeaking = [
+  employment[0].responsibilities[2],
   'Backand: developer evangelism through blogging, technical documentation, and direct community outreach; presentations at conferences and meetups throughout the US.',
   'Sprout Social: developed and delivered multiple unit-testing education sessions for engineers.',
 ]
