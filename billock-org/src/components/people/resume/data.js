@@ -13,7 +13,7 @@ export const employment = [
       'Designed and built a custom memory system that pre-organizes streams by project, reducing tokens per request by an average of 40% in testing',
       'Tech used: Python (Flask/SQLAlchemy), Databricks, Docker, Kubernetes, Airflow, ReactJS',
       'Worked to enhance quality of back-end machine learning pipelines',
-      'Held architectural oversight for the pricing service, which serves 12 million requests per minute at five 9s of availability, while driving team quality and development practices to maximize delivery reliability',
+      'Held architectural oversight for the pricing service, which averages a sustained 12 million requests per minute at 99.999% measured availability tracked using Chronosphere and service metrics, while driving team quality and development practices to maximize delivery reliability',
       'Won a team hackathon and shipped one of the first production LLM integrations at Affirm',
       'Participated in the redesign of the software engineering interview process by developing a new screening question',
       'Provided mentorship and guidance to team members, while also working to level up the larger engineering organization',
@@ -160,6 +160,69 @@ export const employment = [
       'Consistently shipped low-defect solutions to numerous business problems while helping to revise the software development life cycle to reduce redundancy',
     ],
   },
+{
+  "start-date": "March 2010",
+  "end-date": "August 2011",
+  "title": "Senior Gaming Software Engineer",
+  "company": "WMS Gaming, Inc.",
+  "location": "Chicago, IL",
+  "responsibilities": [
+    "Tech used: ActionScript 3.0, C++, SVN",
+    "Shipped titles: Hearts of Venice, Griffin’s Gate, I Love Lucy, All That Glitters 2, Plataea",
+    "Helped set strategy and objectives for new code artifacts through code reviews and design meetings",
+    "Developed new systems within abbreviated delivery timelines"
+  ]
+},
+{
+  "start-date": "August 2009",
+  "end-date": "March 2010",
+  "title": "Engineer",
+  "company": "Trading Technologies",
+  "location": "Chicago, IL",
+  "responsibilities": [
+    "Developed a multithreaded messaging system for application permissions management"
+  ]
+},
+{
+  "start-date": "February 2009",
+  "end-date": "August 2009",
+  "title": "Software Engineer",
+  "company": "Enova Financial",
+  "location": "Chicago, IL",
+  "responsibilities": [
+    "Implemented credit reports using SOAP and Ruby to support fraud reduction",
+    "Documented existing functionality to support onboarding",
+    "Served as a development lead for offshore resources and a technical resource for project managers"
+  ]
+},
+{
+  "start-date": "August 2007",
+  "end-date": "January 2009",
+  "title": "Graphics Programmer",
+  "company": "Raw Thrills, Inc.",
+  "location": "Skokie, IL",
+  "responsibilities": [
+    "Implemented graphical effects in a DirectX 9 rendering engine",
+    "Ported a game engine from DirectX 8 to DirectX 9",
+    "Built a reloadable shader debugger in HLSL and Cg"
+  ]
+},
+{
+  "start-date": "May 2006",
+  "end-date": "August 2007",
+  "title": "Gaming Software Engineer",
+  "company": "WMS Gaming, Inc.",
+  "location": "Chicago, IL",
+  "responsibilities": []
+},
+{
+  "start-date": "August 2004",
+  "end-date": "May 2006",
+  "title": "Application Developer Specialist",
+  "company": "Allstate Insurance Co.",
+  "location": "Northbrook, IL",
+  "responsibilities": []
+}
 ]
 
 export const education = [

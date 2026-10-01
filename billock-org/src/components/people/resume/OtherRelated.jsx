@@ -1,22 +1,18 @@
-import React, { Component } from 'react'
-import {v4 as uuidv4} from 'uuid'
+import React from 'react'
 import { otherRelated } from './data'
 
-export default class OtherRelated extends Component {
-  render() {
-    const item_list = otherRelated.map((item) =>
-      <div key={uuidv4()} className='resume-entry'>
-        <span className='company-location'>{item['data']}</span>
-        <ul>
-          {item['children'].map((child) => <li key={uuidv4()}>{child}</li>)}
-        </ul>
-      </div>
-    )
-    return (
-      <div>
-        <h2>Other organizations and employment</h2>
-          {item_list}
-      </div>
-    )
-  }
+const groups = [
+  { title: 'Music, volunteering & performing', items: otherRelated.slice(0, 4) },
+  { title: 'Teaching & curriculum development', items: otherRelated.slice(4, 7) },
+  { title: 'Recognition', items: otherRelated.slice(7) },
+]
+
+export default function OtherRelated() {
+  return <>{groups.map(group => <section key={group.title}>
+    <h2>{group.title}</h2>
+    {group.items.map(item => <article className='resume-entry' key={item.data}>
+      <h3>{item.data}</h3>
+      {item.children.length > 0 && <ul>{item.children.map(child => <li key={child}>{child}</li>)}</ul>}
+    </article>)}
+  </section>)}</>
 }

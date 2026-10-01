@@ -1,36 +1,17 @@
-import React, { Component } from 'react'
-import {v4 as uuidv4} from 'uuid'
+import React from 'react'
 import { employment } from './data'
 
-export default class EmploymentHistory extends Component {
-  getData() {
-    return employment
-  }
-  render() {
-    var employment_list = this.getData().map( (item) =>
-      <div key={uuidv4()} className='resume-entry'>
-        <div>
-          <span className="datespan">{item['start-date']}-{item['end-date'] === undefined ? 'Present' : item['end-date']}</span>
-          &nbsp;----&nbsp;
-          <span className="title">{item['title']}</span>
-          &nbsp;----&nbsp;
-          <span className="company-location">{item['company']}, {item['location']}</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
-        <div>
-          <ul>
-            {item['responsibilities'].map((sub_item) => <li key={uuidv4()}>{sub_item}</li>)}
-          </ul>
-        </div>
-      </div>
-    );
-    return (
-      <div>
-        <h2>Employment</h2>
-        <div>
-          {employment_list}
-        </div>
-      </div>
-    )
-  }
+export default function EmploymentHistory({ jobs = employment, compact = false, heading = 'Employment' }) {
+  return (
+    <section>
+      <h2>{heading}</h2>
+      {jobs.map(job => (
+        <article className={`resume-entry${compact ? ' resume-entry-compact' : ''}`} key={`${job.company}-${job['start-date']}`}>
+          <h3>{job.title} <span>· {job.company}</span></h3>
+          <p className='career-meta'>{job['start-date']}–{job['end-date'] || 'Present'} · {job.location}</p>
+          {!compact && job.responsibilities.length > 0 && <ul>{job.responsibilities.map(item => <li key={item}>{item}</li>)}</ul>}
+        </article>
+      ))}
+    </section>
+  )
 }
