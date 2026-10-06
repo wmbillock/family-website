@@ -46,7 +46,7 @@ function buildBlog(output, postsDirectory) {
   fs.mkdirSync(output, {recursive:true});
   fs.copyFileSync(path.join(__dirname, '../blog/style.css'), path.join(output, 'style.css'));
   const list = posts.length ? `<ol class="posts">${posts.map(post => `<li><time datetime="${post.date}">${post.date}</time> — <a href="/blog/${post.slug}/">${escape(post.title)}</a><p>${escape(post.summary)}</p></li>`).join('\n')}</ol>` : '<p>No posts published yet.</p>';
-  fs.writeFileSync(path.join(output, 'index.html'), page(`${author} — technical blog`, 'Technical writing by Willow Billock.', '/blog/', `<h1>${author}</h1><p>Technical writing.</p><h2>Posts</h2>${list}`));
+  fs.writeFileSync(path.join(output, 'index.html'), page(`${author} — technical blog`, 'Technical writing by Willow Billock.', '/blog/', `<h1>${author}</h1><p>Technically Writing</p><h2>Posts</h2>${list}`));
   for (const post of posts) {
     const directory = path.join(output, post.slug);
     fs.mkdirSync(directory);
