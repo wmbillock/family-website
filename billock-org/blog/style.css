@@ -1,0 +1,23 @@
+html { color-scheme: light dark; }
+body { max-width: 44rem; margin: 2rem auto; padding: 0 1rem; font: 1.125rem/1.65 Georgia, 'Times New Roman', serif; color: #222; background: #fff; overflow-wrap: anywhere; }
+a { color: #164b9a; text-underline-offset: .15em; }
+a:visited { color: #633694; }
+a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+header, footer { font-size: 1rem; }
+header { margin-bottom: 2.5rem; }
+footer { margin-top: 3rem; border-top: 1px solid #888; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 2rem; }
+h2 { margin-top: 2rem; font-size: 1.5rem; }
+.posts { padding-left: 1.5rem; }
+.posts li { margin-bottom: 1.5rem; }
+.posts p { margin: .25rem 0; }
+pre { overflow-x: auto; padding: 1rem; background: #f3f3f3; }
+code { font-size: .9em; }
+img, video { max-width: 100%; height: auto; }
+.table-scroll { overflow-x: auto; }
+blockquote { margin-left: 1rem; padding-left: 1rem; border-left: 3px solid #888; }
+.skip { position: absolute; left: -10000px; }
+.skip:focus { position: static; }
+@media (max-width: 480px) { body { margin: 1rem auto; } header { margin-bottom: 2rem; } }
+@media (prefers-color-scheme: dark) { body { color: #eee; background: #171717; } a { color: #9ec5ff; } a:visited { color: #d5b4ff; } pre { background: #292929; } }
