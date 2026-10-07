@@ -5,5 +5,10 @@
   "date": "2013-04-19",
   "originalPublished": "2013-04-19T06:52:00.000-05:00",
   "originalUpdated": "2013-04-19T06:52:00.581-05:00",
-  "published": true
+  "publication": {
+    "state": "approved",
+    "publishAt": null,
+    "timezone": "America/Chicago",
+    "approvedSha256": "0cca1663496041e7c06affbcc052dcb812f6941b6d6255e82f1c3adda09da5a2"
+  }
 }

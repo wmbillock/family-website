@@ -4,19 +4,9 @@ const site = 'https://billock.org';
 const author = 'Willow Billock';
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-function loadPosts(directory) {
-  return fs.readdirSync(directory).filter(name => name.endsWith('.json')).map(name => {
-    const post = JSON.parse(fs.readFileSync(path.join(directory, name), 'utf8'));
-    // Unpublished files are excluded before loading any article body.
-    if (post.published !== true) return null;
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug || '') || name !== `${post.slug}.json`) throw Error(`Invalid slug: ${name}`);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(post.date || '') || new Date(`${post.date}T00:00:00Z`).toISOString().slice(0, 10) !== post.date) throw Error(`Invalid date: ${name}`);
-    if (!post.title || !post.summary || typeof post.title !== 'string' || typeof post.summary !== 'string') throw Error(`Missing title or summary: ${name}`);
-    if (post.originalPublished && (typeof post.originalPublished !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(post.originalPublished) || !Number.isFinite(Date.parse(post.originalPublished)) || post.originalPublished.slice(0, 10) !== post.date)) throw Error(`Invalid original publication timestamp: ${name}`);
-    const html = fs.readFileSync(path.join(directory, `${post.slug}.html`), 'utf8');
-    if (!html.trim()) throw Error(`Empty article: ${name}`);
-    return {...post, html};
-  }).filter(Boolean).sort((a,b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
+const {loadQueue, outputState} = require('./publication-queue.cjs');
+function loadPosts(directory, now = new Date()) {
+  return loadQueue(directory, now).filter(post => post.eligible).sort((a,b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 }
 
 function page(title, description, route, body) {
@@ -41,8 +31,9 @@ function page(title, description, route, body) {
 `;
 }
 
-function buildBlog(output, postsDirectory) {
-  const posts = loadPosts(postsDirectory);
+function buildBlog(output, postsDirectory, now = new Date()) {
+  const queue = loadQueue(postsDirectory, now);
+  const posts = queue.filter(post => post.eligible).sort((a,b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
   fs.rmSync(output, {recursive:true, force:true});
   fs.mkdirSync(output, {recursive:true});
   fs.copyFileSync(path.join(__dirname, '../blog/style.css'), path.join(output, 'style.css'));
@@ -51,9 +42,9 @@ function buildBlog(output, postsDirectory) {
   fs.writeFileSync(path.join(output, 'index.html'), page(`${author} — technical blog`, 'Technical writing by Willow Billock.', '/blog/', `<h1>${author}</h1><p>Technically Writing</p><h2>Posts</h2>${list}`));
   // Explicit holding pages overwrite previously uploaded bodies during staged releases.
   // They stay out of the archive, manifest and feed; publishing restores the article.
-  for (const name of fs.readdirSync(postsDirectory).filter(name => name.endsWith('.json'))) {
-    const post = JSON.parse(fs.readFileSync(path.join(postsDirectory, name), 'utf8'));
-    if (post.published === true || post.holding !== true) continue;
+  for (const post of queue) {
+    if (post.eligible || post.holding !== true) continue;
+    const name = `${post.slug}.json`;
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug || '') || name !== `${post.slug}.json` || typeof post.title !== 'string' || !post.title) throw Error(`Invalid holding page: ${name}`);
     const directory = path.join(output, post.slug);
     fs.mkdirSync(directory);
@@ -75,6 +66,7 @@ function buildBlog(output, postsDirectory) {
 <atom:link href="${site}/blog/feed.xml" rel="self" type="application/rss+xml"/>
 ${posts.map(post => `<item><title>${escape(post.title)}</title><link>${site}/blog/${post.slug}/</link><guid isPermaLink="true">${site}/blog/${post.slug}/</guid><pubDate>${new Date(post.originalPublished || `${post.date}T00:00:00Z`).toUTCString()}</pubDate><description>${escape(post.summary)}</description></item>`).join('\n')}
 </channel></rss>\n`);
+  fs.writeFileSync(path.join(output, 'release-state.json'), JSON.stringify(outputState(output)) + '\n');
   return posts.length;
 }
 

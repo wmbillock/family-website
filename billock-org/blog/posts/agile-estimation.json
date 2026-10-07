@@ -5,6 +5,11 @@
   "date": "2014-01-29",
   "originalPublished": "2014-01-29T20:08:00.003-06:00",
   "originalUpdated": "2014-01-29T20:08:56.789-06:00",
-  "published": false,
-  "holding": true
+  "holding": true,
+  "publication": {
+    "state": "approved",
+    "publishAt": "2026-10-08T10:00:00-05:00",
+    "timezone": "America/Chicago",
+    "approvedSha256": "abfda29249ac03a45d2d0e10a7da1229d3b455c98736b255da9a182641d16cd1"
+  }
 }
