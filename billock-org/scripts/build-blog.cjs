@@ -49,10 +49,14 @@ function buildBlog(output, postsDirectory) {
   const list = posts.length ? `<ol class="posts">${posts.map(post => `<li><time datetime="${post.date}">${post.date}</time> — <a href="/blog/${post.slug}/">${escape(post.title)}</a><p>${escape(post.summary)}</p></li>`).join('\n')}</ol>` : '<p>No posts published yet.</p>';
   fs.writeFileSync(path.join(output, 'posts.json'), JSON.stringify(posts.map(({slug, title, date, summary}) => ({slug, title, date, summary}))) + '\n');
   fs.writeFileSync(path.join(output, 'index.html'), page(`${author} — technical blog`, 'Technical writing by Willow Billock.', '/blog/', `<h1>${author}</h1><p>Technically Writing</p><h2>Posts</h2>${list}`));
+  const publishedSlugs = new Set(posts.map(post => post.slug));
   for (const post of posts) {
+    // Keep references to staged posts as plain text until their target is published.
+    // Source HTML stays intact so the next build restores links automatically.
+    const articleHtml = post.html.replace(/<a\b([^>]*\bhref=["']\/blog\/([a-z0-9]+(?:-[a-z0-9]+)*)\/["'][^>]*)>([\s\S]*?)<\/a>/gi, (anchor, attributes, slug, text) => publishedSlugs.has(slug) ? anchor : text);
     const directory = path.join(output, post.slug);
     fs.mkdirSync(directory);
-    fs.writeFileSync(path.join(directory, 'index.html'), page(`${post.title} — ${author}`, post.summary, `/blog/${post.slug}/`, `<article><h1>${escape(post.title)}</h1><p>By ${author} · <time datetime="${post.date}">${post.date}</time></p>${post.html}</article>`));
+    fs.writeFileSync(path.join(directory, 'index.html'), page(`${post.title} — ${author}`, post.summary, `/blog/${post.slug}/`, `<article><h1>${escape(post.title)}</h1><p>By ${author} · <time datetime="${post.date}">${post.date}</time></p>${articleHtml}</article>`));
   }
   fs.writeFileSync(path.join(output, 'feed.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
