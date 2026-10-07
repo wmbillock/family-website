@@ -49,6 +49,17 @@ function buildBlog(output, postsDirectory) {
   const list = posts.length ? `<ol class="posts">${posts.map(post => `<li><time datetime="${post.date}">${post.date}</time> — <a href="/blog/${post.slug}/">${escape(post.title)}</a><p>${escape(post.summary)}</p></li>`).join('\n')}</ol>` : '<p>No posts published yet.</p>';
   fs.writeFileSync(path.join(output, 'posts.json'), JSON.stringify(posts.map(({slug, title, date, summary}) => ({slug, title, date, summary}))) + '\n');
   fs.writeFileSync(path.join(output, 'index.html'), page(`${author} — technical blog`, 'Technical writing by Willow Billock.', '/blog/', `<h1>${author}</h1><p>Technically Writing</p><h2>Posts</h2>${list}`));
+  // Explicit holding pages overwrite previously uploaded bodies during staged releases.
+  // They stay out of the archive, manifest and feed; publishing restores the article.
+  for (const name of fs.readdirSync(postsDirectory).filter(name => name.endsWith('.json'))) {
+    const post = JSON.parse(fs.readFileSync(path.join(postsDirectory, name), 'utf8'));
+    if (post.published === true || post.holding !== true) continue;
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug || '') || name !== `${post.slug}.json` || typeof post.title !== 'string' || !post.title) throw Error(`Invalid holding page: ${name}`);
+    const directory = path.join(output, post.slug);
+    fs.mkdirSync(directory);
+    const holding = page(`${post.title} — ${author}`, 'Article awaiting its scheduled release.', `/blog/${post.slug}/`, `<h1>${escape(post.title)}</h1><p>This article is awaiting its scheduled release.</p><p><a href="/blog/">Read the blog archive</a>.</p>`).replace('<meta name="viewport"', '<meta name="robots" content="noindex">\n<meta name="viewport"');
+    fs.writeFileSync(path.join(directory, 'index.html'), holding);
+  }
   const publishedSlugs = new Set(posts.map(post => post.slug));
   for (const post of posts) {
     // Keep references to staged posts as plain text until their target is published.

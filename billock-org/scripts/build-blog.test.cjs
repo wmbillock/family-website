@@ -62,3 +62,31 @@ test('staged internal references preserve words and restore links when target pu
     assert.equal(fs.existsSync(path.join(out,'later/index.html')),true);
   } finally { fs.rmSync(root,{recursive:true,force:true}); }
 });
+
+test('recoverable holding replaces a previously published body without listing it', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-hold-'));
+  try {
+    const posts = path.join(root, 'posts'), out = path.join(root, 'output');
+    fs.mkdirSync(posts);
+    const metadata = {published:true,slug:'held',date:'2026-10-06',title:'Held article',summary:'Private summary'};
+    fs.writeFileSync(path.join(posts,'held.json'),JSON.stringify(metadata));
+    fs.writeFileSync(path.join(posts,'held.html'),'<p>BODY SENTINEL</p>');
+    buildBlog(out,posts);
+    assert.match(fs.readFileSync(path.join(out,'held/index.html'),'utf8'),/BODY SENTINEL/);
+    metadata.published=false;metadata.holding=true;
+    fs.writeFileSync(path.join(posts,'held.json'),JSON.stringify(metadata));
+    assert.equal(buildBlog(out,posts),0);
+    const held=fs.readFileSync(path.join(out,'held/index.html'),'utf8');
+    assert.match(held,/awaiting its scheduled release/);
+    assert.match(held,/name="robots" content="noindex"/);
+    assert.doesNotMatch(held,/BODY SENTINEL|Private summary/);
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')),[]);
+    assert.doesNotMatch(fs.readFileSync(path.join(out,'feed.xml'),'utf8'),/Held article|BODY SENTINEL|<item>/);
+    metadata.published=true;
+    fs.writeFileSync(path.join(posts,'held.json'),JSON.stringify(metadata));
+    buildBlog(out,posts);
+    assert.match(fs.readFileSync(path.join(out,'held/index.html'),'utf8'),/BODY SENTINEL/);
+    assert.doesNotMatch(fs.readFileSync(path.join(out,'held/index.html'),'utf8'),/awaiting its scheduled release/);
+    assert.equal(fs.readFileSync(path.join(posts,'held.html'),'utf8'),'<p>BODY SENTINEL</p>');
+  } finally { fs.rmSync(root,{recursive:true,force:true}); }
+});
