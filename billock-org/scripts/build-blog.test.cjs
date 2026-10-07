@@ -4,89 +4,100 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const {buildBlog} = require('./build-blog.cjs');
+const {approvalHash,validateTarget,loadQueue,outputState} = require('./publication-queue.cjs');
+function fixture(run) {
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'blog-queue-test-'));
+  const posts=path.join(root,'posts'),out=path.join(root,'out');fs.mkdirSync(posts);
+  try {run(posts,out);} finally {fs.rmSync(root,{recursive:true,force:true});}
+}
+function write(posts, slug, html, options={}) {
+  const post={slug,title:`Title ${slug}`,summary:'Summary <&>',date:'2013-04-19',originalPublished:'2013-04-19T06:52:00.000-05:00',...options};
+  post.publication={state:'approved',publishAt:null,timezone:'America/Chicago',...options.publication};
+  post.publication.approvedSha256=approvalHash(post,html);
+  fs.writeFileSync(path.join(posts,`${slug}.json`),JSON.stringify(post));fs.writeFileSync(path.join(posts,`${slug}.html`),html);return post;
+}
 
-test('empty launch; drafts stay private; published URLs and RSS agree; stale output removed', () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-test-'));
-  try {
-    const posts = path.join(root, 'posts'), out = path.join(root, 'output');
-    fs.mkdirSync(posts);
-    fs.writeFileSync(path.join(posts, 'draft.json'), JSON.stringify({published:false, title:'PRIVATE DRAFT'}));
-    assert.equal(buildBlog(out, posts), 0);
-    assert.match(fs.readFileSync(path.join(out,'index.html'),'utf8'), /No posts published yet/);
-    assert.doesNotMatch(fs.readFileSync(path.join(out,'feed.xml'),'utf8'), /PRIVATE DRAFT|<item>/);
-    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')), []);
-    const metadata = {published:true,slug:'fixture',date:'2026-10-06',originalPublished:'2026-10-06T08:30:00-06:00',title:'Test <&>',summary:'A & B'};
-    fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
-    fs.writeFileSync(path.join(posts,'fixture.html'), '<p>Test body.</p>');
-    assert.equal(buildBlog(out, posts), 1);
-    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')), [{slug:'fixture',title:'Test <&>',date:'2026-10-06',summary:'A & B'}]);
-    assert.match(fs.readFileSync(path.join(out,'fixture/index.html'),'utf8'), /https:\/\/billock.org\/blog\/fixture\//);
-    assert.match(fs.readFileSync(path.join(out,'feed.xml'),'utf8'), /Test &lt;&amp;&gt;/);
-    assert.match(fs.readFileSync(path.join(out,'feed.xml'),'utf8'), /Tue, 06 Oct 2026 14:30:00 GMT/);
-    metadata.published = false;
-    fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
-    buildBlog(out, posts);
-    assert.equal(fs.existsSync(path.join(out,'fixture')), false);
-    metadata.published = true; metadata.originalPublished = '2026-10-06T08:30:00';
-    fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
-    assert.throws(() => buildBlog(out, posts), /Invalid original publication timestamp/);
-    metadata.originalPublished = '2026-10-06T08:30:00-06:00'; metadata.slug = '../escape';
-    fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
-    assert.throws(() => buildBlog(out, posts), /Invalid slug/);
-  } finally { fs.rmSync(root,{recursive:true,force:true}); }
+test('only exact approved due content enters pages, manifest and RSS; draft and review clocks never release',()=>fixture((posts,out)=>{
+  write(posts,'ready','<p>READY</p>');
+  write(posts,'draft','<p>PRIVATE DRAFT</p>',{publication:{state:'draft',publishAt:'2020-01-01T10:00:00-06:00'}});
+  write(posts,'review','<p>PRIVATE REVIEW</p>',{publication:{state:'review',publishAt:'2020-01-01T10:00:00-06:00'}});
+  write(posts,'future','<p>FUTURE BODY</p>',{publication:{publishAt:'2026-10-08T10:00:00-05:00'}});
+  assert.equal(buildBlog(out,posts,'2026-10-08T14:59:59Z'),1);
+  for(const file of ['index.html','posts.json','feed.xml','release-state.json']) assert.doesNotMatch(fs.readFileSync(path.join(out,file),'utf8'),/PRIVATE|FUTURE|Title future|Title draft|Title review/);
+  assert.equal(fs.existsSync(path.join(out,'future')),false);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')).map(p=>p.slug),['ready']);
+  assert.match(fs.readFileSync(path.join(out,'feed.xml'),'utf8'),/Fri, 19 Apr 2013 11:52:00 GMT/);
+  assert.match(fs.readFileSync(path.join(out,'feed.xml'),'utf8'),/Summary &lt;&amp;&gt;/);
+  assert.equal(buildBlog(out,posts,'2026-10-08T15:00:00Z'),2);
+  assert.match(fs.readFileSync(path.join(out,'future/index.html'),'utf8'),/FUTURE BODY/);
+  assert.equal(fs.existsSync(path.join(out,'draft')),false);
+  assert.equal(fs.existsSync(path.join(out,'review')),false);
+}));
+
+test('scheduled holding replaces prior body; due rebuild restores source and links idempotently',()=>fixture((posts,out)=>{
+  const source='<p>Read <b><a href="/blog/later/">last post</a></b> and <a href="https://example.org/">source</a>.</p>';
+  write(posts,'first',source);
+  const later=write(posts,'later','<p>LATER BODY</p>',{holding:true});
+  buildBlog(out,posts,'2026-10-07T15:00:00Z');assert.match(fs.readFileSync(path.join(out,'later/index.html'),'utf8'),/LATER BODY/);
+  later.publication.publishAt='2026-10-08T10:00:00-05:00';later.publication.approvedSha256=approvalHash(later,'<p>LATER BODY</p>');fs.writeFileSync(path.join(posts,'later.json'),JSON.stringify(later));
+  buildBlog(out,posts,'2026-10-07T15:00:00Z');
+  const held=fs.readFileSync(path.join(out,'later/index.html'),'utf8');assert.match(held,/awaiting its scheduled release/);assert.match(held,/name="robots" content="noindex"/);assert.doesNotMatch(held,/LATER BODY|Summary/);
+  const first=fs.readFileSync(path.join(out,'first/index.html'),'utf8');assert.match(first,/<b>last post<\/b>/);assert.match(first,/href="https:\/\/example.org\/"/);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')).length,1);
+  buildBlog(out,posts,'2026-10-08T15:00:00Z');assert.ok(fs.readFileSync(path.join(out,'first/index.html'),'utf8').includes(source));assert.match(fs.readFileSync(path.join(out,'later/index.html'),'utf8'),/LATER BODY/);
+  const state=outputState(out);buildBlog(out,posts,'2026-10-09T15:00:00Z');assert.deepEqual(outputState(out),state);
+  assert.equal(fs.readFileSync(path.join(posts,'first.html'),'utf8'),source);
+}));
+
+test('approval binds wording, title and schedule; unsafe metadata and legacy flags fail closed',()=>fixture((posts,out)=>{
+  const p=write(posts,'post','<p>Original</p>');
+  fs.writeFileSync(path.join(posts,'post.html'),'<p>Edited</p>');assert.throws(()=>buildBlog(out,posts),/Approval no longer matches/);
+  fs.writeFileSync(path.join(posts,'post.html'),'<p>Original</p>');p.title='Edited';fs.writeFileSync(path.join(posts,'post.json'),JSON.stringify(p));assert.throws(()=>loadQueue(posts),/Approval no longer matches/);
+  p.title='Title post';p.publication.publishAt='2026-10-08T10:00:00-05:00';fs.writeFileSync(path.join(posts,'post.json'),JSON.stringify(p));assert.throws(()=>loadQueue(posts),/Approval no longer matches/);
+  p.publication.publishAt=null;p.published=true;fs.writeFileSync(path.join(posts,'post.json'),JSON.stringify(p));assert.throws(()=>loadQueue(posts),/Legacy published/);
+  delete p.published;p.slug='../escape';fs.writeFileSync(path.join(posts,'post.json'),JSON.stringify(p));assert.throws(()=>loadQueue(posts),/Invalid slug/);
+}));
+
+test('Chicago wall times honor summer, winter, ambiguous fall offsets and missing spring times',()=>{
+  assert.equal(validateTarget('2026-10-08T10:00:00-05:00'),Date.parse('2026-10-08T15:00:00Z'));
+  assert.equal(validateTarget('2026-12-08T10:00:00-06:00'),Date.parse('2026-12-08T16:00:00Z'));
+  assert.equal(validateTarget('2026-11-01T01:30:00-05:00'),Date.parse('2026-11-01T06:30:00Z'));
+  assert.equal(validateTarget('2026-11-01T01:30:00-06:00'),Date.parse('2026-11-01T07:30:00Z'));
+  for(const time of ['2026-10-08T10:00:00','2026-10-08T10:00:00-06:00','2026-12-08T10:00:00-05:00','2026-03-08T02:30:00-06:00','2026-02-30T10:00:00-06:00']) assert.throws(()=>validateTarget(time));
+  assert.throws(()=>validateTarget('2026-10-08T10:00:00-05:00','UTC'));
 });
 
+test('unapproved holding requests fail closed without rendering draft titles',()=>fixture((posts,out)=>{
+  for(const state of ['draft','review']) {
+    write(posts,'secret','<p>PRIVATE</p>',{title:'PRIVATE TITLE',holding:true,publication:{state}});
+    assert.throws(()=>buildBlog(out,posts),/Holding pages require exact approved/);
+    assert.equal(fs.existsSync(out),false);
+  }
+}));
 
-test('staged internal references preserve words and restore links when target publishes', () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-links-'));
+test('live verifier catches partial upload even when marker matches, then recognizes retry success',async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'blog-verify-'));
   try {
-    const posts = path.join(root, 'posts'), out = path.join(root, 'output');
-    fs.mkdirSync(posts);
-    const source = '<p>Read <b><a href="/blog/later/">the previous post</a></b> and <a href="https://example.org/">the source</a>.</p>';
-    fs.writeFileSync(path.join(posts,'first.json'), JSON.stringify({published:true,slug:'first',date:'2026-10-06',title:'First',summary:'First summary'}));
-    fs.writeFileSync(path.join(posts,'first.html'), source);
-    const target = {published:false,slug:'later',date:'2026-10-05',title:'Later',summary:'Later summary'};
-    fs.writeFileSync(path.join(posts,'later.json'), JSON.stringify(target));
-    fs.writeFileSync(path.join(posts,'later.html'), '<p>Later body.</p>');
-    buildBlog(out, posts);
-    const pending = fs.readFileSync(path.join(out,'first/index.html'),'utf8');
-    assert.match(pending, /Read <b>the previous post<\/b> and <a href="https:\/\/example.org\/">the source<\/a>/);
-    assert.doesNotMatch(pending, /href="\/blog\/later\/"/);
-    assert.equal(fs.existsSync(path.join(out,'later')),false);
-    assert.equal(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')).length,1);
-    target.published = true;
-    fs.writeFileSync(path.join(posts,'later.json'), JSON.stringify(target));
-    buildBlog(out, posts);
-    assert.ok(fs.readFileSync(path.join(out,'first/index.html'),'utf8').includes(source));
-    assert.equal(fs.readFileSync(path.join(posts,'first.html'),'utf8'),source);
-    assert.equal(fs.existsSync(path.join(out,'later/index.html')),true);
-  } finally { fs.rmSync(root,{recursive:true,force:true}); }
+    const posts=path.join(root,'posts'),out=path.join(root,'out');fs.mkdirSync(posts);write(posts,'ready','<p>READY</p>');buildBlog(out,posts);
+    const {verifyLive}=require('./blog-queue.cjs');let broken=true;
+    const request=async url=>{
+      const name=decodeURIComponent(new URL(url).pathname.slice('/blog/'.length));
+      return new Response(broken && name==='ready/index.html' ? '<p>Stale body</p>' : fs.readFileSync(path.join(out,name)),{status:200});
+    };
+    const partial=await verifyLive(out,'https://example.org/blog/',request);assert.equal(partial.matches,false);assert.deepEqual(partial.differences,['ready/index.html']);
+    broken=false;assert.equal((await verifyLive(out,'https://example.org/blog/',request)).matches,true);
+    const unavailable=await verifyLive(out,'https://example.org/blog/',async()=>{throw Error('network outage');});assert.equal(unavailable.matches,false);
+  } finally {fs.rmSync(root,{recursive:true,force:true});}
 });
 
-test('recoverable holding replaces a previously published body without listing it', () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-hold-'));
+test('holding behavior requires approval and removed remote paths are not falsely verified',async()=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'blog-retired-'));
   try {
-    const posts = path.join(root, 'posts'), out = path.join(root, 'output');
-    fs.mkdirSync(posts);
-    const metadata = {published:true,slug:'held',date:'2026-10-06',title:'Held article',summary:'Private summary'};
-    fs.writeFileSync(path.join(posts,'held.json'),JSON.stringify(metadata));
-    fs.writeFileSync(path.join(posts,'held.html'),'<p>BODY SENTINEL</p>');
-    buildBlog(out,posts);
-    assert.match(fs.readFileSync(path.join(out,'held/index.html'),'utf8'),/BODY SENTINEL/);
-    metadata.published=false;metadata.holding=true;
-    fs.writeFileSync(path.join(posts,'held.json'),JSON.stringify(metadata));
-    assert.equal(buildBlog(out,posts),0);
-    const held=fs.readFileSync(path.join(out,'held/index.html'),'utf8');
-    assert.match(held,/awaiting its scheduled release/);
-    assert.match(held,/name="robots" content="noindex"/);
-    assert.doesNotMatch(held,/BODY SENTINEL|Private summary/);
-    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')),[]);
-    assert.doesNotMatch(fs.readFileSync(path.join(out,'feed.xml'),'utf8'),/Held article|BODY SENTINEL|<item>/);
-    metadata.published=true;
-    fs.writeFileSync(path.join(posts,'held.json'),JSON.stringify(metadata));
-    buildBlog(out,posts);
-    assert.match(fs.readFileSync(path.join(out,'held/index.html'),'utf8'),/BODY SENTINEL/);
-    assert.doesNotMatch(fs.readFileSync(path.join(out,'held/index.html'),'utf8'),/awaiting its scheduled release/);
-    assert.equal(fs.readFileSync(path.join(posts,'held.html'),'utf8'),'<p>BODY SENTINEL</p>');
-  } finally { fs.rmSync(root,{recursive:true,force:true}); }
+    const posts=path.join(root,'posts'),out=path.join(root,'out');fs.mkdirSync(posts);
+    const post=write(posts,'ready','<p>READY</p>');post.holding=true;fs.writeFileSync(path.join(posts,'ready.json'),JSON.stringify(post));assert.throws(()=>buildBlog(out,posts),/Approval no longer matches/);
+    post.holding=false;fs.writeFileSync(path.join(posts,'ready.json'),JSON.stringify(post));buildBlog(out,posts);
+    const {verifyLive}=require('./blog-queue.cjs');const remote=outputState(out);remote.files['previously-public/index.html']='a'.repeat(64);
+    const request=async url=>{const name=new URL(url).pathname.slice('/blog/'.length);return new Response(name==='release-state.json' ? JSON.stringify(remote) : fs.readFileSync(path.join(out,name)));};
+    const result=await verifyLive(out,'https://example.org/blog/',request);assert.equal(result.matches,false);assert.deepEqual(result.retired,['previously-public/index.html']);
+  } finally {fs.rmSync(root,{recursive:true,force:true});}
 });
