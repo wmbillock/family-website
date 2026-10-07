@@ -26,6 +26,10 @@ npm run blog:approve -- <slug>
 
 This records `approvedSha256`, binding exact HTML, public metadata, original timestamps, target, timezone and holding behavior. Changes invalidate approval and stop deployment until reviewed and approved again. The command records a decision; it does not establish user authorization. Review its diff before merging. Invalid approval attempts restore the original file.
 
+## Companion publication privacy
+
+LinkedIn companions require separate review of the exact final artifact and explicit publication authorization. Exclude job-search material, interview or application experiences, recruiting signals, and examples derived from those activities even when anonymized or generalized. Keep excluded drafts private; do not commit them to this public repository. An approved blog release never authorizes a LinkedIn post.
+
 ## Chicago time
 
 Targets require full ISO timestamps with the explicit offset matching **America/Chicago** at that instant. CDT uses `-05:00`, CST uses `-06:00`; nonexistent spring times and wrong offsets are rejected. Choose the offset explicitly during the repeated fall hour. Date-only/UTC-only targets and other timezone names are rejected.
