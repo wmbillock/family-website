@@ -13,11 +13,11 @@ The short resume and full career portfolio share the employment, education, and 
 
 ## Remaining reconciliation
 
-Prior job-hunt resumes are in Willow's Google Drive. No Drive connector is exposed in this session, so those documents have not been retrieved or reconciled. The public archive covers the available record from 2004 onward; do not call it an exhaustive verified history of every achievement.
+The public archive covers the available record from 2004 onward; do not call it an exhaustive verified history of every achievement. Additional records require independent reconciliation before making completeness claims.
 
 Further detail that would improve the case studies: benchmark task count, provider/model versions, run dates, averaging method and per-provider results; pricing measurement window; pricing-configuration final delivery milestone; payment uptime window; experimentation-capacity baseline; older game credits and public artifacts. Do not manufacture these details or present resume-history links as independent verification.
 
-Employer internal artifacts, proprietary code, compensation records, and job-search controls are not copied to the public website. Additional evidence should use public artifacts or a publishable owner-supplied account.
+Private source material is not copied to the public website. Additional evidence should use public artifacts or a publishable owner-supplied account.
 
 ## Libretto clarification
 
