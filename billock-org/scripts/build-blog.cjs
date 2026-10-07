@@ -12,6 +12,7 @@ function loadPosts(directory) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug || '') || name !== `${post.slug}.json`) throw Error(`Invalid slug: ${name}`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(post.date || '') || new Date(`${post.date}T00:00:00Z`).toISOString().slice(0, 10) !== post.date) throw Error(`Invalid date: ${name}`);
     if (!post.title || !post.summary || typeof post.title !== 'string' || typeof post.summary !== 'string') throw Error(`Missing title or summary: ${name}`);
+    if (post.originalPublished && (typeof post.originalPublished !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(post.originalPublished) || !Number.isFinite(Date.parse(post.originalPublished)) || post.originalPublished.slice(0, 10) !== post.date)) throw Error(`Invalid original publication timestamp: ${name}`);
     const html = fs.readFileSync(path.join(directory, `${post.slug}.html`), 'utf8');
     if (!html.trim()) throw Error(`Empty article: ${name}`);
     return {...post, html};
@@ -46,6 +47,7 @@ function buildBlog(output, postsDirectory) {
   fs.mkdirSync(output, {recursive:true});
   fs.copyFileSync(path.join(__dirname, '../blog/style.css'), path.join(output, 'style.css'));
   const list = posts.length ? `<ol class="posts">${posts.map(post => `<li><time datetime="${post.date}">${post.date}</time> — <a href="/blog/${post.slug}/">${escape(post.title)}</a><p>${escape(post.summary)}</p></li>`).join('\n')}</ol>` : '<p>No posts published yet.</p>';
+  fs.writeFileSync(path.join(output, 'posts.json'), JSON.stringify(posts.map(({slug, title, date, summary}) => ({slug, title, date, summary}))) + '\n');
   fs.writeFileSync(path.join(output, 'index.html'), page(`${author} — technical blog`, 'Technical writing by Willow Billock.', '/blog/', `<h1>${author}</h1><p>Technically Writing</p><h2>Posts</h2>${list}`));
   for (const post of posts) {
     const directory = path.join(output, post.slug);
@@ -56,7 +58,7 @@ function buildBlog(output, postsDirectory) {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
 <title>Willow Billock — technical blog</title><link>${site}/blog/</link><description>Technical writing by Willow Billock.</description><language>en</language>
 <atom:link href="${site}/blog/feed.xml" rel="self" type="application/rss+xml"/>
-${posts.map(post => `<item><title>${escape(post.title)}</title><link>${site}/blog/${post.slug}/</link><guid isPermaLink="true">${site}/blog/${post.slug}/</guid><pubDate>${new Date(`${post.date}T00:00:00Z`).toUTCString()}</pubDate><description>${escape(post.summary)}</description></item>`).join('\n')}
+${posts.map(post => `<item><title>${escape(post.title)}</title><link>${site}/blog/${post.slug}/</link><guid isPermaLink="true">${site}/blog/${post.slug}/</guid><pubDate>${new Date(post.originalPublished || `${post.date}T00:00:00Z`).toUTCString()}</pubDate><description>${escape(post.summary)}</description></item>`).join('\n')}
 </channel></rss>\n`);
   return posts.length;
 }

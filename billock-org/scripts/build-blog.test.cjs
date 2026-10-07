@@ -14,17 +14,23 @@ test('empty launch; drafts stay private; published URLs and RSS agree; stale out
     assert.equal(buildBlog(out, posts), 0);
     assert.match(fs.readFileSync(path.join(out,'index.html'),'utf8'), /No posts published yet/);
     assert.doesNotMatch(fs.readFileSync(path.join(out,'feed.xml'),'utf8'), /PRIVATE DRAFT|<item>/);
-    const metadata = {published:true,slug:'fixture',date:'2026-10-06',title:'Test <&>',summary:'A & B'};
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')), []);
+    const metadata = {published:true,slug:'fixture',date:'2026-10-06',originalPublished:'2026-10-06T08:30:00-06:00',title:'Test <&>',summary:'A & B'};
     fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
     fs.writeFileSync(path.join(posts,'fixture.html'), '<p>Test body.</p>');
     assert.equal(buildBlog(out, posts), 1);
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(out,'posts.json'),'utf8')), [{slug:'fixture',title:'Test <&>',date:'2026-10-06',summary:'A & B'}]);
     assert.match(fs.readFileSync(path.join(out,'fixture/index.html'),'utf8'), /https:\/\/billock.org\/blog\/fixture\//);
     assert.match(fs.readFileSync(path.join(out,'feed.xml'),'utf8'), /Test &lt;&amp;&gt;/);
+    assert.match(fs.readFileSync(path.join(out,'feed.xml'),'utf8'), /Tue, 06 Oct 2026 14:30:00 GMT/);
     metadata.published = false;
     fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
     buildBlog(out, posts);
     assert.equal(fs.existsSync(path.join(out,'fixture')), false);
-    metadata.published = true; metadata.slug = '../escape';
+    metadata.published = true; metadata.originalPublished = '2026-10-06T08:30:00';
+    fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
+    assert.throws(() => buildBlog(out, posts), /Invalid original publication timestamp/);
+    metadata.originalPublished = '2026-10-06T08:30:00-06:00'; metadata.slug = '../escape';
     fs.writeFileSync(path.join(posts,'fixture.json'), JSON.stringify(metadata));
     assert.throws(() => buildBlog(out, posts), /Invalid slug/);
   } finally { fs.rmSync(root,{recursive:true,force:true}); }

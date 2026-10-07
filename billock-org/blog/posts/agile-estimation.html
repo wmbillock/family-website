@@ -1,0 +1,314 @@
+<p>
+In the <b><a href="/blog/productivity-and-project-metrics/">last concrete coding corner post</a></b>, I spent a
+lot of time talking about goals and metrics and how they relate to
+non-concrete endeavors such as writing and programming. One thing I
+deliberately left out was the obvious. Sure,  I can develop any
+number of metrics to tell me how much progress I am making, but what
+do I do to tell how much progress is <i>left?</i></p><p>
+In the business world (where most
+of my experiences in this area lie), companies are run on quarterly
+budgets that take into account resource allocation and potential
+projects. These projects usually have some sort of figure attached to
+them that represents a Return On Investment, or ROI. The goal then is
+to have ROI be as high as possible, while the resource allocation
+budget to produce that ROI needs to be as low as possible. For
+manufacturing processes, there are a number of factors that play into
+this – designers, prototyping, manufacturing, material resources,
+and so on. Physical costs, such as the base metal required to
+manufacture the body of a vehicle, are pretty much fixed. You can
+potentially swing a one-time decrease through intense negotiation,
+but you introduce yourself to potential shortfalls in quality to meet
+the new price. Not to mention that negotiating those kinds of
+reductions can be an extremely time-consuming and exhausting process.</p><p>
+The other aspect of any project
+is the, for lack of a better word, “flexible” cost. This is the
+cost for more ephemeral tasks, such as programming or architecture,
+where you cannot necessarily know how long the task will take before
+you begin. A project manager or product owner looks at their cost
+reduction options and sees this, thinking to themselves “Getting
+Joe to work a bit harder for a while will get this done faster, and
+be easier than reducing physical costs. Let's do that!” Without
+data to back up assertions that the goals imposed as a result are not
+achievable through reasonable effort, the programmer is left in the
+lurch – they have no power to change the situation, and thus often
+end up working long hours to meet the seemingly arbitrary goals.</p><h2>The Problem</h2><p>
+The
+primary problem with the “just work more” approach is obvious to
+anyone who has done creative work for any length of time – creative
+work is <i>exhausting</i>.
+Performing that kind of work for any length of time can feel very
+much like running a marathon, conflating the mental and physical
+worlds into a conglomeration of perceived Herculean effort. After X
+number of hours, with X being different for every individual, it is
+simply not possible to produce at the same quality level as it was
+possible before X hours had elapsed.</p><p>
+The
+practical upshot of this is that quality of output for creative
+endeavors decreases as the time spent on that task in a session
+increases. This is the central point that is missed when attempting
+to procure more effort out of employees who derive their primary work
+product from the expense of mental effort – longer hours means more
+bugs and issues, which means longer hours to fix them. It's an
+infinite loop of increasing required effort, which often ends up
+costing more to complete than if the employee had been allowed to go
+at their own pace.</p><p>
+Note
+that the video game industry is horrible in this regard. Long hours
+(60-80 hour weeks or more) are the norm in that industry as projects
+move towards the completed stage. Project managers in the game
+industry are often constrained by hard dates – such as the holiday
+season – that they have no way to negotiate around, and so when you
+cannot manipulate your end date the only thing remaining is to
+attempt to manipulate the amount of effort performed each week. In
+many cases, this results in months of extremely long hours, where
+programmers and artists are pushed relentlessly to meet deadlines
+that are forever seeming farther away. Additionally, the cumulative
+exhaustion of weeks of long hours seeps in, resulting in the
+remaining amount of work increasing despite the longer hours as bugs
+introduced into the system by a tired programmer required effort to
+fix.</p><p>
+Having
+spent time in the game industry, I wish I could say that the above
+was an apocryphal example, but <b><a href="https://www.jacobinmag.com/2013/11/video-game-industry/">examples</a></b>
+<b><a href="http://ea-spouse.livejournal.com/">abound</a></b>
+<b><a href="https://www.destructoid.com/developer-tales-the-true-story-of-an-abused-game-tester/">throughout</a></b>
+<b><a href="http://kotaku.com/investigation-a-video-game-studio-from-hell-511872642">the industry</a></b>,
+and things rarely seem to improve. The marketing and funding
+realities of the industry make this a problem that is tricky to
+solve. Some companies have large enough cash reserves that they can
+simply ignore the calendar and say “It'll be done when it's done,”
+but most others need the infusion of cash provided by a completed
+project to continue to do things like pay rent, electricity, and
+employees (often in that order).</p><h2>Analyzing the issue</h2><p>
+The
+game industry has a situation that arises from external constraints,
+but it also is a byproduct of creative work – there is no way to
+know how long a task is going to take before it is started. Sure, you
+can have a ballpark. For example, I've written two books so far, and
+each took about 30 days for the final draft. Given that, it's
+reasonable to assume that if I were to write a third book, it would
+also take about 30 days for the final draft.</p><p>
+Except
+when it doesn't.</p><p>
+This
+is the most frustrating thing about programming to non-programmers.
+Two tasks can seem extremely similar, but one may take five minutes
+while another would take a week. The
+reasons why are numerous – fractured code bases, incompatible
+patterns, and so on – but ultimately there is no obvious reason
+that a layman can point to and say “Oh, that's why that took so
+long!” This problem, when repeated multiple times over the course
+of a project, can sour the relationship between a project manager and
+a programmer, taking what was originally a productive and respectful
+interaction process and making it confrontational. It is usually not
+the result of any intentional slight by the programmer or intentional
+misinterpretation by the PM, but instead it's an issue of trust. 
+</p><p>
+Every
+time a programmer claims that a task will take longer than originally
+expected, or that they have been delayed, the PM has no choice but to
+assume that the delays are intentional as they have no insight
+whatsoever into the development process. This may not be an overt
+assumption, but it certainly occurs on some subconscious level and
+factors into decision making and interactions. This injects stress
+and discord into the process, which builds up over the course of a
+project and results in negative perceptions. A project could be on
+the most efficient possible track to completion, making strides that
+no other team could possibly make with the same material, but once
+the perception is soured that effort will never be seen as
+sufficient.</p><h2>Addressing the Problem</h2><p>
+The
+problem, as we've already mentioned, is that the PM has no way to
+know when a given task will be completed. The frustrating thing is
+that oftentimes, neither does the programmer. Sure a programmer can
+make an educated guess, but there are always factors outside of their
+control that play into the end result. Thus, the first approach to
+addressing the problem is to rely solely upon the guesses of the
+programmer. The programmer takes a look at a task before he begins,
+and gives an estimate of the effort required to complete that task.
+As a project manager is concerned with dates and timelines, they
+often push for time-based estimates (“It will take four hours”),
+and many programmers agree to the system.</p><h2>Problem Solved, Right?</h2><p>
+Once
+a unit associated with time has been decided upon, everything very
+quickly goes to hell. If a task that should “only take four hours”
+suddenly takes 40, then there is a perceived deficit. A project
+manager looking at a project plan sees the extra 36 hours of effort
+and is forced to conclude that “The project is now 36 hours
+behind.” This amount grows or shrinks as effort continues, and the
+perception of the project manager changes each time. If a task takes
+less time than expected, then the programmer is “making good
+progress” and the project is “on track.” If a task takes more,
+then the programmer is “introducing delays” and  the project is
+“delayed.”</p><p>
+Notice
+the attribution of effort here. This all ties back to the choice of
+time as a base unit. Once you are estimating in terms of hours, the
+natural human tendency is to start watching the clock. We've been
+trained to pay close attention to time periods – 8 hours of work, 1
+hour for lunch, 30 minutes to commute, and so on – that we
+subconsciously monitor the amount of time taken. When something takes
+longer than stated, it is frustrating and unsettling. By tying the
+estimates of a programming task into this time-based system on a
+granular level, we introduce the same predilections and perceptions
+into the evaluation of progress. It removes the ability to look at a
+task objectively and say “we are making X amount of progress.”
+Instead, everything is cast in terms of time. Time elapsed, time
+remaining, time behind, and when looking at the time associated with
+a project subjective judgments are added into the project status.
+Choosing an estimate in terms of time has resulted in looking at the
+project at a micro level, removing the ability to see the forest
+through the trees. The subjective perceptions of “late” and
+“early” that have been pounded in to us from our youngest years
+come into play, and color our perception of the project's progress.</p><h2>Aggregate Data</h2><p>
+One
+of the reasons behind this is that it is far too easy to look at a
+project as a series of finite tasks. Once these tasks have a discrete
+time associated with them, it is far too easy to take each task as an
+element in isolation. Good project managers, though, recognize that
+each task is only part of a larger whole. They strive to look at a
+project in aggregate – that is, as a combination of all of the
+tasks. They see the four hour task taking 40 hours, but then realize
+that the project is still  25% completed with one quarter of the
+budgeted time elapsed.</p><p>
+Thus,
+we see the path to our solution. An individual four hour task may run
+long, and may result in a delay. But on average, four hour tasks will
+typically take four hours. Some may be shorter, some much longer, as
+that is the nature of creative endeavors. However, looked at over a
+span of time, it is possible to develop a translation. If the average
+of all “four hour” tasks is 4.5 hours, that gives us a reliable
+predictive measure. We now know that if the programmer estimates a
+task at 4 hours, it will take 4.5 hours on average. This allows us to
+adjust our estimates and determine where the project actually lies.</p><h2>A Problem of Units</h2><p>
+At
+its core, with this translation table we've improved upon the primary
+concern – developing accurate estimates of project effort. However,
+we haven't addressed the soft factors of
+the issue. By associating progress with hours of effort, we are still
+tapping into that primal clock-watching urge, and thus still adding
+in the subjective judgements that go along with it. This is the
+problem with any time-based estimate system – it is tied to a known
+and familiar system, and even though it may operate on a varying
+scale, there is a subconscious perception of variation that permeates
+the project, regardless of the intentions. Because “hours” was
+chosen as the unit, this is tied back to real world elapsed time, and
+we end up with a slightly improved version of the same problem.</p><p>As
+it is, we now actually have the seeds of a potential solution. We've
+identified that looking at effort in aggregate provides us with more
+accurate estimates of project completion. We've also identified that
+expressing estimates in terms of time introduces needless subjective
+judgments into the process. We finally know that despite our best
+efforts, we do eventually have deadlines to meet – we cannot
+continue to just work forever. 
+</p><h2>A Different Approach</h2><p>
+What
+we are really doing when estimating a task is building a view of the
+entire project. A project is the sum of its parts, and having broken
+a project down into constituent tasks it thus follows that a
+project's total effort is the sum of the efforts of all of its tasks
+(it is more complicated than that, but usually the point holds well
+enough). So by adding up all of the estimates associated with a
+project, we can determine a total estimate for the entire project. In
+a time-based system, this is expressed in terms of hours and days.</p><p>
+However,
+at this point we are working simply with numbers. We've established
+that due to the nature of creative work estimates are by definition
+non-concrete.
+So instead, we apply analytics to find out what “four hours”
+actually means in terms of calendar time. At this point, we're simply
+doing number analysis – averaging numbers together to produce a
+measure in terms of time. Since we have the same units on both sides
+of the equation, it follows that when these values on either side of
+the equation differ, then one of the choices of units is thus
+incorrect. It should be obvious that 4.5 hours does not equal 4
+hours, so one of those figures must not really be “hours” as we
+know them.</p><p>
+Let's
+instead refer to the right side of that equation as points. Instead
+of 4.5 hours = 4 hours, we have 4.5 hours = 4 points. By removing the
+hours from the right hand side of that equation, we've suddenly
+addressed the subjective issue with our measurement system so far –
+we took away the time base in order to find the actual value, and as
+a result hit upon a number system that allows us to assign arbitrary
+values to tasks that develop meaning as a project progresses.</p><p>
+Building
+upon this gives us a more reliable means of estimation. Instead of
+assigning an hour estimate to each task, we assign a point value. The
+point value is indicative of the general effort required to complete
+the task, just as the estimate in hours was, but by removing the time
+value we remove subjective expectations. We assign higher numbers to
+challenging tasks, and lower numbers to easier tasks, knowing that on
+average the effort expended for each classification of task will
+average out to the same amount of effort, even if one specific task
+takes longer than another.</p><h2>Tying it All Together</h2><p>
+As
+we noted earlier, deadlines are inescapable. We cannot simply work
+forever. Thus, status reporting becomes a matter of determining how
+much longer the project will take to complete. We have a method of
+assigning difficulty to our tasks by giving them point values, and
+the point values are arbitrary units and thus remove all subjective
+judgments and perceptions. So our task at this point is to tie these
+points back into time periods.</p><p>
+This
+is actually what we were hoping to accomplish with our original
+estimation scheme – determine the amount of time it will take to
+complete a project. We simply hit upon the wrong units, and thus
+added a lot of extra cruft to our project plan. By trying to tie
+points back to hours, we become too granular – the points completed
+per hour varies far too much from task to task to give a worthwhile
+measurement. So the only option is to expand our averaging time
+window. This becomes an arbitrary choice, but I've seen the most
+success with week-long and two-week-long periods, known in the agile
+methodology as “Sprints”. You add up the points completed during
+each sprint, then keep a running average of the efforts completed. In
+doing so you tie the point values back into time values while also
+accounting for the aggregate variance of the data. For example – if
+I have a project that is has 170 units remaining, and I have been
+averaging 17 points completed per one-week sprint, I can say with a
+fair degree of confidence that there are 10 weeks remaining in the
+project.</p><p>
+This
+17 number – the average point value completed during a sprint –
+is known as “velocity.” A project's velocity is used to relate
+the overall project duration back to the time required to complete
+it. By increasing the unit of measurement and divesting our estimates
+from subjective measures, we've introduced a more reliable system of
+estimation – simply divide points remaining by velocity. What
+this does is twofold. First, it gives you a quick and dirty estimate
+of the time remaining in a project that, over several weeks, tends to
+become very accurate as the amount of data to measure increases.</p><p>
+The
+second thing that it gives you is the ability to say no. Take, for
+example, a project that is starting to trend towards long hours. If
+you archive your data properly, you can point to previous examples
+where such an approach only made matters worse. Instead of “well,
+that will be pretty hard on the team,” you can instead say “We
+tried this before, and added 50 points of work while only achieving
+47 from the increase in face time. How do you think it will be
+different this time around?” By looking at the point value of each
+task to be completed, some negotiation can take place and instead of
+giving subjective measurements and impressions, you can provide
+specific feedback with actionable data. Of course in some cases this
+won't do a damn bit of good, as the project deadlines may be
+particularly unforgiving, but in aggregate this approach should
+produce an environment that is collaborative and built upon a
+reliable history, as opposed to a relationship founded on distrust
+and fostered in a confrontational environment.</p><h2>What does this mean for
+writing?</h2><p>
+Ultimately,
+this method obtained from programming can be applied to any creative
+endeavor that can be assigned a subjective judgment of “easy” or
+“hard.” Simply break a project down into constituent tasks, then
+assign a point value to each task representing its difficulty. Of
+course after a certain point the tasks become repetitive – how many
+ways can “Write this scene!” be phrased, after all? However, one
+thing I have found when applying this approach to my own efforts is
+in support of my previous post on metrics – once you start putting
+your mind to measuring your progress in a more objective manner, you
+are able to get a better feel for how things are actually going with
+the project. While you may or may not have deadlines to work towards,
+and you may or may not have people waiting on your progress, the
+concrete proof of your progress is often enough to help you break
+through any bumps on the road, and stave off periods of despair over
+how long a given project is taking.</p>
