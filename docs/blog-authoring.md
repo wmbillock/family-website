@@ -28,7 +28,7 @@ This records `approvedSha256`, binding exact HTML, public metadata, original tim
 
 ## Companion publication privacy
 
-LinkedIn companions require separate review of the exact final artifact and explicit publication authorization. Exclude job-search material, interview or application experiences, recruiting signals, and examples derived from those activities even when anonymized or generalized. Keep excluded drafts private; do not commit them to this public repository. An approved blog release never authorizes a LinkedIn post.
+LinkedIn companions require separate review of the exact final artifact and explicit publication authorization. Review each channel independently for private information, including text, assets, alt text and linked previews. Keep private or unapproved drafts outside this public repository. An approved blog release never authorizes a LinkedIn post.
 
 ## Chicago time
 
