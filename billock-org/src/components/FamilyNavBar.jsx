@@ -46,7 +46,6 @@ export default class FamilyNavBar extends Component {
           onStateChange={this.handleStateChange}
         >
             <Link id="home" className="menu-item" to="/"><img className='circleimagerot' src={require('../images/tenor-horn.jpg')} alt="Home" /></Link>
-            <a href="/blog/" className="menu-item">Willow’s technical blog</a>
             <Link to="/willow" className="menu-item"><img className="circleimage" src={require("../images/willow.jpg")} alt="Willow" /></Link>
             <Link to="/kiley" className="menu-item"><img className="circleimagerot" src={require("../images/kiley.jpg")} alt="Kiley" /></Link>
             <Link to="/luella" className="menu-item"><img className="circleimage" src={require("../images/luella.jpg")} alt="Luella" /></Link>
