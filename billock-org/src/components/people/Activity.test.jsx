@@ -1,0 +1,13 @@
+import React from 'react'
+import { render, screen, act } from '@testing-library/react'
+import Activity from './Activity'
+const offline={schemaVersion:1,generatedAt:null,sourceObservedAt:null,lastSuccessAt:null,health:'offline',events:[]}
+const response=data=>({ok:true,headers:{get:()=>null},text:async()=>JSON.stringify(data)})
+beforeEach(()=>{jest.useFakeTimers();global.fetch=jest.fn().mockResolvedValue(response(offline));Object.defineProperty(document,'hidden',{configurable:true,value:false})})
+afterEach(()=>{jest.useRealTimers();delete global.fetch})
+test('empty real feed is explicitly offline with no invented events',async()=>{render(<Activity/>);await act(async()=>{});expect(screen.getByText('⚪ Activity source is offline')).toBeInTheDocument();expect(screen.getByText('No successful source check yet.')).toBeInTheDocument();expect(screen.getByText('No verified public updates to show yet.')).toBeInTheDocument();expect(fetch).toHaveBeenCalledWith('/activity/feed.json',expect.objectContaining({cache:'no-store'}));})
+test('inactive tab makes no request',async()=>{render(<Activity active={false}/>);await act(async()=>{});expect(fetch).not.toHaveBeenCalled();})
+test('polling pauses while hidden and refreshes on visibility return',async()=>{render(<Activity/>);await act(async()=>{});Object.defineProperty(document,'hidden',{configurable:true,value:true});await act(async()=>{jest.advanceTimersByTime(60000)});expect(fetch).toHaveBeenCalledTimes(1);Object.defineProperty(document,'hidden',{configurable:true,value:false});await act(async()=>{document.dispatchEvent(new Event('visibilitychange'))});expect(fetch).toHaveBeenCalledTimes(2);})
+test('invalid input is disconnected and cannot render raw/private prose',async()=>{fetch.mockResolvedValue(response({...offline,secret:'private-prose'}));render(<Activity/>);await act(async()=>{});expect(screen.getByText('We couldn’t refresh activity. Earlier updates, if shown, are historical.')).toBeInTheDocument();expect(screen.queryByText('private-prose')).not.toBeInTheDocument();})
+test('old source checks stay stale despite successful fetch',async()=>{const old=new Date(Date.now()-20*60000).toISOString();fetch.mockResolvedValue(response({...offline,generatedAt:old,sourceObservedAt:old,lastSuccessAt:old,health:'healthy'}));render(<Activity/>);await act(async()=>{});expect(screen.getByText('🟡 Updates are stale')).toBeInTheDocument();})
+test('unmount aborts and stops polling',async()=>{const {unmount}=render(<Activity/>);await act(async()=>{});const signal=fetch.mock.calls[0][1].signal;unmount();expect(signal.aborted).toBe(true);await act(async()=>{jest.advanceTimersByTime(120000)});expect(fetch).toHaveBeenCalledTimes(1);})

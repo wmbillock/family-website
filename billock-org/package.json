@@ -21,10 +21,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && node scripts/build-blog.cjs",
+    "build": "react-scripts build && node scripts/build-blog.cjs && node scripts/verify-activity.cjs prepare",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test:blog": "node --test scripts/build-blog.test.cjs",
+    "test:blog": "node --test scripts/build-blog.test.cjs scripts/activity-projector.test.cjs scripts/activity-release.test.cjs && python3 -m unittest discover -s scripts -p activity_exporter_test.py",
     "blog:queue": "node scripts/blog-queue.cjs status",
     "blog:preview": "node scripts/blog-queue.cjs preview",
     "blog:approve": "node scripts/blog-queue.cjs approve"

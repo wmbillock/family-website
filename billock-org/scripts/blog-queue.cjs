@@ -64,7 +64,8 @@ async function main(args) {
     const now=new Date();buildBlog(output,postsDirectory,now);
     const result=await verifyLive(output);
     if(result.retired.length) throw Error('Previously deployed paths cannot be silently removed through SFTP. Restore a reviewed holding page or reconcile retained output: '+result.retired.join(', '));
-    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT,`deploy=${!result.matches}\n`);
+    const activityMatches=await require('./verify-activity.cjs').check();
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT,`deploy=${!result.matches || !activityMatches}\n`);
     const queue=status(postsDirectory,now);
     if (process.env.GITHUB_STEP_SUMMARY) {
       const approved=queue.filter(post=>['due','scheduled'].includes(post.state));
@@ -74,6 +75,7 @@ async function main(args) {
   } else if (command==='verify') {
     const result=await verifyLive(path.join(__dirname,'../build/blog'));
     console.log(JSON.stringify(result,null,2));if(!result.matches) throw Error('Deployed blog differs from build; next queue tick will retry');
+    await require('./verify-activity.cjs').verify();
   } else throw Error('Commands: status, preview [ISO instant], approve <slug>, check, verify');
 }
 if(require.main===module) main(process.argv.slice(2)).catch(error=>{console.error(error.message);process.exitCode=1;});
