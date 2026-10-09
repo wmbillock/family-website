@@ -10,7 +10,7 @@ async function verifyLive(output, base = 'https://billock.org/blog/', request = 
   const differences=[];
   let retired=[];
   try {
-    const response=await request(new URL('release-state.json',base),{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+    const response=await request(new URL('release-state.json',base),{method:'GET',redirect:'error',credentials:'omit',signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
     if(response.ok) {
       const previous=await response.json();
       if(previous.version===1 && previous.files && typeof previous.files==='object') retired=Object.keys(previous.files).filter(file=>!Object.hasOwn(state.files,file));
@@ -21,7 +21,7 @@ async function verifyLive(output, base = 'https://billock.org/blog/', request = 
   for (const [file,checksum] of Object.entries(expected)) {
     try {
       const url=new URL(file,base);url.searchParams.set('queue',checksum.slice(0,12));
-      const response=await request(url,{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+      const response=await request(url,{method:'GET',redirect:'error',credentials:'omit',signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
       if (!response.ok || hash(Buffer.from(await response.arrayBuffer())) !== checksum) differences.push(file);
     } catch { differences.push(file); }
   }

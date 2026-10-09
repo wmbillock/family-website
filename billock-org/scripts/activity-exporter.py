@@ -100,9 +100,17 @@ def publish(db, digest, payload, api=gh, read_live=None):
         db.execute('UPDATE publications SET state=? WHERE digest=?',('published',digest));db.commit();return 'published'
     return 'submitted' if commit else 'pending-live'
 
+class RejectRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise RuntimeError('Public redirects are not permitted')
+
+PUBLIC_OPENER=urllib.request.build_opener(RejectRedirect)
+
 def public_bytes(file):
-    request=urllib.request.Request('https://billock.org/'+file,headers={'Cache-Control':'no-cache'})
-    with urllib.request.urlopen(request,timeout=15) as response:
+    # Fixed origin plus finite public paths only. Never accept a callback URL.
+    if not re.fullmatch(r'(?:index\.html|activity/(?:feed|release-state)\.json|static/(?:js|css)/[a-zA-Z0-9_.-]+)',file):raise RuntimeError('Unsupported public path')
+    request=urllib.request.Request('https://billock.org/'+file,headers={'Cache-Control':'no-cache'},method='GET')
+    with PUBLIC_OPENER.open(request,timeout=15) as response:
         data=response.read(MAX+1)
         if len(data)>MAX: raise RuntimeError('Public artifact too large')
         return data
@@ -139,6 +147,7 @@ def cycle(db, script, api=gh, read_live=live):
     # actual checkout against the push SHA. Full artifact readback binds it.
     _,release=observed_release()
     for run in reversed(runs):
+        if not re.fullmatch('[a-f0-9]{40}',str(run.get('head_sha',''))) or type(run.get('id')) is not int or run['id']<=0:continue
         if run.get('event')!='push' or run.get('status')!='completed' or run.get('conclusion')!='success': continue
         if db.execute('SELECT 1 FROM receipts WHERE source_id=?',('website-'+run.get('head_sha',''),)).fetchone(): continue
         changed=api('repos/'+REPO+'/commits/'+run['head_sha'])

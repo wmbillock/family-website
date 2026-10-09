@@ -16,14 +16,14 @@ function prepare(build=path.join(__dirname,'../build')) {
 }
 async function check(request=fetch,expected=sourceDigest()) {
   try {
-    const response=await request('https://billock.org/activity/release-state.json',{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+    const response=await request('https://billock.org/activity/release-state.json',{method:'GET',redirect:'error',credentials:'omit',signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
     if(!response.ok) return false;
     const marker=await response.json();
     if(!C.keys(marker,['version','sourceDigest','sourceRevision','sourceVerified','files']) || marker.version!==1 || marker.sourceDigest!==expected || !marker.files || Object.keys(marker.files).length>20 || !marker.files['index.html'] || !marker.files['activity/feed.json'])return false;
     for(const [file,digest] of Object.entries(marker.files)){
       if(!/^(?:index\.html|activity\/feed\.json|static\/(?:js|css)\/[a-zA-Z0-9_.-]+)$/.test(file) || !/^[a-f0-9]{64}$/.test(digest))return false;
       const url=new URL(file,'https://billock.org/');url.searchParams.set('activity',digest.slice(0,12));
-      const item=await request(url,{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+      const item=await request(url,{method:'GET',redirect:'error',credentials:'omit',signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
       if(!item.ok || hash(Buffer.from(await item.arrayBuffer()))!==digest)return false;
     }
     return true;
@@ -35,7 +35,7 @@ async function verify(build=path.join(__dirname,'../build'),request=fetch) {
   C.validateFeed(JSON.parse(fs.readFileSync(path.join(build,'activity/feed.json'),'utf8')));
   for(const file of files){
     const bytes=fs.readFileSync(path.join(build,file));const url=new URL(file,'https://billock.org/');url.searchParams.set('activity',hash(bytes).slice(0,12));
-    const response=await request(url,{signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
+    const response=await request(url,{method:'GET',redirect:'error',credentials:'omit',signal:AbortSignal.timeout(15000),headers:{'Cache-Control':'no-cache'}});
     if(!response.ok || hash(Buffer.from(await response.arrayBuffer()))!==hash(bytes))throw Error('Public activity build does not match');
   }
   return {matches:true,files:files.length};

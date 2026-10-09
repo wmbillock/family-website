@@ -79,7 +79,6 @@ class ExporterTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):E.publish(self.db,digest,payload,api)
         self.assertEqual(self.db.execute('SELECT state FROM publications').fetchone()[0],'pending')
 
-if __name__=='__main__':unittest.main()
 
 class SourceBindingTests(unittest.TestCase):
     def test_old_or_scheduled_workflows_are_not_evidence(self):
@@ -89,3 +88,27 @@ class SourceBindingTests(unittest.TestCase):
         self.assertIsNone(E.verified(run,jobs,changed,checked,{'sourceVerified':False,'sourceRevision':'a'*40}))
         run['event']='schedule';jobs['jobs'][0]['steps'].append({'name':'Verify source revision','conclusion':'success'})
         self.assertIsNone(E.verified(run,jobs,changed,checked,{'sourceVerified':False,'sourceRevision':'a'*40}))
+
+class PublicBoundaryTests(unittest.TestCase):
+    def test_hostile_paths_are_rejected_before_network(self):
+        from unittest.mock import Mock
+        original=E.PUBLIC_OPENER;opener=Mock();E.PUBLIC_OPENER=opener
+        try:
+            for file in ['http://127.0.0.1:9999/execute','https://example.invalid/','//localhost/x','../private','static/js/../../private','activity/feed.json?callback=evil','activity/feed.json#fragment']:
+                with self.assertRaises(RuntimeError):E.public_bytes(file)
+            opener.open.assert_not_called()
+        finally:E.PUBLIC_OPENER=original
+    def test_redirect_to_home_or_another_host_is_not_followed(self):
+        for url in ['http://127.0.0.1:9999/execute','http://192.168.1.1/','https://example.invalid/']:
+            with self.assertRaises(RuntimeError):E.RejectRedirect().redirect_request(None,None,302,'redirect',{},url)
+    def test_public_requests_are_fixed_https_get_without_auth(self):
+        from unittest.mock import Mock,MagicMock
+        original=E.PUBLIC_OPENER;opener=Mock();response=MagicMock();response.__enter__.return_value.read.return_value=b'{}';opener.open.return_value=response;E.PUBLIC_OPENER=opener
+        try:
+            self.assertEqual(E.public_bytes('activity/feed.json'),b'{}')
+            request=opener.open.call_args.args[0]
+            self.assertEqual(request.full_url,'https://billock.org/activity/feed.json');self.assertEqual(request.method,'GET')
+            self.assertFalse(any(k.lower() in ['authorization','cookie'] for k,v in request.header_items()))
+        finally:E.PUBLIC_OPENER=original
+
+if __name__=='__main__':unittest.main()
