@@ -1,8 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": null,
-  "sourceObservedAt": null,
-  "lastSuccessAt": null,
-  "health": "offline",
-  "events": []
+  "generatedAt": "2026-10-09T14:19:59.905Z",
+  "sourceObservedAt": "2026-10-09T14:19:59.905Z",
+  "lastSuccessAt": "2026-10-09T14:19:59.905Z",
+  "health": "healthy",
+  "events": [
+    {
+      "eventId": "6c2054cd2553438d43776fc8ee12e8aa8b393f052d8f6584d6da2865dd87cdba",
+      "occurredAt": "2026-10-09T14:17:19.000Z",
+      "project": "website",
+      "agent": "automation",
+      "action": "checks_passed",
+      "verification": "tested",
+      "provenance": "verified-source-receipt",
+      "summary": "🧪 Website · Automation passed the recorded checks."
+    }
+  ]
 }
