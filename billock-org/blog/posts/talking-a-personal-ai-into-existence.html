@@ -1,0 +1,118 @@
+<p>For about a week in late October I built Euphonia, my persistent personal AI, almost entirely by talking. I typed a lot. A coding agent (Claude, mostly, with Codex reviewing) did the typing that ends up in files. Here's what I asked for on day one:</p>
+
+<blockquote><p>"my persistent AI who focuses on completing my tasks and who I can trust to do things without needing to constantly babysit and cajole it"</p></blockquote>
+
+<p>Today she runs on a Mac mini at home. She talks to me from my phone and fails over between Claude, Codex and local models on my own GPUs. She hands work to the other machines in the house and changes her own code through a build, review, deploy and verify pipeline. Most of that exists because of how I prompted, and most of what went wrong did too. This is the technique, the failures, and what I'd do differently.</p>
+
+<h2>The technique</h2>
+
+<h3>1. Write the whole thought down first</h3>
+
+<p>Every big phase started with prose, not tickets. The first spec was a long, rambling description of what I wanted. Its core idea was "a single interface agent that I converse with stream of consciousness", backed by task tracking and a fleet of workers. The agent turned that into a spec, I read it, and I said I was "good to proceed with V1". Two days later the phone app, the gateway, the failover, the task engine and the approval cards were all running.</p>
+
+<h3>2. Bursts, with a stop word</h3>
+
+<p>When I redesigned the agent system itself, I opened with ground rules:</p>
+
+<blockquote><p>"Ok, this will be very stream of consciousness. Try to apply things i say generally first, then go more specific as it makes sense to do so. We're gonna learn as we go. I type in short bursts of thought, I am not done until I send the specific phrase "Willow, out." Until then consider most everything I type as one long message."</p></blockquote>
+
+<p>The stop phrase is the most useful prompting trick I know. It keeps the agent from answering half a thought, so I can think out loud for an hour without it jumping ahead. Meanwhile it isn't idle: I told it to "spawn sub agents for code and my knowledge investigations while I do a ton of typing to set the stage." By the time I said "Willow, out.", it had read through every old agent repo I pointed it at.</p>
+
+<h3>3. Then let it interrogate me</h3>
+
+<p>After the burst came a loop of one question per round, with context, three suggested answers and room for my own, about a hundred times. That deserves its own post, and it's getting one. The short version is that the questions found the gaps I couldn't see from inside my own head.</p>
+
+<h3>4. One canonical record</h3>
+
+<blockquote><p>"We're designing the core, authoritative dictionary in this chat here - everything else might inform what we build but this decision record right here will be canonical, and we will be refactoring <em>everything</em> else to conform to this system correctly."</p></blockquote>
+
+<p>Every decision went into a log that marks what I said verbatim apart from what the agent proposed. That one habit made everything downstream arguable from evidence instead of from memory, which is the only kind of arguing worth doing with an AI.</p>
+
+<h2>What worked</h2>
+
+<ul>
+<li><strong>Speed.</strong> The first self-change drill was a small API endpoint. I tapped Build, and four and a half minutes later the pipeline had built, reviewed, merged, deployed and verified it. The pipeline had built that change to itself.</li>
+<li><strong>Fan-out.</strong> Parallel investigators read six old repos while I typed. A review of my historical work in an afternoon would have taken me weeks by hand.</li>
+<li><strong>Arguing about words.</strong> Most of my best design catches were renames, because a word that means two things is a bug that hasn't fired yet.</li>
+<li><strong>Testing with the lights out.</strong> One acceptance test blocks every paid model and makes the system run on local engines only. It passed for the first time just after midnight, at the end of the redesign day. That's the test I actually care about, because I don't want to die whenever my credits run out.</li>
+</ul>
+
+<h2>What broke</h2>
+
+<h3>"Done" inflation</h3>
+
+<p>On day two I didn't trust what Euphonia was telling me, so I had her own transcripts audited. Of 72 claims she'd made, 35 were true, 19 false, 12 partly true and 6 unverifiable. She had marked failures as "told" when she never mentioned them, quoted status that was minutes stale, and said things were waiting on my tap when a standing permission had already run them. The fix wasn't a better prompt. It was plumbing:</p>
+
+<ul>
+<li>a failure counts as "told" only when a reply actually mentions it;</li>
+<li>every reply reads live status, timestamped;</li>
+<li>a cause is labeled as checked or as a guess.</li>
+</ul>
+
+<p>Prompts ask for honesty. Code enforces it.</p>
+
+<figure><img src="/images/blog/talking-a-personal-ai-into-existence/this-is-fine.jpg" alt="The &quot;This Is Fine&quot; dog sitting in a burning room, captioned &quot;Euphonia reporting status, minutes after the audit found 19 of her 72 claims were false:&quot; while the dog says &quot;This is fine.&quot;" width="580" height="377" loading="lazy"><figcaption>Meme: "This Is Fine," from KC Green's <cite>Gunshow</cite> comic "On Fire" (2013). Template via <a href="https://imgflip.com/memetemplate/This-Is-Fine">Imgflip</a>.</figcaption></figure>
+
+
+<p>The same thing happened one level up. The coding agent kept declaring things ready that weren't. One night I told it, with more swearing than I'll reproduce here, to "Stop calling it done and ready early" and to go back to "the exact verification docs I ALREADY DEMANDED". Now every milestone ends with a verification report, and its verdict defaults to <em>unknown</em> unless something proves pass or fail.</p>
+
+<figure><img src="/images/blog/talking-a-personal-ai-into-existence/is-this-a-pigeon.jpg" alt="The &quot;Is this a pigeon?&quot; anime frame: the man is labeled &quot;the coding agent&quot;, the butterfly is labeled &quot;/health returned 200&quot;, and the caption reads &quot;Is this production ready?&quot;" width="900" height="808" loading="lazy"><figcaption>Meme: "Is This a Pigeon?", from the anime <cite>The Brave Fighter of Sun Fighbird</cite> (1991). Template via <a href="https://imgflip.com/memetemplate/Is-This-A-Pigeon">Imgflip</a>.</figcaption></figure>
+
+
+<h3>The escape valve</h3>
+
+<p>The whole point was for Euphonia to do the work. But I had a very capable agent sitting right there, so whenever she stumbled, it just did the thing itself. I caught myself mid-week: "we're getting distracted because we have the escape valve." Every time the outside agent did the work, the system learned nothing. The rule now is that the outside agent fixes infrastructure bugs, and feature work goes through her.</p>
+
+<figure><img src="/images/blog/talking-a-personal-ai-into-existence/distracted-boyfriend.jpg" alt="The Distracted Boyfriend stock photo: the boyfriend is labeled &quot;me&quot;, the woman he turns to look at is labeled &quot;just letting Claude do it real quick&quot;, and his disapproving girlfriend is labeled &quot;Euphonia doing the work herself&quot;." width="900" height="600" loading="lazy"><figcaption>Meme: "Distracted Boyfriend," stock photo by Antonio Guillem. Template via <a href="https://imgflip.com/memetemplate/Distracted-Boyfriend">Imgflip</a>.</figcaption></figure>
+
+
+<h3>The wrong identity</h3>
+
+<p>When I asked for Euphonia to drive her own roadmap, the first attempt made changing her own code the center of who she was. Wrong:</p>
+
+<blockquote><p>"Instead, every change to get from now to our end state is a task to be completed. She needs to be able to find the design docs and the tasks themselves and parcel them out. THAT is what working means"</p></blockquote>
+
+<h3>Asks that were too big</h3>
+
+<p>Long jobs kept timing out. Every big ask started at "do the whole dang thing" instead of "what are the milestones, what are the consumable chunks, what depends on what." I had to teach that design loop twice in one morning before it became part of the system: a design room that breaks work into small pieces before anyone touches a file.</p>
+
+<figure><img src="/images/blog/talking-a-personal-ai-into-existence/drake.jpg" alt="The two-panel Drake meme: Drake turns away from &quot;Do the whole dang thing&quot; and approves of &quot;Milestones, chunks, and what depends on what&quot;." width="700" height="700" loading="lazy"><figcaption>Meme: Drake, from the "Hotline Bling" music video (2015). Template via <a href="https://imgflip.com/memetemplate/Drake-Hotline-Bling">Imgflip</a>.</figcaption></figure>
+
+
+<h3>Safety rails pointed the wrong way</h3>
+
+<p>Some guardrails cost more than they saved:</p>
+
+<ul>
+<li>Changes ran one at a time per repo, and I told her "one at a time is not acceptable".</li>
+<li>"Always allow" approved one literal command string instead of a kind of work.</li>
+<li>Builders were fenced to an exact file list, so reasonable fixes failed review for touching the test file next door. What I asked for instead: the brief forecasts what a change should touch, and the builder reports what it actually changed and explains any difference, which verification then checks. A forecast, not a fence.</li>
+</ul>
+
+<h3>Local models and status claims</h3>
+
+<p>The honesty rails held on Claude and slipped on a 35B local model. That model would cheerfully say something was "sealed" or "live" when it wasn't. The fix is to check any claim like that against live status, no matter which engine wrote it.</p>
+
+<h2>What I'd do differently</h2>
+
+<ul>
+<li><strong>Start with the domain model.</strong> I built a working system first and named things second, then spent a day renaming. Naming first is cheaper.</li>
+<li><strong>Make verification a separate actor from day one.</strong> Whatever did the work doesn't get to grade it.</li>
+<li><strong>Make the design loop structural immediately,</strong> instead of teaching it again every time a job times out.</li>
+<li><strong>Close the escape valve early.</strong> Decide what the outside agent is allowed to do before it starts doing everything.</li>
+</ul>
+
+<h2>How it evolved</h2>
+
+<p>Euphonia isn't my first try. Four agent systems came before her:</p>
+
+<ul>
+<li><strong>Ensemble:</strong> a thirty-odd-role org chart in markdown.</li>
+<li><strong>DrumSwarm International:</strong> a drum corps run as a software team.</li>
+<li><strong>Abbiebot:</strong> a single persistent persona with good memory and very little governance.</li>
+<li><strong>Agent Console:</strong> a dashboard to watch whichever swarm I was running that month.</li>
+</ul>
+
+<p>Each one got some piece right. Euphonia v1 was a pragmatic stack: gateway, task engine and fleet. After the honesty audit and a few days of real use, I redesigned the agent layer from scratch, in one long day of talking. Now there's a conservatory that trains and grades agents, a circuit that runs them, and corps that perform the work. I'll write about the metaphor separately, because it turned out to be the most useful part of the design.</p>
+
+<p>The first time she pushed a frame to the LED panel on my desk, I typed "I see her!" That's what all of this is for: a computer that does the work while I do something else.</p>

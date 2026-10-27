@@ -1,0 +1,12 @@
+{
+  "slug": "talking-a-personal-ai-into-existence",
+  "title": "Talking a Personal AI into Existence",
+  "summary": "How I built Euphonia, my persistent AI, mostly by talking: the prompting technique, what broke, and what I'd do differently.",
+  "date": "2026-10-29",
+  "publication": {
+    "state": "approved",
+    "publishAt": "2026-10-29T10:00:00-05:00",
+    "timezone": "America/Chicago",
+    "approvedSha256": "1f2f7b2100d183919c69634cc896c465ebd53c939ab83585d49da22ee5e58a39"
+  }
+}
