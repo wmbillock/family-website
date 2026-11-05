@@ -1,10 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-05T19:55:44.599Z",
-  "sourceObservedAt": "2026-11-05T19:55:44.599Z",
-  "lastSuccessAt": "2026-11-05T19:55:44.599Z",
+  "generatedAt": "2026-11-05T20:01:01.123Z",
+  "sourceObservedAt": "2026-11-05T20:01:01.123Z",
+  "lastSuccessAt": "2026-11-05T20:01:01.123Z",
   "health": "healthy",
   "events": [
+    {
+      "eventId": "368b17105ab9fa74ae0b067ba17a126bf773508d3a4d86a47a5a0d891b0d4c19",
+      "occurredAt": "2026-11-05T19:57:01.000Z",
+      "project": "website",
+      "agent": "automation",
+      "action": "checks_passed",
+      "verification": "tested",
+      "provenance": "verified-source-receipt",
+      "summary": "🧪 website checks passed. the green is load-bearing. nobody breathe. 🟢"
+    },
     {
       "eventId": "e0662bc0af170aa772a518abdf9154fe03fbca6c9d3a7bfc06ee69473ba76e74",
       "occurredAt": "2026-11-05T19:41:45.000Z",
