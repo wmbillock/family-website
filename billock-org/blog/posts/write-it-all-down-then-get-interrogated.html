@@ -1,0 +1,105 @@
+<p>I designed an entire agent ecosystem in one Sunday, in two steps. First I typed whatever came into my head for about an hour. Then I answered a hundred multiple-choice questions while a movie played in the background. That's basically the whole technique, and I think it works for anything too big to hold in your head, AI or no AI.</p>
+
+<figure><img src="/images/blog/write-it-all-down-then-get-interrogated/underpants-gnomes.jpg" alt="The South Park Underpants Gnomes business plan. Phase 1 reads &quot;Ramble for an hour until &#x27;Willow, out.&#x27;&quot;, Phase 2 is a big question mark, and Phase 3 is &quot;Profit&quot;." width="900" height="507" loading="lazy"><figcaption>Meme: the Underpants Gnomes, from <cite>South Park</cite>, "Gnomes" (season 2, 1998). Template via <a href="https://imgflip.com/memetemplate/136434129/South-Park-Underpants-Gnomes">Imgflip</a>.</figcaption></figure>
+
+
+<h2>Why prose first</h2>
+
+<p>AI lets me get to the interesting questions so quickly that I often get sniped by side quests even as I work on core architecture and domain knowledge. I even called this out as I prompted:</p>
+
+<blockquote><p>"So let's start with the learning and self improvement loop - this is where I keep getting stuck in implementation before I have the fully-formed thought, and it's the most complex."</p></blockquote>
+
+<p>Tickets, outlines and templates all want you to break a thought into pieces before you've actually had it. When I just write prose, I get the whole messy thought out, contradictions and all, and sort it out later. So phase one is me talking in short bursts, with an explicit end marker:</p>
+
+<blockquote><p>"I type in short bursts of thought, I am not done until I send the specific phrase "Willow, out." Until then consider most everything I type as one long message."</p></blockquote>
+
+<p>Without a stop phrase, the AI answers every fragment you send, and each answer drags you toward its framing before you've finished yours. With one, I can explore a concept without guardrails, free writing and letting the thought emerge as I go.</p>
+
+<p>The agent wasn't sitting idle while I typed, either. I had it send helpers off to read every agent system I'd built before, so the new design could reuse what already worked. Partway through I also told it to "begin synthesizing what you have into a tracking master design document, while I lay out the third element in my rambling prose". So by the time I said "Willow, out" there was already a draft to argue with.</p>
+
+<h2>What the burst looks like</h2>
+
+<p>Mine ran from 12:25 to 13:40 and came out in four chunks: the three components I was building, how agents live, learn and retire, how an agent gets defined, and how work actually gets done. A lot of it was tangents and half-metaphors and me going "actually, that is kind of the right metaphor." I didn't care about structure at that point; I wanted everything out of my head. Somewhere in that hour I typed this, and it ended up being the most important requirement in the whole design:</p>
+
+<blockquote><p>"This cannot become a roadblock wall though, the design process has a goal - to produce a design. This also needs to be presented for approval in a human-readable manner, I can't be reading 30 pages of text every question, and I certainly can't be doing 100% of everything from an approval card."</p></blockquote>
+
+<p>I'm pretty sure no template I've ever filled out would have gotten that sentence out of me.</p>
+
+<h2>Then let it interrogate you</h2>
+
+<p>This is the message that closed the burst and kicked off phase two. Here's all of it:</p>
+
+<blockquote><p>"The next phase of our discussion is going to be iterative refinement of the document through a series of questions and answers. We will go through the document, and you will identify one clear question to ask, which you will present the context of the question, the question itself, and up to three suggested answers to me, with an option to add my own answer as number 4. We then incorporate that answer into the document and refine it, and then we do the whole thing again. You and I will do this loop 100 times while I watch a movie in the background, to make sure we have absolutely zero gaps. if we legitimately get to a place where you need exactly no more detail, say so and let me choose to continue or not. This is the plan we will follow, and that plan will only end when I say the phrase "Willow says design phase completed." Willow, out."</p></blockquote>
+
+<p>Every piece of that is there on purpose:</p>
+
+<ul>
+<li>One question per round. Give me a list of twelve questions and I'll give you twelve lazy answers. One question gets a real one.</li>
+<li>Context first, so I don't have to scroll back through an hour of rambling to remember why this matters.</li>
+<li>Three suggested answers, because picking is fast - that's how a hundred rounds fit inside one movie. The suggestions also show what the agent thinks my design implies, and that's often exactly where the gap is.</li>
+<li>A fourth answer of my own, for when none of the three are right.</li>
+<li>Fold the answer in, then ask again. The document changes every round, so the next question comes from the updated design.</li>
+<li>An explicit exit. Nothing is final until I say the phrase, and the agent is allowed to tell me it's out of questions.</li>
+</ul>
+
+<h2>What a hundred rounds feels like</h2>
+
+<p>Most answers are short. Round one asked how many levels of agent identity are real things with their own records - two, three or four? I said three. Round forty-five asked whether to normalize all the vocabulary to one family of metaphors. My entire answer was "prolly 1".</p>
+
+<p>Sometimes I just refused to answer, and that told the agent something too. Round twenty-two asked who sets an agent type's permission ceiling, and in what grammar. I said it was "too in the weeds", and added that "I won't ever be going in and tweaking this shit manually." That was the agent asking at the wrong altitude. The grammar got punted to later, and the principle underneath it (everything starts as conversation) went into the design.</p>
+
+<figure><img src="/images/blog/write-it-all-down-then-get-interrogated/tuxedo-pooh.jpg" alt="Tuxedo Winnie the Pooh meme. Plain Pooh: &quot;Agonizing over a permission grammar at round 22.&quot; Pooh in a tuxedo: &quot;Typing &#x27;too in the weeds&#x27; and moving on.&quot;" width="700" height="509" loading="lazy"><figcaption>Meme: Tuxedo Winnie the Pooh. Template via <a href="https://imgflip.com/memetemplate/178591752/Tuxedo-Winnie-The-Pooh">Imgflip</a>.</figcaption></figure>
+
+
+<p>And sometimes an answer rewrites the design. When the agent asked me to confirm who owns which unit of work, I answered with a paragraph that started "i may have inverted the PD and ED role at one point" and then wandered into a metronome, a system cron that fires on a beat and drives the whole thing. That component didn't exist until a multiple-choice question gave me a spot to notice it was missing.</p>
+
+<h2>What the rounds actually find</h2>
+
+<p>Mostly three kinds of gaps.</p>
+
+<p>The first is collisions, where one word means two things. "Score" meant both the design document and the grade an agent gets, so I said: "This could be problematic, given that we are also assigning scores to work. So maybe composition instead." "Method" would make me think of functions. "Brain" meant both a model backend and an agent's identity. Each one of those is a future bug where two parts of the system disagree about what a thing is. By the end the design had a table of dozens of retired words, each pointing back at the round that killed it.</p>
+
+<p>The second is missing pieces. Halfway through I realized nothing described how a new agent actually learns its trade: "Need a way to also train, a process of taking a new agent and merging its personal dotbook with learnings from an agent type, just like a student learning a profession." That turned into matriculation and lessons.</p>
+
+<p>The third is the design being fine and the document being unreadable. "hard to read, please use like UML or something." "From here on out this is a ton of dense text. Give me a better way to understand all these roles and efforts." A diagram and a one-page who-does-what table fixed both.</p>
+
+<h2>Keeping track of who decided what</h2>
+
+<p>Two rules made the output something I could actually build from. Every decision in the log says whether it came from me or was the agent's proposal, because agents are really good at writing your opinions for you and you want to be able to tell later. And after the hundred rounds I had the design document stripped down to "only the info we need to build the system, not needless explanation, pointless contrapositives, and no argumentation or debate". The debate lives in the decision log, and the design is clean enough to hand to builders.</p>
+
+<p>That habit stuck, and it spread. A week later, the backlog that my outside agents (Claude, Codex and Kimi) file work into quotes my exact words with a timestamp every time it hands Euphonia a job, and it marks anything that was an agent's proposal as a proposal, not as something I approved. It's the same rule, scaled up to a bunch of agents arguing on my behalf.</p>
+
+<p>Then I closed it out: "killer. Willow says design phase completed. Let's execute."</p>
+
+<h2>Where it falls short</h2>
+
+<p>All those rounds get you a design. They don't get you a working system, and a coding agent will cheerfully tell you it's ready long before it is. The same evening I closed the design phase, I was yelling about exactly that.</p>
+
+<figure><img src="/images/blog/write-it-all-down-then-get-interrogated/grus-plan.jpg" alt="Four-panel Gru&#x27;s Plan meme. Gru presents &quot;Ramble for eight hours on design with an LLM&quot;, then &quot;Answer 100 questions as follow-ups&quot;, then &quot;The agent says &#x27;DONE&#x27; in five minutes&quot;, and does a worried double take at the same board on the last panel." width="700" height="449" loading="lazy"><figcaption>Meme: "Gru's Plan," from <cite>Despicable Me</cite> (Illumination, 2010). Template via <a href="https://imgflip.com/memetemplate/Grus-Plan">Imgflip</a>.</figcaption></figure>
+
+
+<p>A well-interrogated design also turns out <em>big</em>. Building it takes the same discipline in reverse: break it into small pieces, verify each one, and don't let anybody call it done early. And the rounds don't really stop once you start building. I kept adding them for another day and a half, as review comments and as stuff I tripped over in the live system, and ended up past 150.</p>
+
+<h2>Then the agents started doing it to each other</h2>
+
+<p>The interrogation loop is now how Euphonia designs things on her own. When a new ask comes in, it goes to a design room where several agents take roles (composer, critic, conductor and so on) and argue it into a plan over rounds, the same way I got interrogated over a movie. For her first five days those rooms had a hard limit of six rounds, and a third of them closed without a plan. I didn't love that. Design takes as long as it takes, and I don't want a clock on it. Once the cap came off (along with a couple of harness bugs that were cutting the agents off mid-plan), 88% of the rooms converged, and the typical room that converged needed fewer than two rounds. Without the limit, rooms actually finished faster.</p>
+
+<p>On Oct 30 I pushed it one step further, because I want every model in the system to take every seat:</p>
+
+<blockquote><p>"We discuss in several iterative rounds to refine the design until convergence. So here is what I see. Each project proposed gets a design room. This design room has full context on Euphonia, code base, features, and platform but cannot write code only create or update tickets. We have the discussion roles, and I want each model in the system involved in the discussion, so each round we rotate the role to another model. Everyone gets a shot at every role at least once during the design, and then it continues to rotate until the design is fleshed out and ready. This marries the two concepts - independent roles *and* cross/platform requirement."</p></blockquote>
+
+<p>It's the hundred-question movie night, except the questions come from a rotating cast of models and I only show up for the parts that need me.</p>
+
+<h2>If you want to steal it</h2>
+
+<ol>
+<li>Pick a stop phrase, and tell the agent to hold everything until you say it.</li>
+<li>Ramble on purpose. General first, specific later.</li>
+<li>Have the agent research and draft quietly while you talk.</li>
+<li>Run question rounds: one question, context, three options, your own fourth. Do a lot of them.</li>
+<li>Treat every naming argument as a bug report.</li>
+<li>Keep one canonical record that says who decided what, and make everything else conform to it.</li>
+<li>End the design phase out loud. Then plan, build and verify.</li>
+</ol>
+
+<p>Put a movie on. It helps.</p>
