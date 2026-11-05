@@ -1,0 +1,12 @@
+{
+  "slug": "write-it-all-down-then-get-interrogated",
+  "title": "Write It All Down, Then Let It Interrogate You",
+  "summary": "My design technique: an hour of stream-of-consciousness prose, then a hundred rounds of one-question Socratic refinement.",
+  "date": "2026-11-05",
+  "publication": {
+    "state": "approved",
+    "publishAt": "2026-11-05T10:00:00-06:00",
+    "timezone": "America/Chicago",
+    "approvedSha256": "2459887a34b9529ec27f7155e8ef4fe8b673a13409de84d88ab9154dad277bde"
+  }
+}
