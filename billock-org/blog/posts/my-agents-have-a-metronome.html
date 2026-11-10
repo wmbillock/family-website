@@ -1,0 +1,111 @@
+<p>The design session for my personal AI system started with a complaint about vocabulary:</p>
+
+<blockquote><p>"I wish to be able to use a shorthand more interesting and meaningful than "agent" "Server" "client""</p></blockquote>
+
+<p>"Agent" means nothing anymore, because everything is one - the planner, the test runner, the thing that grades the test runner. Once you have more than a handful of them the generic words stop carrying information, and you end up writing paragraphs to explain what a single good noun could have said.</p>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/drake.jpg" alt="The two-panel Drake meme: Drake turns away from &quot;Agent, server, client&quot; and approves of &quot;Drum major, caption head, metronome&quot;." width="700" height="700" loading="lazy"><figcaption>Meme: Drake, from the "Hotline Bling" music video (2015). Template via <a href="https://imgflip.com/memetemplate/Drake-Hotline-Bling">Imgflip</a>.</figcaption></figure>
+
+
+<p>So my agent system speaks music: compositions, rehearsals, drum majors, caption heads, judges, auditions and a metronome. I think making music and making software are basically the same process, and putting them side by side is the fastest way I've found to design an agent swarm.</p>
+
+<h2>The same process, side by side</h2>
+
+<p>I've spent a big chunk of my life in band rooms and a bigger chunk in codebases. Line them up and they rhyme:</p>
+
+<div class="table-scroll">
+<table>
+<thead><tr><th>In music</th><th>In software</th><th>In my system</th></tr></thead>
+<tbody>
+<tr><td>A composition: what the piece is, who plays it, how it should sound</td><td>A design spec: goal, use cases, deliverables, acceptance</td><td>A <em>composition</em>: goal, use cases, deliverables with proof, and what it must not do</td></tr>
+<tr><td>Movements, rehearsal marks, phrases, measures, notes</td><td>Epics, milestones, tasks, subtasks</td><td>The same ladder, each level with exactly one owner</td></tr>
+<tr><td>Rehearsal</td><td>Tests, staging, dry runs</td><td>Rehearsals and an exhibition mode, where nothing ships without a tap</td></tr>
+<tr><td>The drill book, charts and dots</td><td>The task tracker</td><td>The <em>drill</em>: durable records every worker reads at the start of a beat and writes back at the end</td></tr>
+<tr><td>The metronome</td><td>A scheduler tick</td><td>A system cron that fires on a beat; every beat, the drum major collects status</td></tr>
+<tr><td>Drum major, section leaders</td><td>Tech lead, team leads</td><td>The people who keep the performance moving and the sections in step</td></tr>
+<tr><td>Caption heads hiring, auditions</td><td>Staffing, capability matching</td><td>Agents audition for roles based on graded skills</td></tr>
+<tr><td>Judges, sitting outside the corps</td><td>Independent review and QA</td><td>Verification that the team being judged can't influence</td></tr>
+<tr><td>A conservatory, its competitions and grades</td><td>Training, evals and benchmarks</td><td>Where agent types are trained, examined and ranked before any team can recruit them</td></tr>
+<tr><td>A season ends in a performance</td><td>A release</td><td>A season is one delivered performance, not a calendar week</td></tr>
+<tr><td>Alternates</td><td>Failover</td><td>A section mate on a local model, ready when the paid one is out</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>None of those are forced. A composer doesn't write out every note the bassoonist is going to miss at Tuesday's rehearsal. They write the music to be played, and the ensemble works out how to get there. That's exactly the split I wanted between design and execution:</p>
+
+<blockquote><p>"The design room thinks in terms of actors, and speaks in terms of the data model, and considers how things will operate from a user's actual interaction perspective."</p></blockquote>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/handshake.jpg" alt="Epic Handshake meme. One arm is labeled &quot;A band rehearsal&quot;, the other &quot;A test suite&quot;, and the clasped hands are labeled &quot;Run it again until nothing breaks&quot;." width="700" height="501" loading="lazy"><figcaption>Meme: Epic Handshake, from <cite>Predator</cite> (1987). Template via <a href="https://imgflip.com/memetemplate/135256802/Epic-Handshake">Imgflip</a>.</figcaption></figure>
+
+<h2>Why a metaphor does real work</h2>
+
+<p>A good metaphor gives you a hundred defaults for free. Everyone who's been near a marching band knows the staff doesn't sub in on trumpet at the state championship, so "supervisors coordinate, they never write the code" doesn't need a policy document. Everyone knows a judge doesn't ride on the corps' bus, so independent verification is obvious too. A section mate learns the same part on a different instrument, and failover comes along for free.</p>
+
+<p>I started out describing an orchestra that gets contracted to perform a piece. Halfway through the paragraph I noticed I was describing something bigger: a group with hiring and firing preferences, its own records, a staff, a director, auditions every year, a tour, judges, and an identity the members literally wear. So what I ended up with isn't one ensemble. It's the whole music world around one: a conservatory that trains players, ensembles that recruit them, a circuit that judges the results, and the administration that keeps everybody fed and on the bus.</p>
+
+<p>The metaphor also did some of the designing. Most of this system was designed in a long question-and-answer session, where the AI asked me one question at a time about the draft (that's the previous post). One of those questions was who owns which unit of work. I answered in band words: the drum major drives the performance, the section leaders drive their sections, and a metronome, which is really a system cron, fires on a regular beat to keep everything moving. There was no metronome anywhere in the design until I typed that answer.</p>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/expanding-brain.jpg" alt="Expanding Brain meme in four panels of growing enlightenment: &quot;A cron job&quot;, &quot;A scheduler tick&quot;, &quot;An agent orchestration loop with periodic status aggregation&quot;, and finally, with the brightest brain, &quot;The metronome sets the tempo&quot;." width="600" height="841" loading="lazy"><figcaption>Meme: Expanding Brain. Template via <a href="https://imgflip.com/memetemplate/93895088/Expanding-Brain">Imgflip</a>.</figcaption></figure>
+
+<p>"An agent orchestration loop with periodic status aggregation" would have been the generic phrasing. "The metronome sets the tempo" told me right away that tempo should vary by group, that something has to cap it under load, and that being late is a measurable thing. All three are in the design now.</p>
+
+<p>It works for variety, too. Every ensemble does the same basic job, and no two attack a show the same way. If I give agents different approaches to the same kind of problem, I get a better shot at solving new problems, and I get to compare approaches head to head on problems of the same class. Over time that's how the swarm gets smarter about what works.</p>
+
+<p>The fun version of that variety is personality. Real ensembles have crests, uniforms and attitude, and so do mine. Every agent gets a whimsical name, a pixel pet and a voice, and the LED panel on my desk has already shown its first one. That piece goes back to DrumSwarm, an earlier agent system of mine, and it deserves its own post, so that's coming soon.</p>
+
+<h2>Where metaphors bite</h2>
+
+<p>A few lessons, mostly learned the hard way.</p>
+
+<h3>Pick one family</h3>
+
+<p>My first draft mixed music with biology: agents bred, carried DNA, belonged to phyla and species, and got reaped. It was fun, and it doubled the vocabulary. When it came time to pick one, I picked music, and the biology words went into the retired column. Breeding became <em>arranging</em>. Retired agents live in an <em>alumni hall</em>. The family stays consistent, so you can guess a word you've never seen.</p>
+
+<h3>Watch for collisions with the domain you're modeling</h3>
+
+<p>English is squishy, and sometimes when smashing systems together into a big jumble of token burning, we end up having to choose between homonyms:</p>
+
+<ul>
+<li>"Score" meant both the design and an agent's grade, so the design became a <em>composition</em>.</li>
+<li>"Method" collides with code: "I would confuse it with functions. Maybe... pedagogy?"</li>
+<li>"Rubric" was doing two jobs. "Rubrics are for evaluation; you are thinking of stage direction, composer's notes, instructions, or general pedagogy."</li>
+</ul>
+
+<p>Each of those was caught in a question round, and each would have been a real bug, the kind where two parts of a system disagree about what a word means.</p>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/spiderman-triple.jpg" alt="Three Spider-Men pointing at each other, labeled &quot;score: the design&quot;, &quot;score: the grade&quot;, and &quot;score: the sheet music&quot;." width="600" height="551" loading="lazy"><figcaption>Meme: Spider-Man pointing, from the 1967 <cite>Spider-Man</cite> cartoon. Template via <a href="https://imgflip.com/memetemplate/206151308/Spider-Man-Triple">Imgflip</a>.</figcaption></figure>
+
+
+<h3>Don't flinch</h3>
+
+<p>An earlier system of mine started as a drum corps. Partway through, I renamed everything to corporate dev-team titles because I thought the metaphor was getting in the way. It wasn't. The metaphor was the part that made sense, and the org chart was the part that didn't. Swapping the words fixed nothing, so I went back. The next system I started was drum corps from the first commit, and everything I've built since has stayed in music. This time the vocabulary is enforced: the domain model is a file, and a lint refuses a change that uses a retired word.</p>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/one-does-not-simply.jpg" alt="Boromir from The Lord of the Rings, captioned &quot;One does not simply rename trumpet to software engineer&quot;." width="568" height="335" loading="lazy"><figcaption>Meme: Boromir, from <cite>The Lord of the Rings: The Fellowship of the Ring</cite> (New Line Cinema, 2001). Template via <a href="https://imgflip.com/memetemplate/One-Does-Not-Simply">Imgflip</a>.</figcaption></figure>
+
+
+<h3>Reskin your frameworks, reshape your life</h3>
+
+<p>Music works for me because it's my world. I play ska-punk and classical on a handful of horns, and my drum corps days are a long way behind me. What the system really models is the whole business of making music: a circuit, the administration behind it, and the running of ensembles. Think Dwarf Fortress, except it's a drum corps and the drum corps is a software company.</p>
+
+<p>It doesn't have to be yours. I think there's real power in a skinnable metaphor, where the structure underneath stays the same and the words on top match whatever you've lived. Someone else might think in terms of a soccer club, a football team, a library or a sci-fi ship, and honestly any of those could arrive at a good answer. Stay consistent inside whichever one you pick; that's what the lint is for.</p>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/stop-liking.jpg" alt="Angry Chess Kid meme. A boy at a chess tournament glares across the board at his opponent, captioned &quot;Stop liking what I don't like&quot;." width="680" height="473" loading="lazy"><figcaption>Meme: Angry Chess Kid, "Stop Liking What I Don't Like." Template via <a href="https://imgflip.com/memetemplate/151228717/Angry-Chess-Kid">Imgflip</a>.</figcaption></figure>
+
+<p>There's a lot of exploring left to do on which metaphors work best, and that's testable too. The Circuit is built to judge ensembles against each other, so the logical next step is to run the same work through different metaphors and let them compete. Kind of an algorithmic, agent-based Thunderdome.</p>
+
+<h3>Sometimes a reframing becomes a reprise</h3>
+
+<p>Metaphors also tell you when you've built the same thing twice. A couple of weeks ago I set up Ticketmaster, a shared backlog where my outside agents (Claude, Codex and Kimi) could coordinate and file work for Euphonia. It was a different picture, a box office handing out tickets instead of an ensemble on a field. A couple of days in, I noticed that three AI platforms presenting ideas, arguing over designs and producing backlog tickets is exactly what a design room does. I'd built a second door into a room I already had.</p>
+
+<figure><img src="/images/blog/my-agents-have-a-metronome/scooby.jpg" alt="Scooby-Doo mask reveal meme. Fred says &quot;Let's see what you really are&quot; to a hooded figure labeled &quot;Ticketmaster&quot;. With the hood off, the figure is labeled &quot;A design room&quot;." width="560" height="746" loading="lazy"><figcaption>Meme: Scooby-Doo mask reveal, from <cite>Scooby-Doo, Where Are You!</cite> (Hanna-Barbera). Template via <a href="https://imgflip.com/memetemplate/145139900/Scooby-doo-mask-reveal">Imgflip</a>.</figcaption></figure>
+
+<p>Because both things had names in a vocabulary I actually know, I could see which part was new. The discussion was a design room. The durable ticket log, with tracking, was better than anything I'd had before. So the coordination went back into the design rooms, and Ticketmaster kept the part it's good at, which is taking requests in.</p>
+
+<h2>Why this matters more with agents than with people</h2>
+
+<p>Humans paper over vague words with shared context. Agents only have the text, so every word in a prompt, a task record or a status message is the whole context the next agent gets. A precise noun packs a lot into very little: "send it back to the drum major" carries a role, an authority, a direction of flow and an expectation of status, in six words.</p>
+
+<p>And these are words I already think in. When I'm deciding how work should flow, I'm picturing a rehearsal. The system now runs on the same picture.</p>
+
+<p>It's all cosmic dust making noise in the end. Might as well make it music.</p>

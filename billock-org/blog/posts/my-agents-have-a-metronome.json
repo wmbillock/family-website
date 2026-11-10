@@ -1,0 +1,12 @@
+{
+  "slug": "my-agents-have-a-metronome",
+  "title": "My Agents Have a Metronome",
+  "summary": "Why my agent swarm speaks music, from conservatory to drum major, and how music and software production mirror each other.",
+  "date": "2026-11-12",
+  "publication": {
+    "state": "approved",
+    "publishAt": "2026-11-12T10:00:00-06:00",
+    "timezone": "America/Chicago",
+    "approvedSha256": "a7367945d868f57f8943bd1f86d0ea33c731a7cb58f6fe08184c2246955f26e1"
+  }
+}
