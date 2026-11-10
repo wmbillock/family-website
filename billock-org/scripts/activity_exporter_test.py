@@ -81,6 +81,41 @@ class ExporterTests(unittest.TestCase):
 
 
 class SourceBindingTests(unittest.TestCase):
+    def test_feed_write_is_a_compare_and_swap_git_push_without_a_token(self):
+        import subprocess as sp, tempfile, base64 as b64, os
+        with tempfile.TemporaryDirectory() as d:
+            run=lambda *a,cwd=None:sp.run(['git',*a],cwd=cwd,check=True,capture_output=True,text=True).stdout.strip()
+            origin=os.path.join(d,'origin.git');work=os.path.join(d,'work');clone=os.path.join(d,'clone')
+            run('init','--quiet','--bare','--initial-branch=master',origin);run('clone','--quiet',origin,work)
+            feed=os.path.join(work,E.FEED);os.makedirs(os.path.dirname(feed));open(feed,'w').write('{"old":true}\n')
+            run('add','-A',cwd=work);run('-c','user.name=t','-c','user.email=t@example.invalid','commit','--quiet','-m','seed',cwd=work);run('push','--quiet','origin','HEAD:master',cwd=work)
+            blob=run('rev-parse','HEAD:'+E.FEED,cwd=work)
+            old=E.REMOTE;E.REMOTE=origin
+            try:
+                body={'message':'Refresh verified public website activity','content':b64.b64encode(b'{"new":true}\n').decode(),'sha':blob,'branch':'master'}
+                out=E.push_feed(body,clone)
+                self.assertEqual(run('--git-dir',origin,'rev-parse','master'),out['commit']['sha'])
+                self.assertEqual(run('--git-dir',origin,'show','master:'+E.FEED),'{"new":true}')
+                with self.assertRaises(RuntimeError):E.push_feed(body,clone)   # stale blob sha: refused, nothing pushed
+                self.assertEqual(run('--git-dir',origin,'rev-parse','master'),out['commit']['sha'])
+            finally:E.REMOTE=old
+        with self.assertRaises(RuntimeError):E.gh('repos/someone/else/contents/x',{'branch':'master'})
+        with self.assertRaises(RuntimeError):E.gh('user')
+
+    def test_unchanged_feed_is_not_republished_inside_the_heartbeat(self):
+        import tempfile, os
+        feed={'generatedAt':'2026-11-10T08:00:00.000Z','health':'healthy','events':[{'eventId':'a'}]}
+        with tempfile.TemporaryDirectory() as d:
+            db=E.database(os.path.join(d,'outbox.sqlite3'))
+            try:
+                self.assertFalse(E.unchanged(db,feed))
+                E.enqueue(db,feed)
+                self.assertTrue(E.unchanged(db,{**feed,'generatedAt':'2026-11-10T09:00:00.000Z'}))
+                self.assertFalse(E.unchanged(db,{**feed,'generatedAt':'2026-11-11T08:00:01.000Z'}))
+                self.assertFalse(E.unchanged(db,{**feed,'generatedAt':'2026-11-10T09:00:00.000Z','events':[]}))
+                self.assertFalse(E.unchanged(db,{**feed,'generatedAt':'2026-11-10T09:00:00.000Z','health':'stale'}))
+            finally:db.close()
+
     def test_old_or_scheduled_workflows_are_not_evidence(self):
         checked=E.utc();run={'path':E.WORKFLOW,'head_branch':'master','status':'completed','conclusion':'success','head_sha':'a'*40,'id':123,'event':'push'}
         jobs={'jobs':[{'conclusion':'success','steps':[{'name':'Validate queue and check live output','conclusion':'success','completed_at':checked}]}]}
