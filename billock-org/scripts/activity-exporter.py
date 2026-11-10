@@ -131,6 +131,18 @@ def reconcile(db, read_live=live):
     observed=sha(read_live())
     db.execute("UPDATE publications SET state='published' WHERE digest=? AND state!='published'",(observed,));db.commit()
 
+HEARTBEAT_HOURS = 24
+
+def unchanged(db, feed):
+    """True when the last enqueued feed carries the same events and health and is younger than the heartbeat."""
+    row=db.execute("SELECT value FROM state WHERE key='last_feed'").fetchone()
+    if not row: return False
+    try:
+        last=json.loads(row[0])
+        age=dt.datetime.fromisoformat(feed['generatedAt'].replace('Z','+00:00'))-dt.datetime.fromisoformat(last['generatedAt'].replace('Z','+00:00'))
+    except Exception: return False
+    return last.get('events')==feed.get('events') and last.get('health')==feed.get('health') and dt.timedelta(0)<=age<dt.timedelta(hours=HEARTBEAT_HOURS)
+
 def cycle(db, script, api=gh, read_live=live):
     # Reconcile prior effects before creating a fresh projection; uncertain API
     # writes may already have succeeded, so inspect exact public bytes first.
@@ -158,6 +170,9 @@ def cycle(db, script, api=gh, read_live=live):
     # Source observation time is after successful authoritative queries.
     checked=utc()
     feed=projection(db,checked,script)
+    # Publish when the events or health change, or once per HEARTBEAT_HOURS as a
+    # liveness mark. A new clock stamp alone is not news and is not committed.
+    if unchanged(db,feed): return 'unchanged'
     digest,payload=enqueue(db,feed)
     return publish(db,digest,payload,api,read_live)
 

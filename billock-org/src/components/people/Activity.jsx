@@ -50,7 +50,8 @@ export default function Activity({ active = true }) {
     document.addEventListener('visibilitychange', refresh)
     return () => { disposed = true; clearInterval(interval); clearTimeout(timeout); if (controller) controller.abort(); document.removeEventListener('visibilitychange', refresh) }
   }, [active])
-  const stale = feed && (!feed.lastSuccessAt || clock - Date.parse(feed.lastSuccessAt) > 15 * 60000)
+  // The exporter republishes on change or once a day, so a check is only old after 26 hours.
+  const stale = feed && (!feed.lastSuccessAt || clock - Date.parse(feed.lastSuccessAt) > 26 * 3600000)
   const health = failed ? 'disconnected' : !feed ? 'loading' : feed.health === 'offline' ? 'offline' : feed.health === 'stale' || stale ? 'stale' : 'connected'
   return <section className="willow-activity" aria-labelledby="activity-heading">
     <h2 id="activity-heading">Agent activity ✨</h2>
