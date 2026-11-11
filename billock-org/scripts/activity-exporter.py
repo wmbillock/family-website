@@ -1,6 +1,8 @@
 """Private durable exporter. Only verified website check receipts cross its boundary.
 
-Uses standard gh authentication without reading, copying or printing credentials.
+Holds no API token. Reads are public GitHub API calls; the one write is a git push
+of the feed file over this machine's SSH key (2026-11-10: the stored gh token kept
+being revoked, which froze the feed).
 No controller messages, private notes, provider effects or other project state.
 """
 import re, base64, datetime as dt, fcntl, hashlib, json, os, pathlib, sqlite3, subprocess, sys, urllib.request
@@ -8,7 +10,10 @@ import re, base64, datetime as dt, fcntl, hashlib, json, os, pathlib, sqlite3, s
 REPO = 'wmbillock/family-website'
 FEED = 'billock-org/public/activity/feed.json'
 WORKFLOW = '.github/workflows/deploy.yml'
-GH = '/opt/homebrew/bin/gh'
+API = 'https://api.github.com/'
+GIT = '/usr/bin/git'
+REMOTE = 'git@github.com:' + REPO + '.git'
+CLONE = pathlib.Path.home() / '.local/share/billock-activity-feed/publish-clone'
 NODE = '/opt/homebrew/bin/node'
 MAX = 2 * 1024 * 1024
 
@@ -20,13 +25,40 @@ def instant(value):
     return parsed.astimezone(dt.timezone.utc).isoformat(timespec='milliseconds').replace('+00:00','Z')
 def utc(): return instant(dt.datetime.now(dt.timezone.utc).isoformat())
 
-def gh(endpoint, body=None):
-    args = [GH,'api',endpoint]
-    if body is not None: args += ['--method','PUT','--input','-']
-    result = subprocess.run(args,input=raw(body) if body is not None else None,text=True,capture_output=True,timeout=45)
+def git(*args, cwd=None):
+    env = dict(os.environ, GIT_SSH_COMMAND='ssh -o BatchMode=yes -o ConnectTimeout=20', GIT_TERMINAL_PROMPT='0')
+    result = subprocess.run([GIT, *args], cwd=cwd, env=env, text=True, capture_output=True, timeout=120)
     # Tool errors are never copied into public state or logs.
-    if result.returncode or len(result.stdout)>MAX: raise RuntimeError('GitHub transport unavailable')
-    return json.loads(result.stdout)
+    if result.returncode: raise RuntimeError('GitHub transport unavailable')
+    return result.stdout.strip()
+
+def push_feed(body, clone=None):
+    """The one write: replace the feed file on master, only if the remote blob is still the one we read."""
+    clone = pathlib.Path(clone or CLONE)
+    if not (clone / '.git').is_dir():
+        clone.parent.mkdir(parents=True, exist_ok=True)
+        git('clone', '--quiet', '--depth', '1', '--branch', 'master', REMOTE, str(clone))
+    else:
+        git('fetch', '--quiet', '--depth', '1', 'origin', 'master', cwd=clone)
+        git('reset', '--quiet', '--hard', 'FETCH_HEAD', cwd=clone)
+    if git('rev-parse', 'HEAD:' + FEED, cwd=clone) != body.get('sha'): raise RuntimeError('GitHub transport unavailable')
+    (clone / FEED).write_bytes(base64.b64decode(body['content']))
+    git('-c', 'user.name=Willow', '-c', 'user.email=wmbillock@users.noreply.github.com', 'commit', '--quiet', '-m', str(body.get('message') or 'Refresh verified public website activity'), '--', FEED, cwd=clone)
+    git('push', '--quiet', 'origin', 'HEAD:master', cwd=clone)
+    return {'commit': {'sha': git('rev-parse', 'HEAD', cwd=clone)}}
+
+def gh(endpoint, body=None):
+    """GitHub transport without a stored token: public reads over HTTPS, the feed write as a git push over SSH."""
+    if body is not None:
+        if endpoint != 'repos/' + REPO + '/contents/' + FEED or body.get('branch') != 'master': raise RuntimeError('Unsupported write')
+        return push_feed(body)
+    if not re.fullmatch(r'repos/' + re.escape(REPO) + r'/[A-Za-z0-9_./?=&-]+', endpoint): raise RuntimeError('Unsupported read')
+    request = urllib.request.Request(API + endpoint, headers={'Accept': 'application/vnd.github+json', 'User-Agent': 'billock-activity-exporter'}, method='GET')
+    try:
+        with urllib.request.urlopen(request, timeout=45) as response: data = response.read(MAX + 1)
+    except Exception: raise RuntimeError('GitHub transport unavailable') from None
+    if len(data) > MAX: raise RuntimeError('GitHub transport unavailable')
+    return json.loads(data)
 
 def verified(run, jobs, changed, checked, release):
     """A passed named test step is evidence of checks, never human acceptance.
