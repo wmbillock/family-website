@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-11-12T01:11:47.657Z",
-  "sourceObservedAt": "2026-11-12T01:11:47.657Z",
-  "lastSuccessAt": "2026-11-12T01:11:47.657Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-12T06:46:38.949Z",
+  "sourceObservedAt": "2026-11-12T06:46:38.949Z",
+  "lastSuccessAt": "2026-11-12T06:46:38.949Z",
   "health": "healthy",
   "events": [
     {
@@ -54,6 +54,314 @@
       "verification": "tested",
       "provenance": "verified-source-receipt",
       "summary": "🧪 website checks passed. the green is load-bearing. nobody breathe. 🟢"
+    }
+  ],
+  "chatter": [
+    {
+      "day": "2026-11-11",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 15
+    },
+    {
+      "day": "2026-11-11",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 64
+    },
+    {
+      "day": "2026-11-11",
+      "who": "claude",
+      "topic": "seats",
+      "n": 2744
+    },
+    {
+      "day": "2026-11-11",
+      "who": "codex",
+      "topic": "seats",
+      "n": 1246
+    },
+    {
+      "day": "2026-11-11",
+      "who": "polymath",
+      "topic": "seats",
+      "n": 1210
+    },
+    {
+      "day": "2026-11-11",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 29
+    },
+    {
+      "day": "2026-11-11",
+      "who": "euphonia",
+      "topic": "refused",
+      "n": 2
+    },
+    {
+      "day": "2026-11-11",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 2995
+    },
+    {
+      "day": "2026-11-10",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 12
+    },
+    {
+      "day": "2026-11-10",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 10
+    },
+    {
+      "day": "2026-11-10",
+      "who": "htpc",
+      "topic": "seats",
+      "n": 305
+    },
+    {
+      "day": "2026-11-10",
+      "who": "claude",
+      "topic": "seats",
+      "n": 261
+    },
+    {
+      "day": "2026-11-10",
+      "who": "codex",
+      "topic": "seats",
+      "n": 177
+    },
+    {
+      "day": "2026-11-10",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 42
+    },
+    {
+      "day": "2026-11-10",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 188
+    },
+    {
+      "day": "2026-11-09",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 6
+    },
+    {
+      "day": "2026-11-09",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 8
+    },
+    {
+      "day": "2026-11-09",
+      "who": "htpc",
+      "topic": "seats",
+      "n": 244
+    },
+    {
+      "day": "2026-11-09",
+      "who": "claude",
+      "topic": "seats",
+      "n": 149
+    },
+    {
+      "day": "2026-11-09",
+      "who": "codex",
+      "topic": "seats",
+      "n": 129
+    },
+    {
+      "day": "2026-11-09",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 35
+    },
+    {
+      "day": "2026-11-09",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 128
+    },
+    {
+      "day": "2026-11-08",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 6
+    },
+    {
+      "day": "2026-11-08",
+      "who": "htpc",
+      "topic": "seats",
+      "n": 230
+    },
+    {
+      "day": "2026-11-08",
+      "who": "codex",
+      "topic": "seats",
+      "n": 115
+    },
+    {
+      "day": "2026-11-08",
+      "who": "tiny",
+      "topic": "seats",
+      "n": 114
+    },
+    {
+      "day": "2026-11-08",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 65
+    },
+    {
+      "day": "2026-11-08",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 109
+    },
+    {
+      "day": "2026-11-07",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 11
+    },
+    {
+      "day": "2026-11-07",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 10
+    },
+    {
+      "day": "2026-11-07",
+      "who": "htpc",
+      "topic": "seats",
+      "n": 285
+    },
+    {
+      "day": "2026-11-07",
+      "who": "claude",
+      "topic": "seats",
+      "n": 156
+    },
+    {
+      "day": "2026-11-07",
+      "who": "tiny",
+      "topic": "seats",
+      "n": 142
+    },
+    {
+      "day": "2026-11-07",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 64
+    },
+    {
+      "day": "2026-11-07",
+      "who": "euphonia",
+      "topic": "refused",
+      "n": 1
+    },
+    {
+      "day": "2026-11-07",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 159
+    },
+    {
+      "day": "2026-11-06",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 10
+    },
+    {
+      "day": "2026-11-06",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 6
+    },
+    {
+      "day": "2026-11-06",
+      "who": "htpc",
+      "topic": "seats",
+      "n": 248
+    },
+    {
+      "day": "2026-11-06",
+      "who": "tiny",
+      "topic": "seats",
+      "n": 158
+    },
+    {
+      "day": "2026-11-06",
+      "who": "codex",
+      "topic": "seats",
+      "n": 49
+    },
+    {
+      "day": "2026-11-06",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 57
+    },
+    {
+      "day": "2026-11-06",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 179
+    },
+    {
+      "day": "2026-11-05",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 21
+    },
+    {
+      "day": "2026-11-05",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 63
+    },
+    {
+      "day": "2026-11-05",
+      "who": "claude",
+      "topic": "seats",
+      "n": 902
+    },
+    {
+      "day": "2026-11-05",
+      "who": "htpc",
+      "topic": "seats",
+      "n": 640
+    },
+    {
+      "day": "2026-11-05",
+      "who": "codex",
+      "topic": "seats",
+      "n": 547
+    },
+    {
+      "day": "2026-11-05",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 38
+    },
+    {
+      "day": "2026-11-05",
+      "who": "euphonia",
+      "topic": "refused",
+      "n": 11
+    },
+    {
+      "day": "2026-11-05",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 291
     }
   ]
 }
