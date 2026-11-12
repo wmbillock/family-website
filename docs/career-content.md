@@ -9,7 +9,7 @@ The short resume and full career portfolio share the employment, education, and 
 - Libretto, custom memory architecture, 40% average token reduction, and leadership across 13 teams: Willow's statements in this task.
 - Pricing throughput: Willow clarified sustained average of 12 million requests/minute. Availability: 99.999% measured using Chronosphere and tracked metrics, not an SLO alone.
 - Memory evaluation: established research, synthesis, development, and general usage tasks; a control chat prompt across Claude, Codex, and a no-memory control agent; billed token counts compared across shared tasks. Average reduction remains explicitly a testing result.
-- Ensemble and Abbiebot project descriptions: repository README and architecture material reviewed in this task. Links provide implementation context, not proof of employer metrics or production adoption.
+- Ensemble project description: repository README and architecture material reviewed in this task. Euphonia project description: the owner-accepted career baseline of November 5, 2026; it links to the public technical article, not the private repository. Links provide implementation context, not proof of employer metrics or production adoption.
 
 ## Remaining reconciliation
 

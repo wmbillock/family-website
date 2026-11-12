@@ -95,7 +95,7 @@ export const achievements = [
 
 export const projects = [
   { name: 'Ensemble', description: 'Hierarchical multi-agent software-development system with specialized roles, TDD workflows, execution monitoring, and feedback mechanisms.', url: 'https://github.com/wmbillock/ensemble' },
-  { name: 'Abbiebot-9000', description: 'Persistent assistant architecture separating conversational transports from execution through Redis Streams, with durable task state and tiered memory.', url: 'https://github.com/wmbillock/Abbiebot-9000' },
+  { name: 'Euphonia', description: 'Conversational interface to an evolutionary agent swarm with dual-tier PARA memory: shared project knowledge and focused agent-local experience. Designed to develop agent capabilities through training, independent evaluation and selection, preserving identity and learning across tasks and model changes.', url: 'https://billock.org/blog/talking-a-personal-ai-into-existence/' },
 ]
 
 export const writingAndSpeaking = [
