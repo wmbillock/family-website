@@ -4,8 +4,15 @@ Holds no API token. Reads are public GitHub API calls; the one write is a git pu
 of the feed file over this machine's SSH key (2026-11-10: the stored gh token kept
 being revoked, which froze the feed).
 No controller messages, private notes, provider effects or other project state.
+
+Backstage chatter (2026-11-12): once a local day is over, its whole-number counts
+(changes merged, rehearsals held, parts played per engine, test runs green and red,
+refusals, unanswered calls) are read from Euphonia's database opened read-only and
+from the CI result files. Only {day, who, topic, n} is kept or published; no title,
+text, effort, project name or id is ever read into this process's output. The
+words shown on the site live in src/activity/contract.js. No model is called.
 """
-import re, base64, datetime as dt, fcntl, hashlib, json, os, pathlib, sqlite3, subprocess, sys, urllib.request
+import re, base64, datetime as dt, fcntl, hashlib, json, os, pathlib, sqlite3, subprocess, sys, urllib.parse, urllib.request
 
 REPO = 'wmbillock/family-website'
 FEED = 'billock-org/public/activity/feed.json'
@@ -16,6 +23,12 @@ REMOTE = 'git@github.com:' + REPO + '.git'
 CLONE = pathlib.Path.home() / '.local/share/billock-activity-feed/publish-clone'
 NODE = '/opt/homebrew/bin/node'
 MAX = 2 * 1024 * 1024
+GATEWAY = pathlib.Path.home() / '.euphonia/personal/state/gateway.sqlite3'
+CI_RESULTS = pathlib.Path.home() / '.euphonia/ci/results'
+# Engine name in the source -> the character who speaks for it. Unknown engines stay silent.
+PLAYERS = {'polymath':'polymath','tao':'tao','local14b':'tiny','htpc14b':'htpc','claude':'claude','codex':'codex','kimi':'kimi'}
+CHATTER_DAYS = 7
+PLAYERS_PER_DAY = 3
 
 def raw(value): return json.dumps(value, separators=(',', ':'), ensure_ascii=False)
 def sha(value): return hashlib.sha256(value.encode() if isinstance(value, str) else value).hexdigest()
@@ -90,7 +103,8 @@ def database(file):
     db.executescript('''PRAGMA journal_mode=WAL;
     CREATE TABLE IF NOT EXISTS receipts(source_id TEXT PRIMARY KEY,bytes TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS publications(digest TEXT PRIMARY KEY,bytes TEXT NOT NULL,state TEXT NOT NULL,created_at TEXT NOT NULL,remote_commit TEXT);
-    CREATE TABLE IF NOT EXISTS state(key TEXT PRIMARY KEY,value TEXT NOT NULL);''')
+    CREATE TABLE IF NOT EXISTS state(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS chatter(day TEXT NOT NULL,ord INTEGER NOT NULL,who TEXT NOT NULL,topic TEXT NOT NULL,n INTEGER NOT NULL,PRIMARY KEY(day,ord));''')
     return db
 
 def admit(db, receipt):
@@ -100,6 +114,61 @@ def admit(db, receipt):
     db.execute('INSERT INTO receipts VALUES (?,?)',(receipt['sourceId'],receipt['bytes']))
     db.commit();return True
 
+def day_counts(day, gateway=None, ci=None):
+    """Whole-number counts for one finished local day, in speaking order. Numbers only."""
+    gateway=pathlib.Path(gateway or GATEWAY);ci=pathlib.Path(ci or CI_RESULTS)
+    start=dt.datetime.combine(day,dt.time()).timestamp();end=dt.datetime.combine(day+dt.timedelta(days=1),dt.time()).timestamp()
+    src=sqlite3.connect('file:'+urllib.parse.quote(str(gateway))+'?mode=ro',uri=True,timeout=5)
+    try:
+        one=lambda sql:int(src.execute(sql,(start,end)).fetchone()[0])
+        merged=one("SELECT COUNT(*) FROM changes WHERE state='done' AND done_at>=? AND done_at<?")
+        rooms=one("SELECT COUNT(*) FROM rooms WHERE state IN ('converged','closed') AND closed_at>=? AND closed_at<?")
+        refused=one("SELECT COUNT(*) FROM refusal_cases WHERE opened_at>=? AND opened_at<?")
+        noanswer=one("SELECT COUNT(*) FROM engine_events WHERE kind='failure:unavailable' AND at>=? AND at<?")
+        played={}
+        for engine,count in src.execute("SELECT engine,COUNT(*) FROM envelopes WHERE at>=? AND at<? AND role!='willow' AND engine IS NOT NULL GROUP BY engine",(start,end)):
+            who=PLAYERS.get(engine)
+            if who:played[who]=played.get(who,0)+int(count)
+    finally:src.close()
+    green=red=0
+    if ci.is_dir():
+        for file in ci.glob('*.json'):
+            try:
+                stat=file.stat()
+                if stat.st_size>MAX or not start-86400<=stat.st_mtime<end+86400:continue
+                result=json.loads(file.read_text())
+                finished=dt.datetime.fromisoformat(result['finished']).timestamp()
+                if not start<=finished<end:continue
+                steps=result['steps']
+                if steps and all(step.get('exit_code')==0 for step in steps):green+=1
+                else:red+=1
+            except Exception:continue
+    rows=[]
+    if merged:rows.append(('euphonia','merged',merged))
+    if rooms:rows.append(('euphonia','rooms',rooms))
+    for who,count in sorted(played.items(),key=lambda item:(-item[1],item[0]))[:PLAYERS_PER_DAY]:rows.append((who,'seats',count))
+    if green:rows.append(('stagehand','green',green))
+    if red:rows.append(('stagehand','red',red))
+    if refused:rows.append(('euphonia','refused',refused))
+    if noanswer:rows.append(('euphonia','noanswer',noanswer))
+    return rows or [('euphonia','quiet',0)]
+
+def gather(db, today=None, gateway=None, ci=None):
+    """Record each finished day once. A recorded day is never recounted, so the public history does not shift."""
+    today=today or dt.date.today();added=0
+    for back in range(1,CHATTER_DAYS+1):
+        day=today-dt.timedelta(days=back)
+        if db.execute('SELECT 1 FROM chatter WHERE day=?',(day.isoformat(),)).fetchone():continue
+        rows=day_counts(day,gateway,ci)
+        db.executemany('INSERT INTO chatter VALUES (?,?,?,?,?)',[(day.isoformat(),i,who,topic,min(int(n),999999)) for i,(who,topic,n) in enumerate(rows)])
+        db.commit();added+=1
+    return added
+
+def chatter(db, today=None):
+    today=today or dt.date.today()
+    first=(today-dt.timedelta(days=CHATTER_DAYS)).isoformat()
+    return [{'day':d,'who':w,'topic':t,'n':n} for d,w,t,n in db.execute('SELECT day,who,topic,n FROM chatter WHERE day>=? AND day<=? ORDER BY day DESC,ord ASC',(first,today.isoformat()))]
+
 def projection(db, checked, script):
     cutoff=dt.datetime.fromisoformat(checked.replace('Z','+00:00'))-dt.timedelta(days=30)
     receipts=[{'sourceId':s,'bytes':b} for s,b in db.execute('SELECT source_id,bytes FROM receipts ORDER BY source_id') if dt.datetime.fromisoformat(json.loads(b)['occurredAt'].replace('Z','+00:00'))>=cutoff]
@@ -108,7 +177,7 @@ def projection(db, checked, script):
     sources=[{'sourceId':r['sourceId'],'receiptSha256':sha(r['bytes']),'project':'website','agent':'automation','action':'checks_passed'} for r in receipts]
     observation=raw({'schemaVersion':1,'checkedAt':checked,'sourceSetSha256':sha(raw(sorted(sources,key=lambda p:p['sourceId']))),'evidenceSha256':sha(raw({'repository':REPO,'workflow':WORKFLOW,'observedAt':checked,'receiptDigests':[sha(r['bytes']) for r in receipts]}))}) if sources else None
     policy={'schemaVersion':1,'sources':sources,'observationSha256':sha(observation) if observation else None}
-    result=subprocess.run([NODE,'-e',"const fs=require('fs'),p=require(process.argv[1]),x=JSON.parse(fs.readFileSync(0,'utf8'));process.stdout.write(JSON.stringify(p.project(x.receipts,x.policy,x.observation,new Date(x.at))));",str(script)],input=raw({'receipts':receipts,'policy':policy,'observation':observation,'at':checked}),capture_output=True,text=True,timeout=15)
+    result=subprocess.run([NODE,'-e',"const fs=require('fs'),p=require(process.argv[1]),x=JSON.parse(fs.readFileSync(0,'utf8'));process.stdout.write(JSON.stringify(p.project(x.receipts,x.policy,x.observation,new Date(x.at),x.chatter)));",str(script)],input=raw({'receipts':receipts,'policy':policy,'observation':observation,'at':checked,'chatter':chatter(db)}),capture_output=True,text=True,timeout=15)
     if result.returncode: raise RuntimeError('Projection rejected')
     return json.loads(result.stdout)
 
@@ -173,7 +242,7 @@ def unchanged(db, feed):
         last=json.loads(row[0])
         age=dt.datetime.fromisoformat(feed['generatedAt'].replace('Z','+00:00'))-dt.datetime.fromisoformat(last['generatedAt'].replace('Z','+00:00'))
     except Exception: return False
-    return last.get('events')==feed.get('events') and last.get('health')==feed.get('health') and dt.timedelta(0)<=age<dt.timedelta(hours=HEARTBEAT_HOURS)
+    return last.get('events')==feed.get('events') and last.get('chatter')==feed.get('chatter') and last.get('health')==feed.get('health') and dt.timedelta(0)<=age<dt.timedelta(hours=HEARTBEAT_HOURS)
 
 def cycle(db, script, api=gh, read_live=live):
     # Reconcile prior effects before creating a fresh projection; uncertain API
@@ -201,6 +270,9 @@ def cycle(db, script, api=gh, read_live=live):
         if receipt:admit(db,receipt)
     # Source observation time is after successful authoritative queries.
     checked=utc()
+    # Yesterday's counts, once. If Euphonia's database is busy or absent, the day waits for the next tick.
+    try:gather(db)
+    except Exception:pass
     feed=projection(db,checked,script)
     # Publish when the events or health change, or once per HEARTBEAT_HOURS as a
     # liveness mark. A new clock stamp alone is not news and is not committed.

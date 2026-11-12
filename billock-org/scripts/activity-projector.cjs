@@ -5,7 +5,7 @@ const digest=x=>crypto.createHash('sha256').update(x).digest('hex');
 // This is an offline projection boundary, not a verifier or permission grant.
 // A source-specific trusted integration must supply pinned receipts. Never feed
 // agent prose, entire Console responses or vault notes into this function.
-function project(receipts,policy,observation=null,now=new Date()) {
+function project(receipts,policy,observation=null,now=new Date(),chatter=undefined) {
   const ms=now.getTime();if(!Number.isFinite(ms))throw Error('Invalid clock');
   if(!C.keys(policy,['schemaVersion','sources','observationSha256']) || policy.schemaVersion!==1 || !Array.isArray(policy.sources) || policy.sources.length>1000 || !Array.isArray(receipts) || receipts.length>1000)throw Error('Invalid private policy');
   const pins=new Map();
@@ -38,6 +38,8 @@ function project(receipts,policy,observation=null,now=new Date()) {
   const at=now.toISOString();const feed={schemaVersion:1,generatedAt:at,sourceObservedAt:checkedAt,lastSuccessAt:checkedAt,health:checkedAt && ms-Date.parse(checkedAt)<=15*60000?'healthy':'stale',events:[...events.values()].sort((a,b)=>(b.occurredAt+'|'+b.eventId).localeCompare(a.occurredAt+'|'+a.eventId)).slice(0,100)};
   // An empty unconfigured policy is disconnected, not a successful observation.
   if(pins.size===0){feed.health='offline';feed.sourceObservedAt=null;feed.lastSuccessAt=null;}
+  // Day counts are {day, who, topic, n} only. The contract rejects anything else.
+  if(chatter!==undefined){feed.schemaVersion=2;feed.chatter=chatter;}
   return C.validateFeed(feed,ms);
 }
 function writeAtomic(file,feed) {

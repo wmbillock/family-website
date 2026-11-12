@@ -124,6 +124,59 @@ class SourceBindingTests(unittest.TestCase):
         run['event']='schedule';jobs['jobs'][0]['steps'].append({'name':'Verify source revision','conclusion':'success'})
         self.assertIsNone(E.verified(run,jobs,changed,checked,{'sourceVerified':False,'sourceRevision':'a'*40}))
 
+class ChatterTests(unittest.TestCase):
+    def setUp(self):
+        import datetime, sqlite3, os
+        self.temp=tempfile.TemporaryDirectory();root=pathlib.Path(self.temp.name)
+        self.db=E.database(root/'outbox.sqlite3');self.gateway=root/'gateway.sqlite3';self.ci=root/'ci';self.ci.mkdir()
+        self.today=datetime.date(2026,11,12);self.day=datetime.date(2026,11,11)
+        at=datetime.datetime(2026,11,11,15,0).timestamp();old=datetime.datetime(2026,11,9,15,0).timestamp()
+        src=sqlite3.connect(self.gateway)
+        src.executescript("""CREATE TABLE changes(id TEXT,title TEXT,state TEXT,done_at REAL);
+        CREATE TABLE rooms(id TEXT,ask TEXT,state TEXT,closed_at REAL);
+        CREATE TABLE refusal_cases(id TEXT,title TEXT,opened_at REAL);
+        CREATE TABLE engine_events(at REAL,engine TEXT,kind TEXT,detail TEXT);
+        CREATE TABLE envelopes(room_id TEXT,role TEXT,summary TEXT,body TEXT,engine TEXT,at REAL);""")
+        src.executemany('INSERT INTO changes VALUES (?,?,?,?)',[('c1','PRIVATE-TITLE job search','done',at),('c2','PRIVATE-TITLE fund','done',at),('c3','x','cancelled',at),('c4','x','done',old)])
+        src.executemany('INSERT INTO rooms VALUES (?,?,?,?)',[('r1','PRIVATE-ASK','converged',at),('r2','x','blocked',at)])
+        src.execute('INSERT INTO refusal_cases VALUES (?,?,?)',('f1','PRIVATE-TITLE',at))
+        src.executemany('INSERT INTO engine_events VALUES (?,?,?,?)',[(at,'tao','failure:unavailable','PRIVATE-DETAIL')]*3+[(at,'claude','ok','x')])
+        seats=[('polymath',5),('claude',9),('local14b',2),('codex',1),('secret-engine',50)]
+        src.executemany('INSERT INTO envelopes VALUES (?,?,?,?,?,?)',[('r1','critic','PRIVATE-SUMMARY','PRIVATE-BODY',engine,at) for engine,count in seats for _ in range(count)]+[('r1','willow','PRIVATE','PRIVATE','claude',at)])
+        src.commit();src.close()
+        stamp=datetime.datetime(2026,11,11,15,0).astimezone().isoformat()
+        for name,codes in [('a',[0,0]),('b',[0,1]),('c',[0])]:
+            file=self.ci/(name+'.json');file.write_text(json.dumps({'sha':'PRIVATE-SHA','finished':stamp,'steps':[{'name':'PRIVATE-STEP','exit_code':code} for code in codes]}));os.utime(file,(at,at))
+    def tearDown(self):self.db.close();self.temp.cleanup()
+    def test_a_finished_day_becomes_counts_in_speaking_order_and_nothing_else(self):
+        rows=E.day_counts(self.day,self.gateway,self.ci)
+        self.assertEqual(rows,[('euphonia','merged',2),('euphonia','rooms',1),('claude','seats',9),('polymath','seats',5),('tiny','seats',2),('stagehand','green',2),('stagehand','red',1),('euphonia','refused',1),('euphonia','noanswer',3)])
+        self.assertEqual(E.gather(self.db,self.today,self.gateway,self.ci),E.CHATTER_DAYS)
+        public=json.dumps(E.chatter(self.db,self.today))
+        for private in ['PRIVATE','secret-engine','local14b','c1','r1']:self.assertNotIn(private,public)
+        for item in E.chatter(self.db,self.today):self.assertEqual(sorted(item),['day','n','topic','who'])
+    def test_a_day_is_recorded_once_and_an_empty_day_is_a_quiet_day(self):
+        self.assertEqual(E.gather(self.db,self.today,self.gateway,self.ci),E.CHATTER_DAYS)
+        self.assertEqual(E.gather(self.db,self.today,self.gateway,self.ci),0)
+        said=E.chatter(self.db,self.today)
+        self.assertEqual(said[0]['day'],'2026-11-11');self.assertEqual([c['day'] for c in said],sorted([c['day'] for c in said],reverse=True))
+        self.assertIn({'day':'2026-11-10','who':'euphonia','topic':'quiet','n':0},said)
+        self.assertNotIn('2026-11-12',[c['day'] for c in said])
+    def test_a_missing_source_records_nothing_and_the_feed_still_projects(self):
+        with self.assertRaises(Exception):E.gather(self.db,self.today,pathlib.Path(self.temp.name)/'absent.sqlite3',self.ci)
+        self.assertEqual(E.chatter(self.db,self.today),[])
+        feed=E.projection(self.db,E.utc(),pathlib.Path(__file__).with_name('activity-projector.cjs'))
+        self.assertEqual(feed['schemaVersion'],2);self.assertEqual(feed['chatter'],[])
+    def test_recorded_chatter_passes_the_public_contract_and_changes_the_feed(self):
+        import datetime
+        today=datetime.date.today();day=today-datetime.timedelta(days=1)
+        self.db.executemany('INSERT INTO chatter VALUES (?,?,?,?,?)',[(day.isoformat(),0,'euphonia','merged',4),(day.isoformat(),1,'tiny','seats',2)]);self.db.commit()
+        feed=E.projection(self.db,E.utc(),pathlib.Path(__file__).with_name('activity-projector.cjs'))
+        self.assertEqual(feed['chatter'],[{'day':day.isoformat(),'who':'euphonia','topic':'merged','n':4},{'day':day.isoformat(),'who':'tiny','topic':'seats','n':2}])
+        E.enqueue(self.db,feed);self.assertTrue(E.unchanged(self.db,feed));self.assertFalse(E.unchanged(self.db,{**feed,'chatter':[]}))
+        self.db.execute("UPDATE chatter SET who='willow' WHERE ord=0");self.db.commit()
+        with self.assertRaises(RuntimeError):E.projection(self.db,E.utc(),pathlib.Path(__file__).with_name('activity-projector.cjs'))
+
 class PublicBoundaryTests(unittest.TestCase):
     def test_hostile_paths_are_rejected_before_network(self):
         from unittest.mock import Mock

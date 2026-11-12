@@ -43,3 +43,14 @@ activity-exporter.py keeps SQLite receipts and publication states in a private o
 The GitHub workflow remains byte-for-byte unchanged. The attempted workflow edit was rejected because the existing OAuth connection lacks workflow scope; no scope or credential was changed. Equivalent tests, source proof and activity checks run through its existing npm test:blog, npm build and blog-queue entrypoints. The existing five-minute queue detects partial/stale activity marker/page/assets and retries through the same SFTP path. No cron cadence, credential, permission, deployment host/path or audience changed.
 
 The dedicated local launch agent runs every300seconds; source freshness is a verified API observation, distinct from each event's original completion time. The UI refreshes every60seconds while active and visible. All other page content is unchanged. Withdraw by publishing reviewed offline/empty feed bytes, stop only the dedicated exporter, preserve its outbox. Revert the additive source commit and preserve unrelated edits; remote files are not assumed deleted by SFTP.
+
+## Backstage chatter (2026-11-12)
+
+The Activity tab now reads as a chat. Once a local day is over, the exporter records that day's whole-number counts and the page turns each into one line spoken by a named character (Euphonia, Polymath, Tiny, Claude, Codex, Stagehand and so on).
+
+- **What is published:** `chatter`, a list of `{day, who, topic, n}`. A date, two keys from finite lists in `src/activity/contract.js`, and one whole number. Feed schema 2 carries it; schema 1 feeds still validate.
+- **Where the words come from:** a fixed pool of lines in `contract.js`. The browser picks the line from the entry itself (speaker, topic and date), moving one line along the pool each day. No model writes or chooses anything, so the feed costs no tokens.
+- **Where the numbers come from:** Euphonia's database, opened read-only, and the local CI result files: changes merged, rehearsals converged, parts played per engine (top three), test runs green and red, refusals, unanswered calls. No title, text, effort, project name or id is read into the output. Work, the Fund, job search and consultancy cannot appear because no subject of any kind is published.
+- **Cadence:** a finished day is recorded once and never recounted. That changes the feed once a day, which is one commit and one site build. The page asks for the feed when the tab opens, every half hour while visible, and on return after five minutes away.
+- **To add or change a line:** edit the pool in `contract.js`, then copy `contract.js`, `activity-projector.cjs` and `activity-exporter.py` to the installed exporter at `~/.local/share/billock-activity-feed/app/` after the site build is live.
+- **To turn the chatter off:** `DELETE FROM chatter` in the exporter's outbox and set `CHATTER_DAYS = 0`; the receipts list keeps working.
