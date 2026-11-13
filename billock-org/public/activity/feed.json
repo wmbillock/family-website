@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-12T06:46:38.949Z",
-  "sourceObservedAt": "2026-11-12T06:46:38.949Z",
-  "lastSuccessAt": "2026-11-12T06:46:38.949Z",
+  "generatedAt": "2026-11-13T06:02:53.921Z",
+  "sourceObservedAt": "2026-11-13T06:02:53.921Z",
+  "lastSuccessAt": "2026-11-13T06:02:53.921Z",
   "health": "healthy",
   "events": [
     {
@@ -57,6 +57,54 @@
     }
   ],
   "chatter": [
+    {
+      "day": "2026-11-12",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 9
+    },
+    {
+      "day": "2026-11-12",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 42
+    },
+    {
+      "day": "2026-11-12",
+      "who": "codex",
+      "topic": "seats",
+      "n": 1664
+    },
+    {
+      "day": "2026-11-12",
+      "who": "polymath",
+      "topic": "seats",
+      "n": 1302
+    },
+    {
+      "day": "2026-11-12",
+      "who": "claude",
+      "topic": "seats",
+      "n": 1147
+    },
+    {
+      "day": "2026-11-12",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 63
+    },
+    {
+      "day": "2026-11-12",
+      "who": "euphonia",
+      "topic": "refused",
+      "n": 1
+    },
+    {
+      "day": "2026-11-12",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 2850
+    },
     {
       "day": "2026-11-11",
       "who": "euphonia",
@@ -314,54 +362,6 @@
       "who": "euphonia",
       "topic": "noanswer",
       "n": 179
-    },
-    {
-      "day": "2026-11-05",
-      "who": "euphonia",
-      "topic": "merged",
-      "n": 21
-    },
-    {
-      "day": "2026-11-05",
-      "who": "euphonia",
-      "topic": "rooms",
-      "n": 63
-    },
-    {
-      "day": "2026-11-05",
-      "who": "claude",
-      "topic": "seats",
-      "n": 902
-    },
-    {
-      "day": "2026-11-05",
-      "who": "htpc",
-      "topic": "seats",
-      "n": 640
-    },
-    {
-      "day": "2026-11-05",
-      "who": "codex",
-      "topic": "seats",
-      "n": 547
-    },
-    {
-      "day": "2026-11-05",
-      "who": "stagehand",
-      "topic": "red",
-      "n": 38
-    },
-    {
-      "day": "2026-11-05",
-      "who": "euphonia",
-      "topic": "refused",
-      "n": 11
-    },
-    {
-      "day": "2026-11-05",
-      "who": "euphonia",
-      "topic": "noanswer",
-      "n": 291
     }
   ]
 }
