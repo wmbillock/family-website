@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-15T06:01:37.042Z",
-  "sourceObservedAt": "2026-11-15T06:01:37.042Z",
-  "lastSuccessAt": "2026-11-15T06:01:37.042Z",
+  "generatedAt": "2026-11-16T06:01:50.915Z",
+  "sourceObservedAt": "2026-11-16T06:01:50.915Z",
+  "lastSuccessAt": "2026-11-16T06:01:50.915Z",
   "health": "healthy",
   "events": [
     {
@@ -57,6 +57,54 @@
     }
   ],
   "chatter": [
+    {
+      "day": "2026-11-15",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 5
+    },
+    {
+      "day": "2026-11-15",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 99
+    },
+    {
+      "day": "2026-11-15",
+      "who": "claude",
+      "topic": "seats",
+      "n": 3316
+    },
+    {
+      "day": "2026-11-15",
+      "who": "codex",
+      "topic": "seats",
+      "n": 2227
+    },
+    {
+      "day": "2026-11-15",
+      "who": "polymath",
+      "topic": "seats",
+      "n": 1258
+    },
+    {
+      "day": "2026-11-15",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 27
+    },
+    {
+      "day": "2026-11-15",
+      "who": "euphonia",
+      "topic": "refused",
+      "n": 3
+    },
+    {
+      "day": "2026-11-15",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 7992
+    },
     {
       "day": "2026-11-14",
       "who": "euphonia",
@@ -314,42 +362,6 @@
       "who": "euphonia",
       "topic": "noanswer",
       "n": 128
-    },
-    {
-      "day": "2026-11-08",
-      "who": "euphonia",
-      "topic": "rooms",
-      "n": 6
-    },
-    {
-      "day": "2026-11-08",
-      "who": "htpc",
-      "topic": "seats",
-      "n": 230
-    },
-    {
-      "day": "2026-11-08",
-      "who": "codex",
-      "topic": "seats",
-      "n": 115
-    },
-    {
-      "day": "2026-11-08",
-      "who": "tiny",
-      "topic": "seats",
-      "n": 114
-    },
-    {
-      "day": "2026-11-08",
-      "who": "stagehand",
-      "topic": "red",
-      "n": 65
-    },
-    {
-      "day": "2026-11-08",
-      "who": "euphonia",
-      "topic": "noanswer",
-      "n": 109
     }
   ]
 }
