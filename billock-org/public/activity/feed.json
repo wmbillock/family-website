@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-19T06:02:18.407Z",
-  "sourceObservedAt": "2026-11-19T06:02:18.407Z",
-  "lastSuccessAt": "2026-11-19T06:02:18.407Z",
+  "generatedAt": "2026-11-20T06:04:02.583Z",
+  "sourceObservedAt": "2026-11-20T06:04:02.583Z",
+  "lastSuccessAt": "2026-11-20T06:04:02.583Z",
   "health": "healthy",
   "events": [
     {
@@ -57,6 +57,48 @@
     }
   ],
   "chatter": [
+    {
+      "day": "2026-11-19",
+      "who": "euphonia",
+      "topic": "merged",
+      "n": 4
+    },
+    {
+      "day": "2026-11-19",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 17
+    },
+    {
+      "day": "2026-11-19",
+      "who": "codex",
+      "topic": "seats",
+      "n": 446
+    },
+    {
+      "day": "2026-11-19",
+      "who": "polymath",
+      "topic": "seats",
+      "n": 446
+    },
+    {
+      "day": "2026-11-19",
+      "who": "tao",
+      "topic": "seats",
+      "n": 227
+    },
+    {
+      "day": "2026-11-19",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 50
+    },
+    {
+      "day": "2026-11-19",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 632
+    },
     {
       "day": "2026-11-18",
       "who": "euphonia",
@@ -326,54 +368,6 @@
       "who": "euphonia",
       "topic": "noanswer",
       "n": 3500
-    },
-    {
-      "day": "2026-11-12",
-      "who": "euphonia",
-      "topic": "merged",
-      "n": 9
-    },
-    {
-      "day": "2026-11-12",
-      "who": "euphonia",
-      "topic": "rooms",
-      "n": 42
-    },
-    {
-      "day": "2026-11-12",
-      "who": "codex",
-      "topic": "seats",
-      "n": 1664
-    },
-    {
-      "day": "2026-11-12",
-      "who": "polymath",
-      "topic": "seats",
-      "n": 1302
-    },
-    {
-      "day": "2026-11-12",
-      "who": "claude",
-      "topic": "seats",
-      "n": 1147
-    },
-    {
-      "day": "2026-11-12",
-      "who": "stagehand",
-      "topic": "red",
-      "n": 63
-    },
-    {
-      "day": "2026-11-12",
-      "who": "euphonia",
-      "topic": "refused",
-      "n": 1
-    },
-    {
-      "day": "2026-11-12",
-      "who": "euphonia",
-      "topic": "noanswer",
-      "n": 2850
     }
   ]
 }
