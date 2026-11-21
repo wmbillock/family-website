@@ -32,7 +32,7 @@ export default function buildPdf({ full = false } = {}) {
     text(value, { indent: 14 })
   }
   const section = title => {
-    ensure(48)
+    ensure(84)
     y += 7
     text(title, { bold: true, size: 12 })
     y += 5
@@ -53,7 +53,7 @@ export default function buildPdf({ full = false } = {}) {
   text('WILLOW BILLOCK', { bold: true, size: 18 }); y += 10
   text(full ? 'Career portfolio | 2004-present' : 'Staff / Principal engineering | Distributed systems & applied AI')
   doc.setFontSize(FONT_BODY).textWithLink('billock.org/willow', MARGIN, y + FONT_BODY, { url: 'https://billock.org/willow' }); y += LINE_HEIGHT
-  section('Objective'); text(objective)
+  section('Summary'); text(objective)
   if (full) {
     section('Achievement stories')
     text('Employer metrics are from my career accounts. These stories distinguish my contribution, system scope, and the context behind each result.')
