@@ -1,26 +1,27 @@
-export const objective = 'Seeking a remote Staff or Principal engineering role building reliable distributed systems and applied AI platforms, bringing experience in high-throughput pricing, payments, autonomous agents, and leadership across engineering teams.'
+export const objective = "Staff engineer with 20+ years of production software, now focused on agent systems: memory, evaluation, and the workflows that make coding agents reviewable. Division AI-retooling technical lead at Affirm; shipped the team portal's first LLM feature end to end and built work-memory tooling with a measured 288-run evaluation. Earlier: payments at 99.999% uptime, platform management, and real-time graphics. Fully remote since 2019."
 
 export const employment = [
   {
-    'start-date': 'August 2022',
-    'end-date': undefined,
-    title: 'Staff Software Engineer',
-    company: 'Affirm, Inc.',
-    location: 'Remote',
-    responsibilities: [
-      'Led recovery efforts for a stalled pricing-configuration project, aligning 13 teams around a shared goal',
-      'Developed Libretto, an autonomous note-taking swarm with PARA-based memory, custom collectors, and agent lifecycle management; project-organized streams in a local Obsidian Markdown library reduced tokens per request by an average of 40% in testing',
-      'Invited on several occasions to present as a leading voice in AI and autonomous development to an audience of over 1,000 developers',
-      'Tech used: Python (Flask/SQLAlchemy), Databricks, Docker, Kubernetes, Airflow, ReactJS',
-      'Worked to enhance quality of back-end machine learning pipelines',
-      'Held architectural oversight for the pricing service, which averages a sustained 12 million requests per minute at 99.999% measured availability tracked using Chronosphere and service metrics, while driving team quality and development practices to maximize delivery reliability',
-      'Won Affirm’s company hackathon as part of a team and helped ship one of the company’s first production LLM integrations',
-      'Participated in the redesign of the software engineering interview process by developing a new screening question',
-      'Provided mentorship and guidance to team members, while also working to level up the larger engineering organization',
-      'Created and collaborated on many software designs, gathering feedback and buy-in before driving projects through development to delivery',
-      'Improved development pipelines and reduced process inefficiencies to improve concurrent experimentation capacity by 400%',
-      'Developed automated reporting to track financing program experimentation and configuration changes, supporting business needs',
-    ],
+    "start-date": "August 2022",
+    "title": "Staff Software Engineer",
+    "company": "Affirm, Inc.",
+    "location": "Remote",
+    "responsibilities": [
+      "Own pricing and experimentation platform architecture, cross-team service contracts, reliability, and engineering standards.",
+      "Leading recovery of a 14-team migration: authored the recovery RFC, team-specific review packages, and the evidence inventory.",
+      "Built and shipped the team portal's first LLM feature end to end: PRD, React interface, server-side LLM proxy, security review, documentation, and training.",
+      "Built internal work-memory tooling; a 288-run controlled evaluation reported 67% fewer tokens, 49% lower cost, and 58% lower wall-clock time, with no measured accuracy loss.",
+      "Ran an unattended implement-and-critique workflow for three weeks, producing more than 90 small pull requests under a reviewability contract.",
+      "Division AI-retooling technical lead; presented agent context management to roughly 1,000 engineers and contributed to mentoring, interviewing, and hiring decisions.",
+      "Owned the experiment lifecycle and management API; met the objective of reducing experiment setup time by 25% and enabled engineers outside the pricing team to run experiments independently.",
+      "Shaped service boundaries and cross-domain contracts, replacing larger proposed rewrites with smaller designs and writing domain-model, terminology, and design-specification standards.",
+      "Led pricing engineering for the UK launch, then authored the later country-aware, multi-tenant platform strategy; kept launch work and subsequent architecture contributions distinct.",
+      "Designed and drove a feature-flag and experimentation-platform migration without an incident; built a dry-run-by-default configuration migration pipeline with an audit ledger.",
+      "Defined service SLAs, availability and error-budget monitoring, dashboards, alerts, runbooks, and change reporting; reinstated end-to-end tests and built synthetic shadow-traffic verification.",
+      "Mentored two engineers to independent ownership of the experiment platform; served as a certified backend/ML coding and systems-design interviewer and hiring-committee member.",
+      "Co-designed and co-own a practical-coding interview problem and its level-by-level evaluation rubric; reviewed changes and designs across teams.",
+      "Technologies: Python, Kotlin, gRPC, MySQL, Snowflake, Airflow, AWS, Kubernetes, React/Redux, LLM APIs, and agent frameworks."
+    ]
   },
   {
     'start-date': 'June 2021',

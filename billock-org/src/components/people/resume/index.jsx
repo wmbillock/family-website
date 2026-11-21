@@ -22,7 +22,7 @@ export default function Resume() {
         <p className='career-intro'>{full ? 'Career portfolio · 2004–present' : 'Staff / Principal engineering · Distributed systems & applied AI'}</p>
         {full && <p><a href='/willow?career=full'>Permanent link to full career</a></p>}
         <section aria-labelledby='resume-objective'>
-          <h2 id='resume-objective'>Objective</h2><p>{objective}</p>
+          <h2 id='resume-objective'>Summary</h2><p>{objective}</p>
         </section>
         {full ? <>
           <section>

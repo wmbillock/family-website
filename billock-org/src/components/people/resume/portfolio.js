@@ -3,10 +3,7 @@ import { employment } from './data'
 export const shortEmployment = employment.slice(0, 3).map((job, index) => ({
   ...job,
   responsibilities: [
-    [job.responsibilities[0], job.responsibilities[1], job.responsibilities[2],
-      job.responsibilities.find(item => item.startsWith('Won Affirm')),
-      'Architectural oversight of a pricing service averaging 12 million requests per minute at 99.999% measured availability',
-      'Increased concurrent experimentation capacity by 400% through development-pipeline improvements'],
+    job.responsibilities.slice(0, 6),
     ['Helped migrate a workflow engine from Redis/Sidekiq to Temporal and Go',
       'Established a technical design process and mentored engineers as a team lead'],
     ['Staff engineering for Thinkful’s lead-processing systems; architecture, mentoring, and delivery',
@@ -22,39 +19,49 @@ export const careerHighlights = [
 
 export const achievements = [
   {
-    id: 'libretto', title: 'Libretto: project-oriented knowledge and autonomous notes', organization: 'Affirm',
-    contribution: 'Developed a dynamic autonomous note-taking swarm using PARA memory architecture, custom collectors, and agent lifecycle management.',
-    approach: 'A local Obsidian-based Markdown library provides a project-oriented discovery surface. Pre-organizing information by project reduces the repeated retrieval and research needed to assemble request context.',
-    result: 'Testing of the custom memory system showed an average 40% reduction in billed tokens per request across established research, synthesis, development, and general-usage tasks.',
-    context: 'The comparison used a control chat prompt and shared tasks across Claude, Codex, and a control agent with no memory access, comparing billed token counts across the three approaches. The average is a testing result, not a production-wide cost-savings claim.',
+    "id": "agent-memory",
+    "title": "Measured work-memory tooling for agents",
+    "organization": "Affirm",
+    "contribution": "Built and released an internal, local-first work-memory tool that collects engineering activity into a dated, cited knowledge base.",
+    "approach": "Combined collectors, scoped retrieval, and source-backed memory for engineering work; the supplied calibration reports 15 collectors and about 1,500 tests.",
+    "result": "A 288-run controlled evaluation reported 67% fewer tokens, 49% lower cost, and 58% lower wall-clock time per question, with no measured accuracy loss.",
+    "context": "Figures come from my October 30, 2026 career calibration. The underlying dataset, model versions, task allocation, accuracy rubric, and uncertainty estimates are not published here. No measured accuracy loss is not a statistical equivalence claim. Employer implementation and personal projects remain separate."
   },
   {
-    id: 'pricing-recovery', title: 'Bringing 13 teams back to a shared pricing goal', organization: 'Affirm',
-    contribution: 'Assumed cross-team leadership of recovery efforts for a stalled pricing-configuration project.',
-    approach: 'Aligned 13 teams around the same project goal, extending the role beyond a single team’s delivery responsibilities.',
-    result: 'Led the cross-team recovery effort.',
-    context: 'The team count describes coordination scope, not 13 teams of direct reports. A final delivery milestone is not asserted here.',
+    "id": "pricing-recovery",
+    "title": "Leading a 14-team migration recovery",
+    "organization": "Affirm",
+    "contribution": "Leading recovery of a stalled cross-team migration, with a recovery RFC, an evidence inventory, and a review package for each of 14 teams.",
+    "approach": "Ran six kickoff meetings in four days and aligned architecture review around a pre-peak audit and additional preparation.",
+    "result": "Established the recovery plan and cross-team preparation; final migration delivery is not claimed.",
+    "context": "The 14-team scope comes from the October 30, 2026 calibration. It describes coordination across teams, not direct reports. An older career account used a different team count; the records are retained privately rather than silently treated as the same observation."
   },
   {
-    id: 'pricing-scale', title: 'Architectural oversight at pricing-service scale', organization: 'Affirm',
-    contribution: 'Held architectural oversight for the pricing service while guiding team quality and development practices.',
-    approach: 'Combined architectural work with engineering practices intended to improve delivery reliability.',
-    result: 'The service averages a sustained 12 million requests per minute at 99.999% measured availability, tracked using Chronosphere and service metrics.',
-    context: 'Throughput is a sustained average rather than a peak. Availability is measured rather than a target. These are system-level figures; my contribution was architectural oversight and engineering leadership within the team.',
+    "id": "pricing-platform",
+    "title": "Pricing and experimentation platform ownership",
+    "organization": "Affirm",
+    "contribution": "Owned the pricing-experiment lifecycle and management API, service-boundary designs, and platform standards.",
+    "approach": "Made experiments accessible to engineers outside the pricing team, selected smaller cross-domain designs, and wrote reusable domain-model and design-specification standards.",
+    "result": "Met the objective of reducing experiment setup time by 25%; two engineers developed independent ownership of the experiment platform.",
+    "context": "The experiment-setup result is distinct from older concurrency-capacity claims. UK launch contributions preceded the later country-aware, multi-tenant RFC; the later design is not credited retroactively with enabling that launch."
   },
   {
-    id: 'experimentation', title: 'Increasing experimentation capacity', organization: 'Affirm',
-    contribution: 'Improved development pipelines and reduced process inefficiencies.',
-    approach: 'Focused on the development workflow supporting concurrent financing-program experiments; also developed reporting for experimentation and configuration changes.',
-    result: 'Increased concurrent experimentation capacity by 400%.',
-    context: 'This describes experimentation capacity, not a claim that all engineering productivity or revenue increased by 400%.',
+    "id": "reliability",
+    "title": "Safer migrations and operational ownership",
+    "organization": "Affirm",
+    "contribution": "Defined service SLAs and monitoring, built runbooks and change reporting, reinstated end-to-end tests, and developed synthetic shadow-traffic verification.",
+    "approach": "Used dry-run defaults and an audit ledger for configuration migration, and designed a controlled migration to a different feature-flag and experimentation platform.",
+    "result": "The feature-flag platform migration completed without an incident; operational tooling supported verification and on-call work.",
+    "context": "The incident-free statement concerns that migration, not all service history. Non-public business volumes and system-scale figures are omitted."
   },
   {
-    id: 'production-llm', title: 'Company hackathon winner and AI development speaker', organization: 'Affirm',
-    contribution: 'Won Affirm’s company hackathon as part of a team and helped ship one of the company’s first production LLM integrations.',
-    approach: 'Contributed as part of the winning team and the subsequent production integration effort. Invited on several occasions to present as a leading voice in AI and autonomous development to an audience of over 1,000 developers.',
-    result: 'A company hackathon win, a production LLM integration, and repeated invitations to share AI and autonomous-development work with developers.',
-    context: 'The achievement is team-based. Internal implementation and evaluation artifacts are not published here.',
+    "id": "production-llm",
+    "title": "Shipping LLM features and leading AI development practices",
+    "organization": "Affirm",
+    "contribution": "Originated and shipped the team portal's first LLM feature end to end, covering the PRD, React front end, server-side LLM proxy, security review, guide, and training.",
+    "approach": "Used an implement-and-critique workflow that ran unattended for three weeks and produced more than 90 small pull requests under a reviewability contract. Served as division AI-retooling technical lead.",
+    "result": "Delivered a production LLM feature and presented a keynote and context-management deep dive at an internal engineering AI conference of roughly 1,000 engineers.",
+    "context": "Pull-request count describes generated work, not independently verified accepted features. The source records a hackathon entry that became the feature; competing win/attribution accounts remain a private reconciliation item. Employer-specific implementation is not published here."
   },
   {
     id: 'payments', title: 'Payments infrastructure handling $8 million weekly', organization: 'Invoice2go',
@@ -94,12 +101,12 @@ export const achievements = [
 ]
 
 export const projects = [
-  { name: 'Ensemble', description: 'Hierarchical multi-agent software-development system with specialized roles, TDD workflows, execution monitoring, and feedback mechanisms.', url: 'https://github.com/wmbillock/ensemble' },
   { name: 'Euphonia', description: 'Conversational interface to an evolutionary agent swarm with dual-tier PARA memory: shared project knowledge and focused agent-local experience. Designed to develop agent capabilities through training, independent evaluation and selection, preserving identity and learning across tasks and model changes.', url: 'https://billock.org/blog/talking-a-personal-ai-into-existence/' },
+  { name: 'DrumSwarm International', description: 'Experimental platform exploring how persistent agent organizations develop specialization and collaboration. Uses a drum-corps domain model of training, team composition, repeated performance and independent adjudication to investigate reputation and organizational evolution.', url: 'https://github.com/wmbillock/DrumSwarmInternational' },
 ]
 
 export const writingAndSpeaking = [
-  employment[0].responsibilities[2],
+  'Affirm: keynote and deep dive on agent context management at an internal engineering AI conference of roughly 1,000 engineers.',
   'Backand: developer evangelism through blogging, technical documentation, and direct community outreach; presentations at conferences and meetups throughout the US.',
   'Sprout Social: developed and delivered multiple unit-testing education sessions for engineers.',
 ]
