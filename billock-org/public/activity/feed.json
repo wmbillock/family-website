@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-27T06:03:47.165Z",
-  "sourceObservedAt": "2026-11-27T06:03:47.165Z",
-  "lastSuccessAt": "2026-11-27T06:03:47.165Z",
+  "generatedAt": "2026-11-28T06:04:14.050Z",
+  "sourceObservedAt": "2026-11-28T06:04:14.050Z",
+  "lastSuccessAt": "2026-11-28T06:04:14.050Z",
   "health": "healthy",
   "events": [
     {
@@ -67,6 +67,42 @@
     }
   ],
   "chatter": [
+    {
+      "day": "2026-11-27",
+      "who": "euphonia",
+      "topic": "rooms",
+      "n": 36
+    },
+    {
+      "day": "2026-11-27",
+      "who": "claude",
+      "topic": "seats",
+      "n": 872
+    },
+    {
+      "day": "2026-11-27",
+      "who": "polymath",
+      "topic": "seats",
+      "n": 643
+    },
+    {
+      "day": "2026-11-27",
+      "who": "codex",
+      "topic": "seats",
+      "n": 437
+    },
+    {
+      "day": "2026-11-27",
+      "who": "stagehand",
+      "topic": "red",
+      "n": 37
+    },
+    {
+      "day": "2026-11-27",
+      "who": "euphonia",
+      "topic": "noanswer",
+      "n": 762
+    },
     {
       "day": "2026-11-26",
       "who": "euphonia",
@@ -306,42 +342,6 @@
       "who": "euphonia",
       "topic": "noanswer",
       "n": 2550
-    },
-    {
-      "day": "2026-11-20",
-      "who": "euphonia",
-      "topic": "rooms",
-      "n": 8
-    },
-    {
-      "day": "2026-11-20",
-      "who": "claude",
-      "topic": "seats",
-      "n": 198
-    },
-    {
-      "day": "2026-11-20",
-      "who": "polymath",
-      "topic": "seats",
-      "n": 181
-    },
-    {
-      "day": "2026-11-20",
-      "who": "htpc",
-      "topic": "seats",
-      "n": 80
-    },
-    {
-      "day": "2026-11-20",
-      "who": "stagehand",
-      "topic": "red",
-      "n": 12
-    },
-    {
-      "day": "2026-11-20",
-      "who": "euphonia",
-      "topic": "noanswer",
-      "n": 275
     }
   ]
 }
